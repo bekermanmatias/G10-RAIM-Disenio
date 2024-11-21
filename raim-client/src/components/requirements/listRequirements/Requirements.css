@@ -96,16 +96,18 @@
 
 .filter-dropdown {
     position: absolute; /* Posiciona el desplegable */
-    top: 80px; /* Ajusta según sea necesario */
-    left: 20px; /* Alinea con la barra de búsqueda */
-    width: calc(100% - 40px); /* Ancho igual a la barra de búsqueda */
+    top: 155px; /* Ajusta según sea necesario */
+    left: 15.6rem; /* Alinea con el inicio del contenedor padre */
+    width: 80%; /* Asegura que el ancho sea el mismo del contenedor padre */
     background-color: white; /* Color de fondo del desplegable */
     border: 1px solid #ccc; /* Borde */
     border-radius: 4px; /* Bordes redondeados */
     padding: 10px; /* Espaciado interno */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
     z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    box-sizing: border-box; /* Incluye padding y bordes en el ancho total */
 }
+
 
 .filter-dropdown h4 {
     margin: 0 0 10px; /* Espaciado inferior */

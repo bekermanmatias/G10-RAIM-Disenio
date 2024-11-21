@@ -1,3 +1,4 @@
+/*requeriments.js*/
 import React, { useState } from 'react';
 import FilterDropdown from './FilterDropdown';
 import './Requirements.css';
@@ -53,10 +54,9 @@ const requerimientosData = [
         asunto: 'Consulta sobre la política de privacidad',
         propietario: 'Luis Martínez',
     },
-    // Agrega más requerimientos según sea necesario
 ];
 
-    const Requerimientos = () => {
+const Requerimientos = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [showFilters, setShowFilters] = useState(false);
 
@@ -65,13 +65,11 @@ const requerimientosData = [
     };
 
     const handleResetFilter = () => {
-        // Por ahora, solo resetea el término de búsqueda
-        // En el futuro, podrás expandir esta función para resetear filtros más complejos
         setSearchTerm('');
     };
 
     const toggleFilters = () => {
-        setShowFilters(!showFilters);
+        setShowFilters(prev => !prev); // Cambia el estado de manera más clara
     };
 
     const filteredRequerimientos = requerimientosData.filter(req =>
@@ -80,39 +78,48 @@ const requerimientosData = [
 
     return (
         <div className="requerimientos-container">
-        <div className="search-container">
-            <input
-                type="text"
-                placeholder="Buscar requerimientos..."
-                value={searchTerm}
-                onChange={handleSearch}
-                className="search-bar"
-            />
-            <button 
-                className="reset-filter-button"
-                onClick={handleResetFilter}
-                title="Resetear filtros"
-            >
-                <img 
-                    src="/assets/icons/reset-filt.svg"
-                    alt="Resetear filtros" 
-                    className="reset-icon"
+            <div className="search-container">
+                <input
+                    type="text"
+                    placeholder="Buscar requerimientos..."
+                    value={searchTerm}
+                    onChange={handleSearch}
+                    className="search-bar"
                 />
-            </button>
-            <button 
-                className="filter-button"
-                onClick={toggleFilters}
-                title="Filtrar"
-            >
-                <img 
-                    src="/assets/icons/filter.svg"
-                    alt="Filtrar" 
-                    className="filter-icon"
-                />
-            </button>
-        </div>
+                <button 
+                    className="reset-filter-button"
+                    onClick={handleResetFilter}
+                    title="Resetear filtros"
+                >
+                    <img 
+                        src="/assets/icons/reset-filt.svg"
+                        alt="Resetear filtros" 
+                        className="reset-icon"
+                    />
+                </button>
+                <button 
+                    className="filter-button"
+                    onClick={toggleFilters}
+                    title="Filtrar"
+                >
+                    <img 
+                        src="/assets/icons/filter.svg"
+                        alt="Filtrar" 
+                        className="filter-icon"
+                    />
+                </button>
+            </div>
 
-        {showFilters && <FilterDropdown />}
+            {showFilters && (
+                <FilterDropdown 
+                    onClose={() => setShowFilters(false)} 
+                    onApply={(selectedFilters) => {
+                        console.log('Filtros aplicados:', selectedFilters);
+                        setShowFilters(false);
+                    }} 
+                />
+            )}
+
             <table className="requerimientos-table">
                 <thead>
                     <tr className="table-header">
@@ -132,7 +139,7 @@ const requerimientosData = [
                             <td className="table-cell">{req.codigo}</td>
                             <td className="table-cell">{req.prioridad}</td>
                             <td className="table-cell">{req.tipo}</td>
-                            <td className="table-cell">{req.categoria}</td>
+                            <td className="table-cell ">{req.categoria}</td>
                             <td className="table-cell">{req.fechaAlta}</td>
                             <td className="table-cell">{req.estado}</td>
                             <td className="table-cell">{req.asunto}</td>

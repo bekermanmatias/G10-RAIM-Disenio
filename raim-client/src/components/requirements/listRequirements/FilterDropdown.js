@@ -1,48 +1,73 @@
+/*FilterDropdown.js*/
 import React, { useState } from 'react';
-import './FilterDropdown.css'; // Crea este archivo para estilos específicos
+import './FilterDropdown.css';
 
-const FilterDropdown = () => {
-    const [selectedFilters, setSelectedFilters] = useState({
-        estado: false,
-        tipo: false,
-        categoria: false
+const FilterDropdown = ({ onClose, onApply }) => {
+    const [filters, setFilters] = useState({
+        estados: [],
+        tipos: [],
+        categorias: []
     });
 
-    const handleFilterChange = (filterName) => {
-        setSelectedFilters(prevFilters => ({
-            ...prevFilters,
-            [filterName]: !prevFilters[filterName]
-        }));
+    const filterOptions = {
+        estados: ['Abierto', 'En Progreso', 'Cerrado'],
+        tipos: ['Bug', 'Mejora', 'Consulta'],
+        categorias: ['Software', 'Hardware', 'General']
+    };
+
+    const handleCheckboxChange = (group, value) => {
+        setFilters(prev => {
+            const currentGroup = prev[group];
+            const newGroup = currentGroup.includes(value)
+                ? currentGroup.filter(item => item !== value)
+                : [...currentGroup, value];
+            
+            return {
+                ...prev,
+                [group]: newGroup
+            };
+        });
+    };
+
+    const handleApply = () => {
+        onApply(filters);
+        onClose();
     };
 
     return (
         <div className="filter-dropdown">
-            <h4>Filtros</h4>
-            <div className="filter-options">
-                <label>
-                    <input 
-                        type="checkbox" 
-                        checked={selectedFilters.estado}
-                        onChange={() => handleFilterChange('estado')}
-                    /> 
-                    Estado
-                </label>
-                <label>
-                    <input 
-                        type="checkbox" 
-                        checked={selectedFilters.tipo}
-                        onChange={() => handleFilterChange('tipo')}
-                    /> 
-                    Tipo
-                </label>
-                <label>
-                    <input 
-                        type="checkbox" 
-                        checked={selectedFilters.categoria}
-                        onChange={() => handleFilterChange('categoria')}
-                    /> 
-                    Categoría
-                </label>
+            <div className="filter-dropdown-content">
+                <div className="filter-columns">
+                    {Object.entries(filterOptions).map(([group, options]) => (
+                        <div key={group} className="filter-column">
+                            <h4>{group.charAt(0).toUpperCase() + group.slice(1)}</h4>
+                            {options.map(option => (
+                                <label key={option} className="filter-checkbox">
+                                    <input
+                                        type="checkbox"
+                                        checked={filters[group].includes(option)}
+                                        onChange={() => handleCheckboxChange(group, option)}
+                                    />
+                                    {option}
+                                </label>
+                            ))}
+                        </div>
+                    ))}
+                </div>
+                <div className="filter-actions">
+                    <button 
+                        className="filter-cancel-btn" 
+                        onClick={onClose}
+                    >
+                        Cancelar
+                    </button>
+                    <button 
+                        className="filter-apply-btn" 
+                        onClick={handleApply}
+                    >
+                        Aplicar
+                    </button>
+                </div>
             </div>
         </div>
     );

@@ -1,22 +1,72 @@
 .filter-button {
-    background-color:aqua;
     border: none; 
     border-radius: 4px; 
     width: 56px; /* Mismo alto que la barra de búsqueda */
     display: flex; /* Flexbox para centrar el contenido */
     align-items: center; /* Centrar verticalmente */
-    transition: background-color 0.3s ease; /* Transición suave para el hover */
     position: absolute; /* Posicionamiento absoluto */
     right: 130px; /* Ajusta según la posición del botón reset */
-}
-
-.filter-button:hover {
-    background-color: rgb(255, 0, 0); /* Efecto hover sutil */
 }
 
 .filter-icon {
     width: 24px; /* Ajusta el tamaño del ícono */
     height: 24px; /* Ajusta el tamaño del ícono */
     object-fit: contain; /* Mantiene la proporción del ícono */
-    fill: rgb(255, 255, 255); /* Asegúrate de que el ícono sea blanco */
+}
+
+.filter-dropdown {
+    position: absolute; /* Posiciona el dropdown de manera absoluta */
+    top: 100%; /* Coloca el dropdown justo debajo del elemento padre */
+    left: 0; /* Alinea a la izquierda */
+    width: 100%; /* Establece el ancho al 100% del contenedor padre */
+    background-color: white; /* Color de fondo del dropdown */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    z-index: 1000; /* Asegura que el dropdown esté por encima de otros elementos */
+}
+
+.filter-dropdown-content {
+    padding: 10px; /* Espaciado interno */
+}
+
+.filter-columns {
+    display: flex; /* Usar flexbox para las columnas */
+    justify-content: space-between; /* Espacio entre columnas */
+}
+
+filter-column {
+    flex: 1; /* Cada columna ocupa el mismo espacio */
+    margin-right: 20px; /* Espacio entre columnas */
+}
+
+.filter-column:last-child {
+    margin-right: 0; /* Eliminar margen derecho del último elemento */
+}
+
+.filter-checkbox {
+    display: block; /* Cada checkbox en una nueva línea */
+    margin: 5px 0; /* Espaciado entre checkboxes */
+}
+
+.filter-actions {
+    display: flex; /* Usar flexbox para los botones */
+    justify-content: flex-end; /* Alinear botones a la derecha */
+    margin-top: 10px; /* Espaciado superior */
+}
+
+.filter-cancel-btn,
+.filter-apply-btn {
+    margin-left: 10px; /* Espacio entre botones */
+    padding: 8px 12px; /* Espaciado interno de los botones */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+}
+
+.filter-cancel-btn {
+    background-color: #f0f0f0; /* Color de fondo para el botón de cancelar */
+    border: 1px solid #ccc; /* Borde para el botón de cancelar */
+}
+
+.filter-apply-btn {
+    background-color: #040247; /* Color de fondo para el botón de aplicar */
+    color: white; /* Color de texto para el botón de aplicar */
+    border: none; /* Sin borde para el botón de aplicar */
 }
