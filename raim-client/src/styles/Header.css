@@ -1,0 +1,16 @@
+.header {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #040247; 
+    border-bottom: 1px solid #ccc; /* linea inferior */
+}
+
+.logo-container {
+    margin-right: 20px; 
+}
+
+.logo {
+    height: 50px; 
+}
+
