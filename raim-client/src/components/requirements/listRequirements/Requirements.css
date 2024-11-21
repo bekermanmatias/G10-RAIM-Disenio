@@ -1,0 +1,117 @@
+.requerimientos-container {
+    padding: 20px;
+    width: 100%; /* Asegúrate de que el contenedor ocupe todo el ancho */
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
+}
+
+.search-container {
+    display: flex; /* Usar flexbox para alinear la barra de búsqueda y el botón */
+    align-items: center; /* Centrar verticalmente los elementos */
+    position: relative; 
+    margin-bottom: 20px; /* Espacio debajo de la barra de búsqueda */
+}
+
+.search-bar {
+    flex-grow: 1; /* Permite que la barra de búsqueda ocupe el espacio disponible */
+    padding: 18px; /* Espaciado interno */
+    border: 1px solid #ccc; /* Borde */
+    border-radius: 4px; /* Bordes redondeados */
+    box-sizing: border-box; /* Asegura que el padding se incluya en el ancho total */
+    margin-right: 10px; /* Espacio entre la barra de búsqueda y el botón */
+    height: 56px; /* Altura explícita */
+}
+
+.reset-filter-button {
+    background-color: #040247; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Bordes redondeados */
+    width: 120px; /* Ancho del botón */
+    height: 56px; /* Misma altura que la barra de búsqueda */
+    padding: 0; /* Eliminar padding para igualar altura */
+    display: flex; /* Alinear contenido dentro del botón */
+    align-items: center; /* Centrar verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Transición suave para el hover */
+}
+
+.reset-filter-button:hover {
+    background-color: #070370; /* Color más oscuro al pasar el mouse */
+}
+
+.reset-icon {
+    width: 30px; /* Ajusta el tamaño del ícono */
+    height: 30px; /* Ajusta el tamaño del ícono */
+}
+
+.requerimientos-table {
+    width: 100%; /* Asegúrate de que la tabla ocupe todo el ancho */
+    border-collapse: collapse; /* Elimina el espacio entre celdas */
+    table-layout: auto; /* Permite que la tabla se ajuste a su contenido */
+}
+
+.table-header {
+    background-color: #040247; /* Color de fondo para el encabezado */
+    color: white; /* Color del texto */
+    font-weight: bold; /* Negrita */
+}
+
+.table-header th {
+    padding: 15px; /* Espaciado interno en encabezados */
+    text-align: center; /* Centrar texto */
+}
+
+.table-row:nth-child(even) {
+    background-color: #f0f0f0; /* Color de fondo para filas pares */
+}
+
+.table-row:nth-child(odd) {
+    background-color: #e0e0e0; /* Color de fondo para filas impares */
+}
+
+.table-cell {
+    padding: 15px; /* Espaciado interno en celdas */
+    text-align: center; /* Centrar texto */
+    border-bottom: 1px solid #ccc; /* Línea divisoria entre filas */
+}
+
+.filter-button {
+    background-color: transparent;
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Bordes redondeados */
+    width: 120px; /* Ancho del botón */
+    height: 56px; /* Misma altura que la barra de búsqueda */
+    display: flex; /* Alinear contenido dentro del botón */
+    align-items: center; /* Centrar verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    transition: background-color 0.3s ease; /* Transición suave para el hover */
+}
+
+.filter-button:hover {
+    background-color: #e7e7e7; /* Color más oscuro al pasar el mouse */
+}
+
+.filter-dropdown {
+    position: absolute; /* Posiciona el desplegable */
+    top: 80px; /* Ajusta según sea necesario */
+    left: 20px; /* Alinea con la barra de búsqueda */
+    width: calc(100% - 40px); /* Ancho igual a la barra de búsqueda */
+    background-color: white; /* Color de fondo del desplegable */
+    border: 1px solid #ccc; /* Borde */
+    border-radius: 4px; /* Bordes redondeados */
+    padding: 10px; /* Espaciado interno */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+}
+
+.filter-dropdown h4 {
+    margin: 0 0 10px; /* Espaciado inferior */
+}
+
+.filter-dropdown label {
+    display : block; /* Cada etiqueta en una nueva línea */
+    margin-bottom: 5px; /* Espacio entre las etiquetas */
+}
