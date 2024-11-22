@@ -1,0 +1,79 @@
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    gap: 20px;
+}
+
+.form-left,
+.form-right {
+    display: flex;
+    flex-direction: column;
+    width: 48%; /* Cada columna ocupa casi la mitad */
+    gap: 10px;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input, select, textarea {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.radio-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.radio-group input {
+    margin-right: 5px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 15px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button.cancel {
+    background-color: #f44336;
+    color: white;
+}
+
+button.cancel:hover {
+    background-color: #d32f2f;
+}
+
+button.submit {
+    background-color: #0929e0;
+    color: white;
+}
+
+button.submit:hover {
+    background-color: #071f9f;
+}

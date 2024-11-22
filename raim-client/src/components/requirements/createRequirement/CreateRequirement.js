@@ -1,12 +1,139 @@
-import React from 'react';
+import React, { useState } from 'react';
+import './CreateRequirement.css';
 
 const CrearRequerimiento = () => {
-    return (
-        <div>
-            <h2>CrearRequerimiento</h2>
-            <p>Contenido para crear el requerimiento</p>
-        </div>
-    );
-};
+    const [formData, setFormData] = useState({
+        tipo: '',
+        estado: '',
+        categoria: '',
+        prioridad: '',
+        asunto: '',
+        descripcion: '',
+        destinatario: '',
+        relacionados: [],
+        archivos: null,
+    });
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+          ...formData,
+          [name]: value,
+        });
+      };
+    
+      const handleFileChange = (e) => {
+        setFormData({
+          ...formData,
+          archivos: e.target.files,
+        });
+      };
+    
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(formData);
+      };
+
+      return (
+        <div className="content">
+        <h2>Agregar Nuevo Requerimiento</h2>
+        <form className="requerimiento-form" onSubmit={handleSubmit}>
+          <div className="form-container">
+            {/* Columna Izquierda */}
+            <div className="form-left">
+              <div className="form-row">
+                <label>Tipo</label>
+                <select name="tipo" value={formData.tipo} onChange={handleChange}>
+                  <option value="">Seleccione el Tipo</option>
+                  <option value="tipo1">Tipo 1</option>
+                  <option value="tipo2">Tipo 2</option>
+                </select>
+              </div>
+              <div className="form-row">
+                <label>Categoría</label>
+                <select name="categoria" value={formData.categoria} onChange={handleChange}>
+                  <option value="">Seleccione la Categoría</option>
+                  <option value="software">Software</option>
+                  <option value="hardware">Hardware</option>
+                </select>
+              </div>
+              <div className="form-row">
+                <label>Asunto</label>
+                <input
+                  type="text"
+                  name="asunto"
+                  value={formData.asunto}
+                  onChange={handleChange}
+                  maxLength="50"
+                />
+              </div>
+              <div className="form-row">
+                <label>Descripción</label>
+                <textarea
+                  name="descripcion"
+                  value={formData.descripcion}
+                  onChange={handleChange}
+                  maxLength="5000"
+                ></textarea>
+              </div>
+              <div className="form-row">
+                <label>Archivos Adjuntos</label>
+                <input type="file" name="archivos" multiple onChange={handleFileChange} />
+              </div>
+            </div>
+      
+            {/* Columna Derecha */}
+            <div className="form-right">
+              <div className="form-row">
+                <label>Estado</label>
+                <select name="estado" value={formData.estado} onChange={handleChange}>
+                  <option value="">Seleccione el Estado</option>
+                  <option value="pendiente">Pendiente</option>
+                  <option value="completado">Completado</option>
+                </select>
+              </div>
+              <div className="form-row">
+                <label>Prioridad</label>
+                <div className="radio-group">
+                  {['Urgente', 'Alta', 'Media', 'Baja'].map((priority) => (
+                    <label key={priority}>
+                      <input
+                        type="radio"
+                        name="prioridad"
+                        value={priority}
+                        onChange={handleChange}
+                      />
+                      {priority}
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div className="form-row">
+                <label>Destinatario (Opcional)</label>
+                <select name="destinatario" value={formData.destinatario} onChange={handleChange}>
+                  <option value="">Seleccione el Destinatario</option>
+                  <option value="dest1">Destinatario 1</option>
+                  <option value="dest2">Destinatario 2</option>
+                </select>
+              </div>
+              <div className="form-row">
+                <label>Requerimientos Relacionados</label>
+                <textarea
+                  name="requerimientosRelacionados"
+                  value={formData.requerimientosRelacionados}
+                  onChange={handleChange}
+                  maxLength="500"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+      
+          <div className="form-actions">
+            <button type="button">Cancelar</button>
+            <button type="submit">Guardar Requerimiento</button>
+          </div>
+        </form>
+      </div>
+      );
+    };
 export default CrearRequerimiento;
