@@ -1,14 +1,16 @@
+/* Requirements.css*/
+
 .requerimientos-container {
     padding: 20px;
     width: 100%; /* Asegúrate de que el contenedor ocupe todo el ancho */
     box-sizing: border-box; /* Incluye el padding en el ancho total */
 }
-
 .search-container {
     display: flex; /* Usar flexbox para alinear la barra de búsqueda y el botón */
     align-items: center; /* Centrar verticalmente los elementos */
-    position: relative; 
+    position: relative; /* Establece el contenedor como punto de referencia para el menú desplegable */
     margin-bottom: 20px; /* Espacio debajo de la barra de búsqueda */
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
 }
 
 .search-bar {
@@ -19,6 +21,21 @@
     box-sizing: border-box; /* Asegura que el padding se incluya en el ancho total */
     margin-right: 10px; /* Espacio entre la barra de búsqueda y el botón */
     height: 56px; /* Altura explícita */
+}
+
+.filter-dropdown {
+    display:contents;
+    position: absolute; /* Posiciona el desplegable */
+    top: 155px; /* Ajusta la distancia desde el contenedor superior según sea necesario */
+    left: 250px; /* Alinea el desplegable al borde izquierdo del contenedor de la barra de búsqueda */
+    width: 60%; /* Hace que el desplegable ocupe todo el ancho del contenedor de la barra de búsqueda */
+    background-color: white; /* Color de fondo del desplegable */
+    border: 1px solid #ccc; /* Borde */
+    border-radius: 4px; /* Bordes redondeados */
+    padding: 10px; /* Espaciado interno */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    z-index: 1000; /* Asegura que el desplegable esté por encima de otros elementos */
+    box-sizing: border-box; /* Incluye padding y bordes en el ancho total */
 }
 
 .reset-filter-button {
@@ -94,19 +111,8 @@
     background-color: #e7e7e7; /* Color más oscuro al pasar el mouse */
 }
 
-.filter-dropdown {
-    position: absolute; /* Posiciona el desplegable */
-    top: 155px; /* Ajusta según sea necesario */
-    left: 15.6rem; /* Alinea con el inicio del contenedor padre */
-    width: 80%; /* Asegura que el ancho sea el mismo del contenedor padre */
-    background-color: white; /* Color de fondo del desplegable */
-    border: 1px solid #ccc; /* Borde */
-    border-radius: 4px; /* Bordes redondeados */
-    padding: 10px; /* Espaciado interno */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
-    z-index: 1000; /* Asegura que esté por encima de otros elementos */
-    box-sizing: border-box; /* Incluye padding y bordes en el ancho total */
-}
+
+
 
 
 .filter-dropdown h4 {
@@ -114,6 +120,6 @@
 }
 
 .filter-dropdown label {
-    display : block; /* Cada etiqueta en una nueva línea */
+    display: block; /* Cada etiqueta en una nueva línea */
     margin-bottom: 5px; /* Espacio entre las etiquetas */
 }
