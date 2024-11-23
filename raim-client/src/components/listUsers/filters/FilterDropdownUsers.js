@@ -1,20 +1,14 @@
-// src/components/listRequirements/filters/FilterDropdown.js
 import React, { useState } from 'react';
 import './FilterDropdown.css';
 
-const FilterDropdown = ({ onClose, onApply }) => {
+const FilterDropdownUsers = ({ onClose, onApply }) => {
     const [filters, setFilters] = useState({
         estados: [],
-        tipos: [],
-        categorias: [],
-        miPropiedad: []
+        departamentos: []
     });
 
     const filterOptions = {
-        estados: ['Abierto', 'En Progreso', 'Cerrado'],
-        tipos: ['Bug', 'Mejora', 'Consulta'],
-        categorias: ['Software', 'Hardware', 'General', 'Hardware', 'General'],
-        miPropiedad: ['Propietario', 'Asisgnados', 'Emitidos']
+        departamentos: ['Tecnología', 'Gestión', 'Sistemas', 'Recursos Humanos']
     };
 
     const handleCheckboxChange = (group, value) => {
@@ -75,4 +69,4 @@ const FilterDropdown = ({ onClose, onApply }) => {
     );
 };
 
-export default FilterDropdown;
+export default FilterDropdownUsers;

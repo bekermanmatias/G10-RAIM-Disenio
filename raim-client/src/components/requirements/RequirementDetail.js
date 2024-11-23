@@ -20,7 +20,6 @@ const RequirementDetail = () => {
             </div>
             
             <div className="requirement-detail-content">
-                {/* Aquí podrías agregar más contenido en el futuro */}
                 <p>Información detallada del requerimiento {codigo} será mostrada próximamente.</p>
             </div>
         </div>
