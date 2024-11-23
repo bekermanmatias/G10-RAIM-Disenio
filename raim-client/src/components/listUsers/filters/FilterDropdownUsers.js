@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './FilterDropdown.css';
 
-const FilterDropdownUsers = ({ onClose, onApply }) => {
+const FilterDropdownUsers = ({ onClose, onApply, initialFilters }) => {
     const [filters, setFilters] = useState({
         cargo: [],
         departamentos: []
     });
+
+    // Efecto para cargar los filtros iniciales
+    useEffect(() => {
+        if (initialFilters) {
+            setFilters(initialFilters);
+        }
+    }, [initialFilters]);
 
     const filterOptions = {
         cargo: ['Desarrollador Senior', 'Analista de Proyectos', 'Gerente de TI'],
@@ -28,7 +35,6 @@ const FilterDropdownUsers = ({ onClose, onApply }) => {
 
     const handleApply = () => {
         onApply(filters);
-        onClose();
     };
 
     return (

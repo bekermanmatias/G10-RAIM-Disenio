@@ -70,7 +70,7 @@ const Requerimientos = () => {
         estados: [],
         tipos: [],
         categorias: [],
-        miPropiedad: []
+        participacion: []
     });
 
 
@@ -86,10 +86,11 @@ const Requerimientos = () => {
             estados: [],
             tipos: [],
             categorias: [],
-            miPropiedad: []
+            participacion: []
         });
-        setFilteredRequirements(requerimientosData);
-    };
+
+    setFilteredRequirements(requerimientosData);
+};
 
     const toggleFilters = () => {
         setShowFilters(!showFilters);
@@ -100,53 +101,54 @@ const Requerimientos = () => {
     };
 
     const handleApplyFilters = (selectedFilters) => {
+        // No cerrar el menú de filtros
         setActiveFilters(selectedFilters);
         filterRequirements(searchTerm, selectedFilters);
-        setShowFilters(false);
     };
 
     const filterRequirements = (searchTerm, filters) => {
         let result = requerimientosData;
-
+    
         // Filtro por búsqueda
         if (searchTerm) {
             result = result.filter(req => 
-                req.asunto.toLowerCase().includes(searchTerm.toLowerCase())
+                req.asunto.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                req.codigo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                req.propietario.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }
-
+    
         // Filtro por estados
-        if (filters.estados.length > 0) {
+        if (filters.estados && filters.estados.length > 0) {
             result = result.filter(req => 
                 filters.estados.includes(req.estado)
             );
         }
-
+    
         // Filtro por tipos
-        if (filters.tipos.length > 0) {
+        if (filters.tipos && filters.tipos.length > 0) {
             result = result.filter(req => 
                 filters.tipos.includes(req.tipo)
             );
         }
-
+    
         // Filtro por categorías
-        if (filters.categorias.length > 0) {
+        if (filters.categorias && filters.categorias.length > 0) {
             result = result.filter(req => 
                 filters.categorias.includes(req.categoria)
             );
         }
-
-        // Filtro por mi propiedad (propietario)
-        if (filters.miPropiedad.length > 0) {
+    
+        // Filtro por participacion
+        if (filters.participacion && filters.participacion.length > 0) {
             result = result.filter(req => {
-                if (filters.miPropiedad.includes('Propietario')) {
-                    return req.propietario === 'Juan Pérez'; // Ejemplo de usuario actual
+                if (filters.participacion.includes('Propietario')) {
+                    return req.propietario === 'Juan Pérez'; // Ajusta al usuario actual
                 }
-                // Puedes agregar más lógica para 'Asignados' y 'Emitidos'
                 return true;
             });
         }
-
+    
         setFilteredRequirements(result);
     };
 
@@ -163,6 +165,7 @@ const Requerimientos = () => {
                 <FilterDropdown 
                     onClose={() => setShowFilters(false)} 
                     onApply={handleApplyFilters}
+                    initialFilters={activeFilters}
                 />
             )}
 

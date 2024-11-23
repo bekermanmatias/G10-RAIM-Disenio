@@ -1,14 +1,21 @@
 // src/components/listRequirements/filters/FilterDropdown.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './FilterDropdown.css';
 
-const FilterDropdown = ({ onClose, onApply }) => {
+const FilterDropdown = ({ onClose, onApply, initialFilters }) => {
     const [filters, setFilters] = useState({
         estados: [],
         tipos: [],
         categorias: [],
         participacion: []
     });
+
+    // Efecto para cargar los filtros iniciales
+    useEffect(() => {
+        if (initialFilters) {
+            setFilters(initialFilters);
+        }
+    }, [initialFilters]);
 
     const filterOptions = {
         estados: ['Abierto', 'En Progreso', 'Cerrado'],
@@ -33,7 +40,6 @@ const FilterDropdown = ({ onClose, onApply }) => {
 
     const handleApply = () => {
         onApply(filters);
-        onClose();
     };
 
     return (
