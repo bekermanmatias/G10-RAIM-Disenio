@@ -1,12 +1,13 @@
 // src/components/listRequirements/Requirements.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SearchBar from './components/SearchBar';
 import TableRequirements from './components/TableRequirements';
 import FilterDropdown from './filters/FilterDropdown';
 import FloatingCreateButton from './components/FloatingCreateButton';
 import './Requirements.css';
 
-const requerimientosData = [
+export const requerimientosData = [
     {
         codigo: 'REQ-001',
         prioridad: 'Alta',
@@ -64,12 +65,14 @@ const Requerimientos = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [showFilters, setShowFilters] = useState(false);
     const [filteredRequirements, setFilteredRequirements] = useState(requerimientosData);
+    const navigate = useNavigate();
     const [activeFilters, setActiveFilters] = useState({
         estados: [],
         tipos: [],
         categorias: [],
         miPropiedad: []
     });
+
 
     const handleSearch = (event) => {
         const term = event.target.value;
@@ -90,6 +93,10 @@ const Requerimientos = () => {
 
     const toggleFilters = () => {
         setShowFilters(!showFilters);
+    };
+
+    const handleRowClick = (codigo) => {
+        navigate(`/details-requirement/${codigo}`);
     };
 
     const handleApplyFilters = (selectedFilters) => {

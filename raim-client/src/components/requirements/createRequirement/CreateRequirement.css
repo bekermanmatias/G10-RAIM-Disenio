@@ -62,7 +62,7 @@ button {
 
 button.cancel {
     background-color: #f44336;
-    color: white;
+    color: red;
 }
 
 button.cancel:hover {
@@ -71,7 +71,7 @@ button.cancel:hover {
 
 button.submit {
     background-color: #0929e0;
-    color: white;
+    color: blue;
 }
 
 button.submit:hover {
