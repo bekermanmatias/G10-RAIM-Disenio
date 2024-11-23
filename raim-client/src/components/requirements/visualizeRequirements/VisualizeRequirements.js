@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { requerimientosData } from '../listRequirements/Requirements';
+import { requerimientosData } from '../../listRequirements/Requirements';
 
 const VisualizeRequirements = () => {
     const { codigo } = useParams();
