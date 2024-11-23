@@ -1,9 +1,9 @@
-/*requeriments.js*/
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import FilterDropdown from './FilterDropdown';
 import './Requirements.css';
 
-const requerimientosData = [
+export const requerimientosData = [
     {
         codigo: 'REQ-001',
         prioridad: 'Alta',
@@ -59,6 +59,7 @@ const requerimientosData = [
 const Requerimientos = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [showFilters, setShowFilters] = useState(false);
+    const navigate = useNavigate();
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
@@ -69,7 +70,11 @@ const Requerimientos = () => {
     };
 
     const toggleFilters = () => {
-        setShowFilters(prev => !prev); // Cambia el estado de manera más clara
+        setShowFilters(prev => !prev); 
+    };
+
+    const handleRowClick = (codigo) => {
+        navigate(`/details-requirement/${codigo}`);
     };
 
     const filteredRequerimientos = requerimientosData.filter(req =>

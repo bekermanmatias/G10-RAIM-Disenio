@@ -8,6 +8,7 @@ import Settings from './components/settings/Settings';
 import Login from './components/auth/Login'; 
 import Register from './components/auth/Register'; 
 import FloatingCreateButton from './components/requirements/listRequirements/FloatingCreateButton'; 
+import VisualizeRequirements from './components/requirements/visualizeRequirements/VisualizeRequirements';
 import './styles/App.css';
 
 const App = () => {
@@ -25,9 +26,10 @@ const App = () => {
                         <Route path="/users" element={<Users />} />
                         <Route path="/requirements" element={<Requirements />} />
                         <Route path="/crear-requerimiento" element={<CrearRequerimiento />} />
+                        <Route path="/details-requirement/:codigo" element={<VisualizeRequirements />} />
                         <Route path="/settings" element={<Settings />} />
-                        <Route path="/login" element={<Login />} /> {/* Ruta para Login */}
-                        <Route path="/register" element={<Register />} /> {/* Ruta para Register */}
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
                         <Route path="/" element={<Requirements />} />
                     </Routes>
                     <FloatingCreateButton />
