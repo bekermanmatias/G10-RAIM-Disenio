@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+// TableUsers.js
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './TableUsers.css';
 
 const TableUsers = ({ users }) => {
     const [hoveredRow, setHoveredRow] = useState(null);
     const navigate = useNavigate();
+
+    // Añade un useEffect para depuración
+    useEffect(() => {
+        console.log('Usuarios actualizados:', users);
+    }, [users]);
 
     const handleRowHover = (index) => {
         setHoveredRow(index);
@@ -15,7 +21,6 @@ const TableUsers = ({ users }) => {
     };
 
     const handleRowClick = (user) => {
-        // Navegar al detalle del usuario
         navigate(`/users/${user.legajo}`);
     };
 
@@ -23,9 +28,12 @@ const TableUsers = ({ users }) => {
         <table className="usuarios-table">
             <thead>
                 <tr className="table-header">
-                    <th>Nombre Completo</th>                    
                     <th>Legajo</th>
+                    <th>Nombre Completo</th>
+                    <th>Email</th>
+                    <th>Usuario</th>
                     <th>Cargo</th>
+                    <th>Departamento</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,9 +45,14 @@ const TableUsers = ({ users }) => {
                         onMouseLeave={handleRowLeave}
                         onClick={() => handleRowClick(user)}
                     >
-                        <td className="table-cell">{user.nombreCompleto}</td>
-                        <td className="table-cell">{user.legajo}</td>
+                       <td className="table-cell">{user.legajo}</td> 
+                       <td className="table-cell">{user.nombreCompleto}</td>
+                        <td className="table-cell">{user.email}</td>
+                        <td className="table-cell">{user.usuario }</td>
                         <td className="table-cell">{user.cargo}</td>
+                        <td className="table-cell">{user.departamento}</td>
+                        
+                        
                     </tr>
                 ))}
             </tbody>

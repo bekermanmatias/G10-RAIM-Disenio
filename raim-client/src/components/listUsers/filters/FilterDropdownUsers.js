@@ -3,11 +3,12 @@ import './FilterDropdown.css';
 
 const FilterDropdownUsers = ({ onClose, onApply }) => {
     const [filters, setFilters] = useState({
-        estados: [],
+        cargo: [],
         departamentos: []
     });
 
     const filterOptions = {
+        cargo: ['Desarrollador Senior', 'Analista de Proyectos', 'Gerente de TI'],
         departamentos: ['Tecnología', 'Gestión', 'Sistemas', 'Recursos Humanos']
     };
 

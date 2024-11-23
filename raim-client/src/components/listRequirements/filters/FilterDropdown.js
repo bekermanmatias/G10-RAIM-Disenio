@@ -7,14 +7,14 @@ const FilterDropdown = ({ onClose, onApply }) => {
         estados: [],
         tipos: [],
         categorias: [],
-        miPropiedad: []
+        participacion: []
     });
 
     const filterOptions = {
         estados: ['Abierto', 'En Progreso', 'Cerrado'],
         tipos: ['Bug', 'Mejora', 'Consulta'],
-        categorias: ['Software', 'Hardware', 'General', 'Hardware', 'General'],
-        miPropiedad: ['Propietario', 'Asisgnados', 'Emitidos']
+        categorias: ['Software', 'Hardware', 'General'],
+        participacion: ['Propietario','Asignado']
     };
 
     const handleCheckboxChange = (group, value) => {

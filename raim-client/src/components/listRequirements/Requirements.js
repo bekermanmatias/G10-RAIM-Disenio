@@ -30,7 +30,7 @@ const requerimientosData = [
     {
         codigo: 'REQ-003',
         prioridad: 'Baja',
-        tipo: 'Consulta',
+        tipo: 'Mejora',
         categoria: 'General',
         fechaAlta: '2023-10-03',
         estado: 'Cerrado',
@@ -49,7 +49,7 @@ const requerimientosData = [
     },
     {
         codigo: 'REQ-003',
-        prioridad: 'Baja',
+        prioridad: 'Alta',
         tipo: 'Consulta',
         categoria: 'General',
         fechaAlta: '2023-10-03',
@@ -64,19 +64,27 @@ const Requerimientos = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [showFilters, setShowFilters] = useState(false);
     const [filteredRequirements, setFilteredRequirements] = useState(requerimientosData);
+    const [activeFilters, setActiveFilters] = useState({
+        estados: [],
+        tipos: [],
+        categorias: [],
+        miPropiedad: []
+    });
 
     const handleSearch = (event) => {
         const term = event.target.value;
         setSearchTerm(term);
-        
-        const filtered = requerimientosData.filter(req =>
-            req.asunto.toLowerCase().includes(term.toLowerCase())
-        );
-        setFilteredRequirements(filtered);
+        filterRequirements(term, activeFilters);
     };
 
     const handleResetFilter = () => {
         setSearchTerm('');
+        setActiveFilters({
+            estados: [],
+            tipos: [],
+            categorias: [],
+            miPropiedad: []
+        });
         setFilteredRequirements(requerimientosData);
     };
 
@@ -85,9 +93,54 @@ const Requerimientos = () => {
     };
 
     const handleApplyFilters = (selectedFilters) => {
-        // Implementa la lógica de filtrado más compleja
-        console.log('Filtros aplicados:', selectedFilters);
+        setActiveFilters(selectedFilters);
+        filterRequirements(searchTerm, selectedFilters);
         setShowFilters(false);
+    };
+
+    const filterRequirements = (searchTerm, filters) => {
+        let result = requerimientosData;
+
+        // Filtro por búsqueda
+        if (searchTerm) {
+            result = result.filter(req => 
+                req.asunto.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
+        // Filtro por estados
+        if (filters.estados.length > 0) {
+            result = result.filter(req => 
+                filters.estados.includes(req.estado)
+            );
+        }
+
+        // Filtro por tipos
+        if (filters.tipos.length > 0) {
+            result = result.filter(req => 
+                filters.tipos.includes(req.tipo)
+            );
+        }
+
+        // Filtro por categorías
+        if (filters.categorias.length > 0) {
+            result = result.filter(req => 
+                filters.categorias.includes(req.categoria)
+            );
+        }
+
+        // Filtro por mi propiedad (propietario)
+        if (filters.miPropiedad.length > 0) {
+            result = result.filter(req => {
+                if (filters.miPropiedad.includes('Propietario')) {
+                    return req.propietario === 'Juan Pérez'; // Ejemplo de usuario actual
+                }
+                // Puedes agregar más lógica para 'Asignados' y 'Emitidos'
+                return true;
+            });
+        }
+
+        setFilteredRequirements(result);
     };
 
     return (

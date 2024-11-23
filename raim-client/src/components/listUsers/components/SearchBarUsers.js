@@ -10,6 +10,11 @@ const SearchBarUsers = ({
     return (
         <div className="search-container">
             <div className="search-input-wrapper">
+            <img
+                className="search-icon"
+                alt="Icono de busqueda"
+                src="/assets/icons/lupa.svg"
+                ></img>
                 <input
                     type="text"
                     placeholder="Buscar usuarios..."
