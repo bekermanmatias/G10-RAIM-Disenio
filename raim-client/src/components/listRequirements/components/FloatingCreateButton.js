@@ -1,13 +1,12 @@
-// components/FloatingCreateButton.js
+// src/components/listRequirements/components/FloatingCreateButton.js
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import './FloatingCreateButton.css'; // Importa el CSS específico si lo tienes
+import './FloatingCreateButton.css';
 
 const FloatingCreateButton = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // Mostrar botón solo en ciertas rutas
     const shouldShowButton = ['/requirements', '/'].includes(location.pathname);
 
     const handleCreateClick = () => {

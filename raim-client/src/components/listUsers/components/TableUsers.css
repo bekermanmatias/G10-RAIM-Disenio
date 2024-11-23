@@ -1,0 +1,45 @@
+.usuarios-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+.table-header {
+    background-color: #040247;
+    color: white;
+    font-weight: bold;
+}
+
+.table-header th {
+    padding: 15px;
+    text-align: center;
+}
+
+.table-row {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.table-row:nth-child(even) {
+    background-color: #f0f0f0;
+}
+
+.table-row:nth-child(odd) {
+    background-color: #e0e0e0;
+}
+
+.table-row.row-hovered {
+    background-color: rgba(0, 123, 255, 0.2); /* Azul claro transparente */
+}
+
+.table-row:hover {
+    box-shadow: 0 3px 4px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+}
+
+.table-cell {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+}

@@ -1,0 +1,53 @@
+/* src/components/listRequirements/components/SearchBar.css */
+.search-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.search-input-wrapper {
+    flex-grow: 1;
+    position: relative;
+    margin-right: 10px;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 18px;
+    padding-right: 120px; /* Espacio para el botón de filtro */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    height: 56px;
+}
+
+.filter-button-inside {
+    position: absolute;
+    right: 0; /* Alineado con el borde derecho */
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    width: 120px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.filter-button-inside:hover {
+    background-color: rgba(128, 128, 128, 0.2); /* Gris claro transparente */
+}
+
+.filter-icon-inside {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+/* Resto del CSS se mantiene igual */

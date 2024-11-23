@@ -1,8 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';import Header from './components/header/Header';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import Header from './components/header/Header';
 import Sidebar from './components/sidebar/Sidebar';
-import Users from './components/users/Users';
-import Requirements from './components/requirements/listRequirements/Requirements';
+import Users from './components/listUsers/Users';
 import CrearRequerimiento from './components/requirements/createRequirement/CreateRequirement';
 import Settings from './components/settings/Settings';
 import Login from './components/auth/Login'; 
@@ -12,7 +12,6 @@ import VisualizeRequirements from './components/requirements/visualizeRequiremen
 import './styles/App.css';
 
 const App = () => {
-
     const location = useLocation();
 
     const noSidebarRoutes = ['/login', '/register'];
@@ -25,6 +24,7 @@ const App = () => {
                     <Routes>
                         <Route path="/users" element={<Users />} />
                         <Route path="/requirements" element={<Requirements />} />
+                        <Route path="/requirements/:codigo" element={<RequirementDetail />} /> 
                         <Route path="/crear-requerimiento" element={<CrearRequerimiento />} />
                         <Route path="/details-requirement/:codigo" element={<VisualizeRequirements />} />
                         <Route path="/settings" element={<Settings />} />
