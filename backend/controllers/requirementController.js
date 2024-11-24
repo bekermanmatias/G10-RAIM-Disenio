@@ -86,7 +86,25 @@ const createRequirement = async (req, res) => {
 
 const getRequirements = async (req, res) => {
   try {
-    const requirements = await Requirement.findAll();
+    const requirements = await Requirement.findAll({
+      include: [
+        {
+          model: Estado,
+          as: 'estado',
+          attributes: ['descripcion'], 
+        },
+        {
+          model: Prioridad,
+          as: 'prioridad',
+          attributes: ['descripcion'], 
+        },
+        {
+          model: TipoRequerimiento,
+          as: 'tipoReq',
+          attributes: ['descripcion', 'codigo'], 
+        },
+      ],
+    });
     if(requirements.length === 0){
       return res.status(203).json({message: 'No hay requerimientos almacenados'})
     }
