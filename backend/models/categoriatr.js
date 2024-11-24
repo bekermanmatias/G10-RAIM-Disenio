@@ -10,18 +10,23 @@ module.exports = (sequelize, DataTypes) => {
         descripcion: {
           type: DataTypes.STRING,
           allowNull: false,
-        }
+        },
+      idTipoReq: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       },
       {
         tableName: 'categoriatr',
         timestamps: true,
-      }
+      },
+      
     );
 
     CategoriaTR.associate = (models) => {
-        CategoriaTR.hasOne(models.TipoRequerimiento, {
-            foreignKey: 'idCategoriaTR',
-            as:'tipoRequerimiento'
+        CategoriaTR.belongsTo(models.TipoRequerimiento, {
+            foreignKey: 'idTipoReq',
+            targetKey:'idTipoReq'
         });
     }
   

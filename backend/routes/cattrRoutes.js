@@ -4,7 +4,7 @@ const cattrController = require('../controllers/catTRController');
 
 router.get('/', cattrController.getCatTR);
 router.post('/', cattrController.createCatTR);
-router.get('/:descripcion', cattrController.getCatByDesc);
-router.delete('/:descripcion', cattrController.eliminarCat);
+router.get('/desc', cattrController.getCatByDesc);
+router.delete('/', cattrController.eliminarCat);
 
 module.exports = router;

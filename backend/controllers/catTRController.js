@@ -1,27 +1,35 @@
-const { categoriaTR } = require('../models');
+const { CategoriaTR, TipoRequerimiento } = require('../models');
 
 
 const createCatTR = async (req, res) => {
-  const { descripcion } = req.body;
+  const {descripcion, codTR} = req.body;
 
   try {
-    const descLibre = await categoriaTR.findOne({
+    const descLibre = await CategoriaTR.findOne({
         where: {descripcion: descripcion},
     });
-
     if (descLibre){
-        return res.status(404).json({ message: 'Categoria con misma descripcion existente!'});
+        return res.status(400).json({ message: 'Descripcion no disponible'});
     }
-    const newCatTR = await categoriaTR.create({ descripcion });
+
+    const TipoReq = await TipoRequerimiento.findOne({
+      where: {codigo: codTR},
+    });
+    if(!TipoReq){
+      return res.status(404).json({message: 'Tipo de requerimiento no encontrado'})
+    }
+    const idTipoReq = TipoReq.idTipoReq;
+
+    const newCatTR = await CategoriaTR.create({ descripcion, idTipoReq });
     res.status(201).json(newCatTR);
   } catch (error) {
-    res.status(500).json({ message: 'Error al crear la categoria', error });
+    res.status(500).json({ message: 'Error al crear la categoria', error: error.message });
   }
 };
 
 const getCatTR = async (req, res) => {
   try {
-    const catsTR = await categoriaTR.findAll();
+    const catsTR = await CategoriaTR.findAll();
     res.status(200).json(catsTR);
   }
   catch (error){
@@ -30,35 +38,36 @@ const getCatTR = async (req, res) => {
 }
 
 const getCatByDesc = async (req,res) => {
-  const Desc = req.params;
+  const {descripcion} = req.body;
   try{
-    if (!Desc){
-      res.status(404).json({ mmessage: 'Se debe enviar una descripcion.'});
-    }
-
-    const catTR = await categoriaTR.findOne({
-      where: {descripcion: Desc},
+    
+    const catTR = await CategoriaTR.findOne({
+      where: {descripcion: descripcion},
     });
-    res.status(201).json(catTR);
+    if (!catTR) {
+      return res.status(404).json({ message: 'Categoria no encontrada' });
+    }
+    res.status(200).json(catTR);
   }
   catch (error){
-    res.status(500).json({message: 'Error al obtener la categoria.'});
+    res.status(500).json({message: 'Error al obtener la categoria.', error: error.message});
   }
     
 }
 
 
 const eliminarCat = async (req, res) => {
-  const { Desc } = req.params;
+  const {descripcion} = req.body;
   
   try{
-    const catTR = await User.findOne({
-      where: {descripcion: Desc},
+    const catTR = await CategoriaTR.findOne({
+      where: {descripcion: descripcion},
     });
     if (!catTR) {
       return res.status(404).json({ message: 'Categoria no encontrada' });
     }
     await catTR.destroy();
+    res.status(200).json({ message: 'Categoria eliminada'})
   }
   catch(error){
     res.status(500).json({ message: 'Error al eliminar la categoria', error});

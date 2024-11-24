@@ -6,12 +6,12 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
         },
         descripcion: {
-            type: DataTypes.STRING(255),
+            type: DataTypes.STRING,
             allowNull: false,
         }
     }, {
         tableName: 'estado',
-        timestamps: false, // Si no necesitas createdAt/updatedAt
+        timestamps: false,
     });
 
     Estado.associate = (models) => {

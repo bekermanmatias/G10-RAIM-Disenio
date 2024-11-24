@@ -1,33 +1,30 @@
-const { TipoReq, categoriaTR} = require('../models');
+const { TipoRequerimiento } = require('../models');
 
 
 const createTipoReq = async (req, res) => {
-  const { codigo, descripcion, descCTR } = req.body;
+  const { codigo, descripcion } = req.body;
 
   try {
-    if(codigo.length() !== 3){
-        res.status(500).json({message: 'El codigo debe tener 3 caracteres.'})
+    
+    if( String(codigo).length !== 3){
+        return res.status(400).json({message: 'El codigo debe tener 3 caracteres.'})
     }
-
-    const CategoriaTR = await categoriaTR.findOne({
-        where: {descripcion: descCTR},
-    });
-
-    if (!CategoriaTR){
-        return res.status(404).json({ message: 'Categoria no encontrada.'});
-    }else{
-        const idCategoriaTR = categoriaTR.idCategoriaTR;
+    
+    const codExiste = await TipoRequerimiento.findOne( { where: {codigo: codigo} });
+    if (codExiste){
+      return res.status(400).json( { message: 'El codigo del tipo ya esta utilizado.'})
     }
-    const newTipoReq = await TipoReq.create({ codigo, descripcion, idCategoriaTR });
-    res.status(201).json(newTipoReq);
+    const newTipoReq= await TipoRequerimiento.create({codigo, descripcion});
+    return res.status(201).json(newTipoReq);
   } catch (error) {
-    res.status(500).json({ message: 'Error al crear el tipo de requerimiento', error });
+     res.status(500).json({ message: 'Error al crear el tipo de requerimiento', error: error.message});
   }
-};
+};  
+
 
 const getTiposReq = async (req, res) => {
   try {
-    const tiposReq = await TipoReq.findAll();
+    const tiposReq = await TipoRequerimiento.findAll();
     res.status(200).json(tiposReq);
   }
   catch (error){
@@ -36,38 +33,39 @@ const getTiposReq = async (req, res) => {
 }
 
 const getTipoByCodigo = async (req,res) => {
-  const Cod = req.params;
+  const { codigo } = req.params;
   try{
-    if (!Cod){
-      res.status(404).json({ mmessage: 'Se debe ingresar un codigo'});
-    }
 
-    const TipoR = await TipoReq.findOne({
-      where: {codigo: Cod},
+    const TipoReq = await TipoRequerimiento.findOne({
+      where: {codigo: codigo},
     });
-    res.status(201).json(TipoR);
+    if (!TipoReq){
+      return res.status(404).json({message: 'Tipo de requerimiento no encontrado'})
+    }
+    res.status(200).json(TipoReq);
   }
   catch (error){
-    res.status(500).json({message: 'Error al obtener el tipo de requerimiento.'});
+    res.status(500).json({message: 'Error al obtener el tipo de requerimiento.', error: error.message});
   }
     
 }
 
 
 const eliminarTipoReq = async (req, res) => {
-  const { Cod } = req.params;
+  const { codigo } = req.params;
   
   try{
-    const TipoReq = await TipoReq.findOne({
-      where: {codigo: Cod},
+    const TipoReq = await TipoRequerimiento.findOne({
+      where: {codigo: codigo},
     });
     if (!TipoReq) {
       return res.status(404).json({ message: 'Tipo de requerimiento no encontrado' });
     }
     await TipoReq.destroy();
+    res.status(200).json({meesage: 'Tipo de requerimiento eliminado con exito.'})
   }
   catch(error){
-    res.status(500).json({ message: 'Error al eliminar el tipo de requerimiento', error});
+    res.status(500).json({ message: 'Error al eliminar el tipo de requerimiento', error: error.message});
   }
 }
 
