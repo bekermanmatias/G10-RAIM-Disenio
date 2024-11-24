@@ -1,5 +1,4 @@
 import React from 'react';
-import './SearchBarUsers.css';
 
 const SearchBarUsers = ({ 
     searchTerm, 
