@@ -1,5 +1,5 @@
 // src/components/listRequirements/Requirements.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from './components/SearchBar';
 import TableRequirements from './components/TableRequirements';
@@ -7,82 +7,87 @@ import FilterDropdown from './filters/FilterDropdown';
 import FloatingCreateButton from './components/FloatingCreateButton';
 import './Requirements.css';
 
-export const requerimientosData = [
-    {
-        codigo: 'REQ-001',
-        prioridad: 'Alta',
-        tipo: 'Bug',
-        categoria: 'Software',
-        fechaAlta: '2023-10-01',
-        estado: 'Abierto',
-        asunto: 'Error en la página de inicio',
-        propietario: 'Juan Pérez',
-    },
-    {
-        codigo: 'REQ-002',
-        prioridad: 'Media',
-        tipo: 'Mejora',
-        categoria: 'Hardware',
-        fechaAlta: '2023-10-02',
-        estado: 'En Progreso',
-        asunto: 'Actualizar el servidor',
-        propietario: 'Ana Gómez',
-    },
-    {
-        codigo: 'REQ-003',
-        prioridad: 'Baja',
-        tipo: 'Mejora',
-        categoria: 'General',
-        fechaAlta: '2023-10-03',
-        estado: 'Cerrado',
-        asunto: 'Consulta sobre la política de privacidad',
-        propietario: 'Luis Martínez',
-    },
-    {
-        codigo: 'REQ-003',
-        prioridad: 'Baja',
-        tipo: 'Consulta',
-        categoria: 'General',
-        fechaAlta: '2023-10-03',
-        estado: 'Cerrado',
-        asunto: 'Consulta sobre la política de privacidad',
-        propietario: 'Luis Martínez',
-    },
-    {
-        codigo: 'REQ-003',
-        prioridad: 'Alta',
-        tipo: 'Consulta',
-        categoria: 'General',
-        fechaAlta: '2023-10-03',
-        estado: 'Cerrado',
-        asunto: 'Consulta sobre la política de privacidad',
-        propietario: 'Luis Martínez',
-    },
-    {
-        codigo: 'REQ-005',
-        prioridad: 'Urgente',
-        tipo: 'Bug',
-        categoria: 'Seguridad',
-        fechaAlta: '2023-10-05',
-        estado: 'Abierto',
-        asunto: 'Vulnerabilidad crítica de seguridad',
-        propietario: 'Carlos Rodríguez',
-    },
-    // Agrega más requerimientos según sea necesario
-];
-
 const Requerimientos = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [showFilters, setShowFilters] = useState(false);
-    const [filteredRequirements, setFilteredRequirements] = useState(requerimientosData);
-    const navigate = useNavigate();
+    const [filteredRequirements, setFilteredRequirements] = useState([]);
+    const [requerimientosData, setRequerimientosData] = useState([]);
     const [activeFilters, setActiveFilters] = useState({
         estados: [],
         tipos: [],
         categorias: [],
         participacion: []
     });
+    const navigate = useNavigate();
 
+    useEffect(() => {
+        const fetchRequirements = async () => {
+            try {
+                const response = await fetch('https://g10-raim-disenio.onrender.com/api/requirement');
+                const data = await response.json();
+    
+                // Mapeo de prioridades
+                const getPrioridadTexto = (idPrioridad) => {
+                    switch(idPrioridad) {
+                        case 1: return 'Urgente';
+                        case 2: return 'Alta';
+                        case 3: return 'Media';
+                        case 4: return 'Baja';
+                        default: return 'Sin prioridad';
+                    }
+                };
+    
+                // Mapeo de estados
+                const getEstadoTexto = (idEstado) => {
+                    switch(idEstado) {
+                        case 1: return 'Abierto';
+                        case 2: return 'Asignado';
+                        default: return 'Sin estado';
+                    }
+                };
+    
+                // Mapeo de tipos
+                const getTipoTexto = (idTipo) => {
+                    switch(idTipo) {
+                        case 1: return 'Bug';
+                        case 2: return 'Mejora';
+                        case 3: return 'Consulta';
+                        default: return 'Sin tipo';
+                    }
+                };
+    
+                // Mapeo de categorías
+                const getCategoriaTexto = (idCategoria) => {
+                    switch(idCategoria) {
+                        case 1: return 'Software';
+                        case 2: return 'Hardware';
+                        case 3: return 'General';
+                        default: return 'Sin categoría';
+                    }
+                };
+    
+                //Mapeo de requerimientos
+            const requerimientosData = data.map(req => ({
+                codigo: req.codigo,
+                prioridad: getPrioridadTexto(req.idPrioridad),
+                tipo: getTipoTexto(req.idTipoReq),
+                categoria: getCategoriaTexto(req.idTipoRequerimiento),
+                fechaAlta: new Date(req.fechaHora).toLocaleDateString(), // Formatea la fecha
+                estado: getEstadoTexto(req.idEstado),
+                asunto: req.asunto,
+                propietario: req.idUser ? `Usuario ${req.idUser}` : 'Sin propietario' // Ajusta según necesites
+            }));
+
+    
+                setFilteredRequirements(requerimientosData);
+                setRequerimientosData(requerimientosData);
+            } catch (error) {
+                console.error('Error fetching requirements:', error);
+            }
+        };
+    
+        fetchRequirements();
+    }, []);
 
     const handleSearch = (event) => {
         const term = event.target.value;

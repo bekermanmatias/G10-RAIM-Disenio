@@ -1,24 +1,73 @@
 // src/components/requirements/RequirementDetail.js
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { requerimientosData } from '../listRequirements/Requirements';
+import RequirementContainer from './RequirementContainer';
 
 const RequirementDetail = () => {
     const { codigo } = useParams();
     const navigate = useNavigate();
+    const [requerimiento, setRequerimiento] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const handleBack = () => {
         navigate('/requirements');
     };
 
-    const requerimiento = requerimientosData.find(req => req.codigo === codigo);
-
-    if (!requerimiento) {
-        return <p>Requerimiento no encontrado</p>;
+    // Si aún está cargando, renderiza el mensaje de carga
+    if (loading) {
+        return (
+            <div>
+                <RequirementContainer 
+                    codigo={codigo} 
+                    setRequerimiento={setRequerimiento} 
+                    setLoading={setLoading} 
+                    setError={setError} 
+                />
+                <p>Cargando...</p>
+            </div>
+        );
     }
-    
+
+    // Si hay un error, muestra el mensaje de error
+    if (error) {
+        return (
+            <div>
+                <RequirementContainer 
+                    codigo={codigo} 
+                    setRequerimiento={setRequerimiento} 
+                    setLoading={setLoading} 
+                    setError={setError} 
+                />
+                <p>Error: {error}</p>
+            </div>
+        );
+    }
+
+    // Si no hay requerimiento después de cargar, muestra mensaje
+    if (!requerimiento) {
+        return (
+            <div>
+                <RequirementContainer 
+                    codigo={codigo} 
+                    setRequerimiento={setRequerimiento} 
+                    setLoading={setLoading} 
+                    setError={setError} 
+                />
+                <p>Requerimiento no encontrado</p>
+            </div>
+        );
+    }
+
+    // Renderiza el detalle del requerimiento
     return (
         <div className="requirement-detail-container">
+            <RequirementContainer 
+                codigo={codigo} 
+                setRequerimiento={setRequerimiento} 
+                setLoading={setLoading} 
+                setError={setError} 
+            />
             <div className="requirement-detail-header">
                 <button onClick={handleBack} className="back-button">
                     ← Volver
@@ -27,12 +76,15 @@ const RequirementDetail = () => {
             </div>
             
             <div className="requirement-detail-content">
-                <p>Información detallada del requerimiento {codigo}.</p>
                 <p><strong>Código:</strong> {requerimiento.codigo}</p>
                 <p><strong>Asunto:</strong> {requerimiento.asunto}</p>
+                <p><strong>Descripcion:</strong> {requerimiento.descripcion}</p>
                 <p><strong>Estado:</strong> {requerimiento.estado}</p>
                 <p><strong>Propietario:</strong> {requerimiento.propietario}</p>
-                {/* Muestra otros detalles */}
+                <p><strong>Prioridad:</strong> {requerimiento.prioridad}</p>
+                <p><strong>Tipo:</strong> {requerimiento.tipo}</p>
+                <p><strong>Categoría:</strong> {requerimiento.categoria}</p>
+                <p><strong>Fecha de Alta:</strong> {requerimiento.fechaAlta}</p>
             </div>
         </div>
     );
