@@ -65,29 +65,49 @@
     margin-right: 6px;
 }
 
-.priority-high {
-    background-color: rgba(255, 0, 0, 0.1);
-    color: #d32f2f;
-}
-
-.priority-high::before {
-    background-color: #d32f2f;
-}
-
-.priority-medium {
-    background-color: rgba(255, 165, 0, 0.1);
-    color: #f57c00;
-}
-
-.priority-medium::before {
-    background-color: #f57c00;
-}
-
 .priority-low {
-    background-color: rgba(0, 128, 0, 0.1);
-    color: #2e7d32;
+    background-color: rgba(80, 194, 129, 0.2); 
+    color: #2E8B57; 
 }
 
 .priority-low::before {
-    background-color: #2e7d32;
+    background-color: #2E8B57;
+}
+
+.priority-medium {
+    background-color: rgba(218, 165, 32, 0.2); 
+    color: #B8860B; 
+}
+
+.priority-medium::before {
+    background-color: #DAA520; 
+}
+
+.priority-high {
+    background-color: rgba(255, 116, 65, 0.2); 
+    color: #f35b35; 
+}
+
+.priority-high::before {
+    background-color: #ec5721; 
+}
+
+.priority-urgent {
+    background-color: rgba(231, 86, 86, 0.3); 
+    color: #fc0909; 
+}
+
+.priority-urgent::before {
+    background-color: #f80505; 
+}
+
+/* Añade esto a tu TableRequirements.css */
+thead th {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+}
+
+thead th:hover {
+    background-color: rgba(0,0,0,0.05);
 }

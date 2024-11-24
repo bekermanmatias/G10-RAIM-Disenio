@@ -1,23 +1,38 @@
 .sidebar {
-    width: 200px;
+    width: 250px;
     background-color: #f4f4f4;
-    padding: 15px;
+    padding: 20px 0;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
 }
 
 .sidebar ul {
     list-style-type: none;
     padding: 0;
+    margin: 0;
 }
 
 .sidebar ul li {
-    margin: 10px 0;
+    margin: 0;
 }
 
 .sidebar ul li a {
     text-decoration: none;
-    color: #333;
+    color: #040247;
+    display: block;
+    padding: 15px 20px;
+    transition: all 0.2s ease;
+
 }
 
 .sidebar ul li a:hover {
-    color: #0929e0; /*color al pasar el mouse */
+    background-color: rgba(85, 85, 99, 0.1);
+    color: #040247;
+
+}
+
+.sidebar ul li a.active {
+    background-color: rgba(68, 68, 73, 0.2);
+    color: #040247;
+    border-left-color: #040247;
+    font-weight:bold;
 }

@@ -58,6 +58,16 @@ export const requerimientosData = [
         asunto: 'Consulta sobre la política de privacidad',
         propietario: 'Luis Martínez',
     },
+    {
+        codigo: 'REQ-005',
+        prioridad: 'Urgente',
+        tipo: 'Bug',
+        categoria: 'Seguridad',
+        fechaAlta: '2023-10-05',
+        estado: 'Abierto',
+        asunto: 'Vulnerabilidad crítica de seguridad',
+        propietario: 'Carlos Rodríguez',
+    },
     // Agrega más requerimientos según sea necesario
 ];
 

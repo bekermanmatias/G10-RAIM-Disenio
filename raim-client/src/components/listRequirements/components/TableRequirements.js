@@ -5,7 +5,19 @@ import './TableRequirements.css';
 
 const TableRequirements = ({ requirements }) => {
     const [hoveredRow, setHoveredRow] = useState(null);
+    const [sortConfig, setSortConfig] = useState({
+        key: null,
+        direction: 'ascending'
+    });
     const navigate = useNavigate();
+
+    // Mapeo de prioridades para ordenamiento
+    const priorityOrder = {
+        'Urgente': 1,
+        'Alta': 2,
+        'Media': 3,
+        'Baja': 4
+    };
 
     const handleRowHover = (index) => {
         setHoveredRow(index);
@@ -16,13 +28,13 @@ const TableRequirements = ({ requirements }) => {
     };
 
     const handleRowClick = (requirement) => {
-        // Navegar al detalle del requerimiento
         navigate(`/requirements/${requirement.codigo}`);
     };
 
-    // Agrega esta función de ayuda para obtener el estilo de prioridad
     const getPriorityStyle = (prioridad) => {
         switch(prioridad) {
+            case 'Urgente':
+                return 'priority-urgent';
             case 'Alta':
                 return 'priority-high';
             case 'Media':
@@ -34,22 +46,83 @@ const TableRequirements = ({ requirements }) => {
         }
     };
 
+    // Función para ordenar
+    const handleSort = (key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+    };
+
+    // Función de comparación para ordenar
+    const sortedRequirements = React.useMemo(() => {
+        if (!sortConfig.key) return requirements;
+
+        // Ordenamiento personalizado para prioridad
+        if (sortConfig.key === 'prioridad') {
+            return [...requirements].sort((a, b) => {
+                const priorityA = priorityOrder[a.prioridad];
+                const priorityB = priorityOrder[b.prioridad];
+                
+                if (sortConfig.direction === 'ascending') {
+                    return priorityA - priorityB;
+                } else {
+                    return priorityB - priorityA;
+                }
+            });
+        }
+
+        // Ordenamiento para el resto de columnas
+        return [...requirements].sort((a, b) => {
+            if (a[sortConfig.key] < b[sortConfig.key]) {
+                return sortConfig.direction === 'ascending' ? -1 : 1;
+            }
+            if (a[sortConfig.key] > b[sortConfig.key]) {
+                return sortConfig.direction === 'ascending' ? 1 : -1;
+            }
+            return 0;
+        });
+    }, [requirements, sortConfig]);
+
+    // Renderizar icono de ordenamiento
+    const renderSortIcon = (key) => {
+        if (sortConfig.key !== key) return '⇅';
+        return sortConfig.direction === 'ascending' ? '▲' : '▼';
+    };
+
     return (
         <table className="requerimientos-table">
             <thead>
                 <tr className="table-header">
-                    <th>Código</th>
-                    <th>Prioridad</th>
-                    <th>Tipo</th>
-                    <th>Categoría</th>
-                    <th>Fecha de Alta</th>
-                    <th>Estado</th>
-                    <th>Asunto</th>
-                    <th>Propietario</th>
+                    <th onClick={() => handleSort('codigo')}>
+                        Código {renderSortIcon('codigo')}
+                    </th>
+                    <th onClick={() => handleSort('prioridad')}>
+                        Prioridad {renderSortIcon('prioridad')}
+                    </th>
+                    <th onClick={() => handleSort('tipo')}>
+                        Tipo {renderSortIcon('tipo')}
+                    </th>
+                    <th onClick={() => handleSort('categoria')}>
+                        Categoría {renderSortIcon('categoria')}
+                    </th>
+                    <th onClick={() => handleSort('fechaAlta')}>
+                        Fecha de Alta {renderSortIcon('fechaAlta')}
+                    </th>
+                    <th onClick={() => handleSort('estado')}>
+                        Estado {renderSortIcon('estado')}
+                    </th>
+                    <th onClick={() => handleSort('asunto')}>
+                        Asunto {renderSortIcon('asunto')}
+                    </th>
+                    <th onClick={() => handleSort('propietario')}>
+                        Propietario {renderSortIcon('propietario')}
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                {requirements.map((req, index) => (
+                {sortedRequirements.map((req, index) => (
                     <tr 
                         className={`table-row ${hoveredRow === index ? 'row-hovered' : ''}`}
                         key={`${req.codigo}-${index}`}
