@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        idUser:{
+        idUsuario:{
             type: DataTypes.INTEGER,
             allowNull: false,
         },
@@ -56,18 +56,22 @@ module.exports = (sequelize, DataTypes) => {
         Requirement.belongsTo(models.Estado, {
             foreignKey: 'idEstado',
             targetKey: 'idEstado',
+            as:'estado'
         });
         Requirement.belongsTo(models.Prioridad,{
             foreignKey: 'idPrioridad',
             targetKey: 'idPrioridad',
+            as:'prioridad'
         });
         Requirement.belongsTo(models.TipoRequerimiento,{
             foreignKey: 'idTipoReq',
             targetKey: 'idTipoReq',
+            as:'tipoReq'
         });
         Requirement.belongsTo(models.User,{
             foreignKey: 'idUsuario',
             targetKey: 'idUsuario',
+            as:'idUser'
         });
         Requirement.belongsTo(models.User,{
             foreignKey: 'idUsuario',

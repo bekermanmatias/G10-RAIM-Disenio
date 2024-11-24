@@ -14,7 +14,7 @@ const createUser = async (req, res) => {
     }
 
     if (!email.includes('@')) {
-      return res.status(400).json({message: 'Formato de email invalido'})
+      return res.status(400).json({message: 'Formato de email invalido'});
     }
 
     const departamento = await Departamento.findOne({
@@ -34,13 +34,22 @@ const createUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      include: [
+        {
+          model: Departamento,
+          as: 'nombreDepa',
+          attributes: ['nombre'], 
+        },
+      ],
+    });
+
     res.status(200).json(users);
+  } catch (error) {
+    console.error('Error al obtener los usuarios:', error); 
+    res.status(500).json({message: 'Error al obtener los usuarios'});
   }
-  catch (error){
-    res.status(500).json( { message: 'Error al obtener los usuarios', error});
-  }
-}
+};
 
 const getUserByUsername = async (req,res) => {
   const {username }= req.params;
@@ -54,8 +63,8 @@ const getUserByUsername = async (req,res) => {
       include: [
         {
           model: Departamento,
-          as: 'nombreDepa', // Alias definido en el modelo
-          attributes: ['nombre'], // Atributos que deseas obtener del Departamento
+          as: 'nombreDepa',
+          attributes: ['nombre'], 
         },
       ],
     });

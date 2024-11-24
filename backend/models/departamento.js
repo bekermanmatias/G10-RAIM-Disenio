@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'idDepartamento',
             as:'usuarios'
         });
-    }
+    };
     return Departamento;
   };
   
