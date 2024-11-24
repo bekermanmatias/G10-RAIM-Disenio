@@ -1,7 +1,5 @@
-/* src/components/users/UserDetail.css */
-
 /* Contenedor principal */
-.user-detail-container {
+.requirement-detail-container {
     background-color: #ffffff; /* Fondo blanco */
     padding: 20px;
     min-height: 100vh; /* Asegura que ocupe toda la altura de la pantalla */
@@ -11,7 +9,7 @@
 }
 
 /* Estilos para el encabezado */
-.user-detail-header {
+.requirement-detail-header {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
@@ -19,9 +17,10 @@
     justify-content: space-between;
 }
 
+/* Botón "Volver" */
 .back-button {
     background-color: #040247;
-    color: #ffffff;;
+    color: #ffffff;
     width: 235px;
     padding: 10px 20px;
     font-size: 16px;
@@ -33,20 +32,25 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%); /* Centra el botón horizontalmente */
 }
 
 .back-button:hover {
-    background-color:  #070370;
+    background-color: #070370;
 }
 
 /* Títulos */
-.user-detail-header h1 {
+.requirement-detail-header h1 {
     font-size: 2rem;
     color: #040247; 
     font-weight: 700;
 }
 
-.user-detail-content {
+/* Contenedor de contenido de los detalles del requerimiento */
+.requirement-detail-content {
     background-color: #ffffff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
     border-radius: 0.75rem;
@@ -55,8 +59,8 @@
     max-width: 800px; /* Limita el ancho del contenedor */
 }
 
-/* Sección de Información */
-.user-detail-section {
+/* Estilo de la sección de información */
+.requirement-detail-section {
     background-color: #f7fafc; /* Fondo gris claro */
     margin-bottom: 1.5rem;
     padding: 1.5rem;
@@ -64,41 +68,40 @@
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
-.user-detail-section h2 {
+.requirement-detail-section h2 {
     font-size: 1.5rem;
     color: #040247; /* Azul oscuro */
     margin-bottom: 1rem;
 }
 
-.user-detail-section p {
+.requirement-detail-section p {
     font-size: 1rem;
     color: #4a5568; /* Gris oscuro */
     margin-bottom: 0.5rem;
 }
 
 /* Estilo para los mensajes de carga y error */
-.user-detail-loading,
-.user-detail-error {
+.requirement-detail-loading,
+.requirement-detail-error {
     font-size: 1.125rem;
     color: #4a5568; /* Gris suave */
 }
 
-.user-detail-error {
+.requirement-detail-error {
     color: #e53e3e; /* Rojo para el error */
 }
 
-.user-detail-loading {
+.requirement-detail-loading {
     color: #3182ce; /* Azul para el texto de carga */
 }
 
-/* Estilo para los mensajes de "usuario no encontrado" */
-.user-detail-not-found {
+/* Estilo para los mensajes de "requerimiento no encontrado" */
+.requirement-detail-not-found {
     font-size: 1.125rem;
     color: #e53e3e; /* Rojo */
 }
 
 /* Estilo para los contenedores adicionales */
-.user-container {
+.requirement-container {
     margin-bottom: 1.5rem;
 }
-

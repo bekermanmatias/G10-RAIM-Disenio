@@ -67,9 +67,6 @@ const UserDetail = () => {
                 setError={setError}
             />
             <div className="user-detail-header">
-                <button onClick={handleBack} className="back-button">
-                    ← Volver
-                </button>
                 <h1>Detalles de Usuario</h1>
             </div>
             
@@ -88,6 +85,9 @@ const UserDetail = () => {
                     <p><strong>Departamento:</strong> {usuario.departamento}</p>
                     <p><strong>Fecha de Ingreso:</strong> {usuario.fechaIngreso}</p>
                 </div>
+                <button onClick={handleBack} className="back-button">
+                    ← Volver
+                </button>
             </div>
         </div>
     );
