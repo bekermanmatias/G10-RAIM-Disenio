@@ -11,54 +11,36 @@ const RequirementContainer = ({ codigo, setRequerimiento, setLoading, setError }
                 }
                 const data = await response.json();
                 
-                // Funciones de mapeo (mantener igual que en versión anterior)
-                const getPrioridadTexto = (idPrioridad) => {
-                    switch(idPrioridad) {
-                        case 1: return 'Urgente';
-                        case 2: return 'Alta';
-                        case 3: return 'Media';
-                        case 4: return 'Baja';
-                        default: return 'Sin prioridad';
-                    }
+                // Funciones de mapeo actualizadas según los datos recibidos
+                const getPrioridadTexto = (prioridad) => {
+                    return prioridad.descripcion || 'Sin prioridad';
                 };
 
-                const getEstadoTexto = (idEstado) => {
-                    switch(idEstado) {
-                        case 1: return 'Abierto';
-                        case 2: return 'Asignado';
-                        default: return 'Sin estado';
-                    }
+                const getEstadoTexto = (estado) => {
+                    return estado.descripcion || 'Sin estado';
                 };
 
-                const getTipoTexto = (idTipo) => {
-                    switch(idTipo) {
-                        case 1: return 'Bug';
-                        case 2: return 'Mejora';
-                        case 3: return 'Consulta';
-                        default: return 'Sin tipo';
-                    }
+                const getTipoTexto = (tipoReq) => {
+                    return tipoReq.descripcion || 'Sin tipo';
                 };
 
-                const getCategoriaTexto = (idCategoria) => {
-                    switch(idCategoria) {
-                        case 1: return 'Software';
-                        case 2: return 'Hardware';
-                        case 3: return 'General';
-                        default: return 'Sin categoría';
-                    }
+                const getCategoriaTexto = (tipoReq) => {
+                    return tipoReq.descripcion || 'Sin categoría';
                 };
 
                 // Mapeo del requerimiento
                 const requerimientoData = {
                     codigo: data.codigo,
-                    prioridad: getPrioridadTexto(data.idPrioridad),
-                    tipo: getTipoTexto(data.idTipoReq),
-                    categoria: getCategoriaTexto(data.idTipoRequerimiento),
+                    prioridad: getPrioridadTexto(data.prioridad),
+                    tipo: getTipoTexto(data.tipoReq),
+                    categoria: getCategoriaTexto(data.tipoReq),
                     fechaAlta: new Date(data.fechaHora).toLocaleDateString(),
-                    estado: getEstadoTexto(data.idEstado),
+                    estado: getEstadoTexto(data.estado),
                     asunto: data.asunto,
                     descripcion: data.descripcion,
-                    propietario: data.idUser ? `Usuario ${data.idUser}` : 'Sin propietario'
+                    propietario: data.idUser ? `Usuario ${data.idUser}` : 'Sin propietario',
+                    fechaCreacion: new Date(data.createdAt).toLocaleString(),
+                    fechaActualizacion: new Date(data.updatedAt).toLocaleString()
                 };
 
                 // Actualizar estados
