@@ -2,8 +2,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './TableUsers.css';
+import axios from 'axios';
 
-const TableUsers = ({ users }) => {
+const TableUsers = () => {
     const [hoveredRow, setHoveredRow] = useState(null);
     const [sortConfig, setSortConfig] = useState({
         key: null,
@@ -11,10 +12,26 @@ const TableUsers = ({ users }) => {
     });
     const navigate = useNavigate();
 
-    // Añade un useEffect para depuración
+
+
+    const fetchUsers = async () =>{
+        try{
+            const response = await axios.get(`http://g10-raim-disenio.onrender.com/api/user`);
+            setUsers(response.data);
+        }
+        catch (err){
+            if (err.response && err.response.status === 404) {
+                setError('Usuarios no encontrados.');
+            } else {
+                setError('Error al cargar los usuarios.');
+            }
+        }finally{
+            setLoading(false);
+        }
+    }
     useEffect(() => {
-        console.log('Usuarios actualizados:', users);
-    }, [users]);
+        fetchUsers();
+    }, []);
 
     const handleRowHover = (index) => {
         setHoveredRow(index);
@@ -92,7 +109,7 @@ const TableUsers = ({ users }) => {
                         onClick={() => handleRowClick(user)}
                     >
                        <td className="table-cell">{user.legajo}</td> 
-                       <td className="table-cell">{user.nombreCompleto}</td>
+                       <td className="table-cell">{user.nombre}</td>
                         <td className="table-cell">{user.email}</td>
                         <td className="table-cell">{user.usuario}</td>
                         <td className="table-cell">{user.cargo}</td>
