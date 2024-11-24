@@ -24,7 +24,7 @@ const App = () => {
                 {!noSidebarRoutes.includes(location.pathname) && <Sidebar />}
                 <main className="main-content">
                     <Routes>
-                        <Route path="/users" element={<Users />} />
+                        <Route path="/user" element={<Users />} />
                         <Route path="/requirements" element={<Requerimientos />} />
                         <Route path="/requirements/:codigo" element={<RequirementDetail />} /> 
                         <Route path="/crear-requerimiento" element={<CrearRequerimiento />} />
