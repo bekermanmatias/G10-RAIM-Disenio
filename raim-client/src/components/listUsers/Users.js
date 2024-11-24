@@ -1,42 +1,17 @@
-// Users.js
+// src/components/listUsers/Users.js
 import React, { useState } from 'react';
 import SearchBar from './components/SearchBarUsers';
 import TableUsers from './components/TableUsers';
 import FilterDropdownUsers from './filters/FilterDropdownUsers';
+import UsersContainer from './UsersContainer';
 import './Users.css';
-
-const usuariosData = [
-    {
-        legajo: 'EMP-001',
-        nombreCompleto: 'Juan Pérez',
-        cargo: 'Desarrollador Senior',
-        departamento: 'Tecnología',
-        email: 'juan.perez@empresa.com',
-        usuario: 'juanperez',
-    },
-    {
-        legajo: 'EMP-002',
-        nombreCompleto: 'María González',
-        cargo: 'Analista de Proyectos',
-        departamento: 'Gestión',
-        email: 'maria.gonzalez@empresa.com',
-        usuario: 'mariagonzalez',
-    },
-    {
-        legajo: 'EMP-003',
-        nombreCompleto: 'Carlos Rodríguez',
-        cargo: 'Gerente de TI',
-        departamento: 'Sistemas',
-        email: 'carlos.rodriguez@empresa.com',
-        usuario: 'carlosrodriguez',
-    },
-    // Agrega más usuarios según sea necesario
-];
 
 const Users = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [showFilters, setShowFilters] = useState(false);
-    const [filteredUsers, setFilteredUsers] = useState(usuariosData);
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const [activeFilters, setActiveFilters] = useState({
         cargo: [],
         departamentos: []
@@ -54,7 +29,9 @@ const Users = () => {
             cargo: [],
             departamentos: []
         });
-        setFilteredUsers(usuariosData);
+        
+        // Restaura los usuarios originales
+        filterUsers('', { cargo: [], departamentos: [] });
     };
 
     const toggleFilters = () => {
@@ -67,7 +44,7 @@ const Users = () => {
     };
 
     const filterUsers = (searchTerm, filters) => {
-        let filtered = usuariosData;
+        let filtered = filteredUsers;
 
         // Filtro por búsqueda
         if (searchTerm) {
@@ -94,7 +71,7 @@ const Users = () => {
             );
         }
 
-        setFilteredUsers(filtered);
+        return filtered;
     };
 
     return (
@@ -114,7 +91,16 @@ const Users = () => {
                 />
             )}
 
-            <TableUsers users={filteredUsers} />
+            <UsersContainer 
+                setFilteredUsers={setFilteredUsers}
+                setLoading={setLoading}
+                setError={setError}
+            />
+
+            {loading && <p>Cargando usuarios...</p>}
+            {error && <p>Error: {error}</p>}
+
+            <TableUsers users={filterUsers(searchTerm, activeFilters)} />
         </div>
     );
 };

@@ -1,0 +1,18 @@
+/* src/components/users/UserDetail.css */
+.user-detail-container {
+    padding: 20px;
+}
+
+.user-detail-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    margin-right: 20px;
+}

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-route
 import Header from './components/header/Header';
 import Sidebar from './components/sidebar/Sidebar';
 import Users from './components/listUsers/Users';
+import UserDetail from './components/listUsers/UserDetail';
 import Requerimientos from './components/listRequirements/Requirements';
 import CrearRequerimiento from './components/requirements/createRequirement/CreateRequirement';
 import Settings from './components/settings/Settings';
@@ -25,6 +26,7 @@ const App = () => {
                 <main className="main-content">
                     <Routes>
                         <Route path="/users" element={<Users />} />
+                        <Route path="/users/:nombreUsuario" element={<UserDetail />} />
                         <Route path="/requirements" element={<Requerimientos />} />
                         <Route path="/requirements/:codigo" element={<RequirementDetail />} /> 
                         <Route path="/crear-requerimiento" element={<CrearRequerimiento />} />

@@ -23,9 +23,9 @@ const TableUsers = ({ users }) => {
     const handleRowLeave = () => {
         setHoveredRow(null);
     };
-
+    
     const handleRowClick = (user) => {
-        navigate(`/users/${user.legajo}`);
+        navigate(`/users/${user.usuario}`);
     };
 
     // Función para ordenar
