@@ -19,7 +19,7 @@ const UserContainer = ({ nombreUsuario, setUsuario, setLoading, setError }) => {
                     usuario: data.nombreUsuario || 'Sin usuario',
                     email: data.email || 'Sin email',
                     cargo: data.cargo || 'Sin cargo',
-                    departamento: data.departamento || 'Sin departamento',
+                    departamento: data.nombreDepa.nombre,
                     // Campos adicionales que puedas necesitar
                 };
 

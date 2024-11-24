@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import './CreateRequirement.css';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import './sweetalert-custom.css';
+import { 
+    showConfirmCancelAlert, 
+    showFormValidationAlert, 
+    showSuccessAlert, 
+    showErrorAlert 
+} from '../../../utils/sweetalert-utils';
 
 const CrearRequerimiento = () => {
     const navigate = useNavigate();
@@ -25,127 +30,67 @@ const CrearRequerimiento = () => {
           ...formData,
           [name]: value,
         });
-      };
+    };
     
-      const handleFileChange = (e) => {
+    const handleFileChange = (e) => {
         setFormData({
           ...formData,
           archivos: e.target.files,
         });
-      };
+    };
     
-      const handleCancel = () => {
-        Swal.fire({
-            title: 'Confirmar Cancelación',
-            html: `
-                <p>¿Estás seguro de que deseas abandonar la creación del requerimiento?</p>
-                <small>Todos los cambios no guardados se perderán permanentemente.</small>
-            `,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Sí, descartar cambios',
-            cancelButtonText: 'Continuar editando',
-            background: '#f4f4f4',
-            buttonsStyling: false,
-            customClass: {
-                confirmButton: 'swal2-confirm',
-                cancelButton: 'swal2-cancel'
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                navigate('/requirements');
-            }
-        });
+    const handleCancel = () => {
+        showConfirmCancelAlert(() => navigate('/requirements'));
     };
 
     const validateForm = () => {
-      const fieldTranslations = {
-          tipo: 'Tipo de Requerimiento',
-          estado: 'Estado',
-          categoria: 'Categoría',
-          prioridad: 'Prioridad',
-          asunto: 'Asunto',
-          descripcion: 'Descripción'
-      };
-      
-      for (let field of Object.keys(fieldTranslations)) {
-          if (!formData[field] || formData[field].trim() === '') {
-              Swal.fire({
-                  icon: 'warning',
-                  title: 'Formulario Incompleto',
-                  html: `
-                      <p>Por favor complete el campo: <strong>${fieldTranslations[field]}</strong></p>
-                      <small>Todos los campos marcados son obligatorios para crear un requerimiento.</small>
-                  `,
-                  confirmButtonColor: '#3085d6',
-                  confirmButtonText: 'Entendido',
-                  background: '#f4f4f4',
-                  buttonsStyling: false,
-                  customClass: {
-                        confirmButton: 'swal2-confirm'
-                  }
-              });
-              return false;
-          }
-      }
-      return true;
-  };
+        const requiredFields = ['tipo', 'estado', 'categoria', 'prioridad', 'asunto', 'descripcion'];
+        
+        for (let field of requiredFields) {
+            if (!formData[field] || formData[field].trim() === '') {
+                showFormValidationAlert(field);
+                return false;
+            }
+        }
+        return true;
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-        return;
-    }
+    const createRequirement = async () => {
+        try {
+            // Aquí va la lógica de crear requerimiento
+            // Por ejemplo:
+            const response = await fetch('tu-url-de-api', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
 
-    try {
-        Swal.fire({
-            icon: 'success',
-            title: 'Requerimiento Registrado',
-            text: 'El requerimiento se ha guardado exitosamente',
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: false, // Opcional
-            showClass: {
-                popup: ''  // Sin animación de entrada
-            },
-            hideClass: {
-                popup: ''  // Sin animación de salida
-            },
-            buttonsStyling: false,
-            customClass: {
-                popup: 'professional-alert',
-                confirmButton: 'swal2-confirm'
-            },
-            backdrop: 'rgba(0,0,0,0.2)', // Fondo semi-transparente sutil
-            background: '#ffffff', // Fondo blanco limpio
-            width: '380px' // Ancho personalizado
-        }).then(() => {
-            navigate('/requirements');
-        });
-    } catch (error) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error en el Registro',
-            text: error.message || 'No se pudo guardar el requerimiento',
-            showClass: {
-                popup: ''
-            },
-            hideClass: {
-                popup: ''
-            },
-            customClass: {
-                popup: 'professional-alert',
-        confirmButton: 'swal2-confirm'
-            },
-            backdrop: 'rgba(0,0,0,0.2)',
-            background: '#ffffff',
-            width: '380px'
-        });
-    }
-};
+            if (!response.ok) {
+                throw new Error('No se pudo crear el requerimiento');
+            }
+
+            return await response.json();
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        if (!validateForm()) {
+            return;
+        }
+
+        try {
+            await createRequirement();
+            showSuccessAlert(() => navigate('/requirements'));
+        } catch (error) {
+            showErrorAlert(error.message);
+        }
+    };
 
       return (
         <div className="content">

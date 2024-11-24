@@ -18,10 +18,10 @@ const FilterDropdown = ({ onClose, onApply, initialFilters }) => {
     }, [initialFilters]);
 
     const filterOptions = {
-        estados: ['Abierto', 'En Progreso', 'Cerrado'],
+        estados: ['Abierto', 'Asignado'],
         tipos: ['Bug', 'Mejora', 'Consulta'],
         categorias: ['Software', 'Hardware', 'General'],
-        participacion: ['Propietario','Asignado']
+        participacion: ['Emisor','Asignado']
     };
 
     const handleCheckboxChange = (group, value) => {

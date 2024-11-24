@@ -58,7 +58,8 @@ const RequirementsContainer = ({ setFilteredRequirements, setRequerimientosData,
                     fechaAlta: new Date(req.fechaHora).toLocaleDateString(), // Formatea la fecha
                     estado: getEstadoTexto(req.idEstado),
                     asunto: req.asunto,
-                    propietario: req.idUser  ? `Usuario ${req.idUser }` : 'Sin propietario' // Ajusta según necesites
+                    propietario: req.idUsuarioDestinatario  ? `Usuario ${req.idUsuarioDestinatario}` : 'Sin asignar', // Ajusta según necesites
+                    emisor: req.idUser
                 }));
 
                 setFilteredRequirements(requerimientosData);

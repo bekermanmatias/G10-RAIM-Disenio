@@ -85,8 +85,17 @@ const Requerimientos = () => {
 
         if (filters.participacion && filters.participacion.length > 0) {
             result = result.filter(req => {
-                if (filters.participacion.includes('Propietario')) {
-                    return req.propietario === 'Juan Pérez'; // Ajusta al usuario actual
+                if (filters.participacion.includes('Emisor')) {
+                    return req.emisor === 7; // Ajusta al usuario actual
+                }
+                return true;
+            });
+        }
+
+        if (filters.participacion && filters.participacion.length > 0) {
+            result = result.filter(req => {
+                if (filters.participacion.includes('Asignado')) {
+                    return req.propietario === 7; // Ajusta al usuario actual
                 }
                 return true;
             });

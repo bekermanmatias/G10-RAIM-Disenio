@@ -14,7 +14,7 @@ const UsersContainer = ({ setFilteredUsers, setLoading, setError }) => {
 
                 // Mapeo de usuarios
                 const usuariosData = data.map(user => ({
-                    legajo: user.legajo || 'Sin legajo',
+                    legajo: user.legajo ? String(user.legajo) : 'Sin legajo',
                     nombreCompleto: user.nombre || 'Sin nombre',
                     cargo: user.cargo || 'Sin cargo',
                     departamento: user.idDepartamento || 'Sin departamento',

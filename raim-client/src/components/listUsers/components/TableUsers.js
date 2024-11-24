@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './TableUsers.css';
 
-const TableUsers = ({ users }) => {
+const TableUsers = ({ users = [] }) => {
     const [hoveredRow, setHoveredRow] = useState(null);
     const [sortConfig, setSortConfig] = useState({
         key: null,
@@ -23,7 +23,7 @@ const TableUsers = ({ users }) => {
     const handleRowLeave = () => {
         setHoveredRow(null);
     };
-    
+
     const handleRowClick = (user) => {
         navigate(`/users/${user.usuario}`);
     };
@@ -86,7 +86,7 @@ const TableUsers = ({ users }) => {
                 {sortedUsers.map((user, index) => (
                     <tr 
                         className={`table-row ${hoveredRow === index ? 'row-hovered' : ''}`}
-                        key={`${user.legajo}-${index}`}
+                        key={`${user.usuario}-${index}`}
                         onMouseEnter={() => handleRowHover(index)}
                         onMouseLeave={handleRowLeave}
                         onClick={() => handleRowClick(user)}
