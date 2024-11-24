@@ -51,10 +51,19 @@ const getUserByUsername = async (req,res) => {
 
     const user = await User.findOne({
       where: {nombreUsuario: username},
+      include: [
+        {
+          model: Departamento,
+          as: 'nombreDepa', // Alias definido en el modelo
+          attributes: ['nombre'], // Atributos que deseas obtener del Departamento
+        },
+      ],
     });
+
     if(!user){
       res.status(404).json({message: 'Usuario no encontrado'});
     }
+
     res.status(200).json(user);
   }
   catch (error){

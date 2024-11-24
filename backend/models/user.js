@@ -49,7 +49,8 @@ module.exports = (sequelize, DataTypes) => {
         });
         User.belongsTo(models.Departamento, {
             foreignKey: 'idDepartamento',
-            targetKey:'idDepartamento'
+            targetKey:'idDepartamento',
+            as:'nombreDepa'
         });
         User.hasMany(models.Requirement, {
             foreignKey: 'idUsuarioDestinatario',
