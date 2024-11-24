@@ -1,4 +1,3 @@
-const { INTEGER } = require('sequelize');
 const { Requirement, Estado, Prioridad, TipoRequerimiento, User } = require('../models');
 
 
@@ -20,7 +19,7 @@ const createRequirement = async (req, res) => {
         where: {descripcion: descTipoReq},
     });
     if(!tipoReq){
-      return res.status(404).json({message: 'Tipo de requerimiento  no encontrado.'});
+      return res.status(404).json({message: 'Tipo de requerimiento no encontrado.'});
     }
     const idTipoReq = tipoReq.idTipoReq;
   
@@ -29,6 +28,7 @@ const createRequirement = async (req, res) => {
     const ultReq = await getReqMasReciente();
     ultReq === null ? ultCodigo = 1000000000 : ultCodigo = parseInt(ultReq.codigo.slice(-10));
     const nuevoCodigo = (ultCodigo + 1).toString().padStart(10, '0');
+    console.log(codTipoReq);
     const codigo = codTipoReq + '-' + (new Date()).getFullYear() + '-' + nuevoCodigo;
 
     const existeCod = Requirement.findOne({
@@ -88,7 +88,7 @@ const getRequirements = async (req, res) => {
   try {
     const requirements = await Requirement.findAll();
     if(requirements.length === 0){
-      return res.status(203).json({message: 'No hay requerimientos almacenados.'})
+      return res.status(203).json({message: 'No hay requerimientos almacenados'})
     }
     res.status(200).json(requirements);
   }
@@ -103,6 +103,23 @@ const getReqByCodigo = async (req,res) => {
 
     const requirement = await Requirement.findOne({
       where: {codigo: codigo},
+      include: [
+        {
+          model: Estado,
+          as: 'estado',
+          attributes: ['descripcion'], 
+        },
+        {
+          model: Prioridad,
+          as: 'prioridad',
+          attributes: ['descripcion'], 
+        },
+        {
+          model: TipoRequerimiento,
+          as: 'tipoReq',
+          attributes: ['descripcion', 'codigo'], 
+        },
+      ],
     });
     if(!requirement){
       return res.status(404).json({message: 'Requerimiento no encontrado'});
