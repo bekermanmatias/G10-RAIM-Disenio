@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        idUsuario:{
+        idUser:{
             type: DataTypes.INTEGER,
             allowNull: false,
         },
@@ -69,13 +69,11 @@ module.exports = (sequelize, DataTypes) => {
             as:'tipoReq'
         });
         Requirement.belongsTo(models.User,{
-            foreignKey: 'idUsuario',
-            targetKey: 'idUsuario',
-            as:'idUser'
+            foreignKey: 'idUser',
+            as:'idUsuarioCreador'
         });
         Requirement.belongsTo(models.User,{
-            foreignKey: 'idUsuario',
-            targetKey: 'idUsuario',
+            foreignKey: 'idUsuarioDestinatario',
             as: 'UsuarioDestinatario'
         });
         Requirement.hasMany(models.Comentario,{

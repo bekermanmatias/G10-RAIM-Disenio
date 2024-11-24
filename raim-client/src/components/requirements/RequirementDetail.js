@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import RequirementContainer from './RequirementContainer';
+import './requirementDetail.css';
+
 
 const RequirementDetail = () => {
     const { codigo } = useParams();
@@ -69,9 +71,6 @@ const RequirementDetail = () => {
                 setError={setError} 
             />
             <div className="requirement-detail-header">
-                <button onClick={handleBack} className="back-button">
-                    ← Volver
-                </button>
                 <h1>Detalle Requerimiento {codigo}</h1>
             </div>
             
@@ -86,6 +85,9 @@ const RequirementDetail = () => {
                 <p><strong>Categoría:</strong> {requerimiento.categoria}</p>
                 <p><strong>Fecha de Alta:</strong> {requerimiento.fechaAlta}</p>
             </div>
+            <button onClick={handleBack} className="back-button">
+                    ← Volver
+                </button>
         </div>
     );
 };
