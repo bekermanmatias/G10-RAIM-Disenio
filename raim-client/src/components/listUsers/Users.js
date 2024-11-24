@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import SearchBar from './components/SearchBarUsers';
 import TableUsers from './components/TableUsers';
 import FilterDropdownUsers from './filters/FilterDropdownUsers';
+import FilterContainerUsers from './filters/FilterContainerUsers';
 import UsersContainer from './UsersContainer';
 import './Users.css';
 
@@ -12,6 +13,8 @@ const Users = () => {
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [cargos, setCargos] = useState([]); 
+    const [departamentos, setDepartamentos] = useState([]);
     const [activeFilters, setActiveFilters] = useState({
         cargo: [],
         departamentos: []
@@ -76,6 +79,12 @@ const Users = () => {
 
     return (
         <div className="usuarios-container">
+            {/* Añade el FilterContainerUsers para cargar cargos y departamentos */}
+            <FilterContainerUsers 
+                setCargos={setCargos} 
+                setDepartamentos={setDepartamentos} 
+            />
+
             <SearchBar 
                 searchTerm={searchTerm}
                 onSearchChange={handleSearch}
@@ -88,6 +97,8 @@ const Users = () => {
                     onClose={() => setShowFilters(false)} 
                     onApply={handleApplyFilters}
                     initialFilters={activeFilters}
+                    cargos={cargos}
+                    departamentos={departamentos}
                 />
             )}
 

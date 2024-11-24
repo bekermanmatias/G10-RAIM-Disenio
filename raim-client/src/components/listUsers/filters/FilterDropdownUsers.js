@@ -1,7 +1,14 @@
+// src/components/listUsers/filters/FilterDropdownUsers.js
 import React, { useState, useEffect } from 'react';
 import './FilterDropdown.css';
 
-const FilterDropdownUsers = ({ onClose, onApply, initialFilters }) => {
+const FilterDropdownUsers = ({ 
+    onClose, 
+    onApply, 
+    initialFilters, 
+    cargos = [], 
+    departamentos = [] 
+}) => {
     const [filters, setFilters] = useState({
         cargo: [],
         departamentos: []
@@ -15,8 +22,8 @@ const FilterDropdownUsers = ({ onClose, onApply, initialFilters }) => {
     }, [initialFilters]);
 
     const filterOptions = {
-        cargo: ['Desarrollador Senior', 'Analista de Proyectos', 'Gerente de TI'],
-        departamentos: ['Tecnología', 'Gestión', 'Sistemas', 'Recursos Humanos']
+        cargo: cargos,
+        departamentos: departamentos
     };
 
     const handleCheckboxChange = (group, value) => {
@@ -37,25 +44,53 @@ const FilterDropdownUsers = ({ onClose, onApply, initialFilters }) => {
         onApply(filters);
     };
 
+    // Función para dividir opciones en dos columnas
+    const splitOptionsIntoColumns = (options) => {
+        const halfLength = Math.ceil(options.length / 2);
+        return [
+            options.slice(0, halfLength),
+            options.slice(halfLength)
+        ];
+    };
+
     return (
         <div className="filter-dropdown">
             <div className="filter-dropdown-content">
                 <div className="filter-columns">
-                    {Object.entries(filterOptions).map(([group, options]) => (
-                        <div key={group} className="filter-column">
-                            <h4>{group.charAt(0).toUpperCase() + group.slice(1)}</h4>
-                            {options.map(option => (
-                                <label key={option} className="filter-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        checked={filters[group].includes(option)}
-                                        onChange={() => handleCheckboxChange(group, option)}
-                                    />
-                                    {option}
-                                </label>
-                            ))}
-                        </div>
-                    ))}
+                    {Object.entries(filterOptions).map(([group, options]) => {
+                        const [column1, column2] = splitOptionsIntoColumns(options);
+                        return (
+                            <div key={group} className="filter-column">
+                                <h4>{group.charAt(0).toUpperCase() + group.slice(1)}</h4>
+                                <div className="filter-column-grid">
+                                    <div className="filter-column-half">
+                                        {column1.map(option => (
+                                            <label key={option} className="filter-checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={filters[group].includes(option)}
+                                                    onChange={() => handleCheckboxChange(group, option)}
+                                                />
+                                                {option}
+                                            </label>
+                                        ))}
+                                    </div>
+                                    <div className="filter-column-half">
+                                        {column2.map(option => (
+                                            <label key={option} className="filter-checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={filters[group].includes(option)}
+                                                    onChange={() => handleCheckboxChange(group, option)}
+                                                />
+                                                {option}
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
                 <div className="filter-actions">
                     <button 

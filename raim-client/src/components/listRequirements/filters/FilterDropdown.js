@@ -2,7 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import './FilterDropdown.css';
 
-const FilterDropdown = ({ onClose, onApply, initialFilters }) => {
+const FilterDropdown = ({ 
+    onClose, 
+    onApply, 
+    initialFilters, 
+    tipos = [], 
+    categorias = [] 
+}) => {
     const [filters, setFilters] = useState({
         estados: [],
         tipos: [],
@@ -19,8 +25,8 @@ const FilterDropdown = ({ onClose, onApply, initialFilters }) => {
 
     const filterOptions = {
         estados: ['Abierto', 'Asignado'],
-        tipos: ['Bug', 'Mejora', 'Consulta'],
-        categorias: ['Software', 'Hardware', 'General'],
+        tipos: tipos, // Ahora recibido como prop
+        categorias: categorias, // Ahora recibido como prop
         participacion: ['Emisor','Asignado']
     };
 
@@ -70,8 +76,7 @@ const FilterDropdown = ({ onClose, onApply, initialFilters }) => {
                         Cancelar
                     </button>
                     <button 
-                        className="filter-apply-btn" 
-                        onClick={handleApply}
+                        className="filter-apply-btn" onClick={handleApply}
                     >
                         Aplicar
                     </button>

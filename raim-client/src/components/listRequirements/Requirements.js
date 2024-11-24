@@ -6,6 +6,7 @@ import TableRequirements from './components/TableRequirements';
 import FilterDropdown from './filters/FilterDropdown';
 import FloatingCreateButton from './components/FloatingCreateButton';
 import RequirementsContainer from './RequirementsContainer';
+import FilterContainer from './filters/FilterContainer'; // Importa el nuevo FilterContainer
 import './Requirements.css';
 
 const Requerimientos = () => {
@@ -13,8 +14,10 @@ const Requerimientos = () => {
     const [showFilters, setShowFilters] = useState(false);
     const [filteredRequirements, setFilteredRequirements] = useState([]);
     const [requerimientosData, setRequerimientosData] = useState([]);
-    const [loading, setLoading] = useState(false); // Nuevo estado para loading
-    const [error, setError] = useState(null); // Nuevo estado para error
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [tipos, setTipos] = useState([]); // Nuevo estado para tipos
+    const [categorias, setCategorias] = useState([]); // Nuevo estado para categorías
     const [activeFilters, setActiveFilters] = useState({
         estados: [],
         tipos: [],
@@ -52,6 +55,7 @@ const Requerimientos = () => {
     const handleApplyFilters = (selectedFilters) => {
         setActiveFilters(selectedFilters);
         filterRequirements(searchTerm, selectedFilters);
+        setShowFilters(false);
     };
 
     const filterRequirements = (searchTerm, filters) => {
@@ -106,6 +110,12 @@ const Requerimientos = () => {
 
     return (
         <div className="requerimientos-container">
+            {/* Añade el FilterContainer para cargar tipos y categorías */}
+            <FilterContainer 
+                setTipos={setTipos} 
+                setCategorias={setCategorias} 
+            />
+
             <SearchBar 
                 searchTerm={searchTerm}
                 onSearchChange={handleSearch}
@@ -118,6 +128,8 @@ const Requerimientos = () => {
                     onClose={() => setShowFilters(false)} 
                     onApply={handleApplyFilters}
                     initialFilters={activeFilters}
+                    tipos={tipos}
+                    categorias={categorias}
                 />
             )}
 
