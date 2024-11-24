@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-// Importar rutas
 const userRoutes = require('./userRoutes');
-const requirementRoutes = require('./requirementRoutes');
+const reqRoutes = require('./requirementRoutes');
 
 router.use('/user', userRoutes);
-router.use('/requirement', requirementRoutes);
+router.use('/requirements', reqRoutes);
 
 module.exports = router;

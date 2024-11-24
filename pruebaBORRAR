@@ -1,0 +1,84 @@
+const { User } = require('../models'); // Importa el modelo User
+
+// Método para obtener todos los usuarios
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.findAll(); // Obtener todos los usuarios
+    res.status(200).json(users); // Devuelve los usuarios en formato JSON
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener los usuarios', error });
+  }
+};
+
+// Método para obtener un usuario por ID
+const getUserById = async (req, res) => {
+  const { id } = req.params; // Obtén el id desde los parámetros de la solicitud
+
+  try {
+    const user = await User.findByPk(id); // Buscar usuario por primary key
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+    res.status(200).json(user); // Devuelve el usuario encontrado
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener el usuario', error });
+  }
+};
+
+// Método para crear un nuevo usuario
+const createUser = async (req, res) => {
+  const { name, email } = req.body; // Obtén los datos desde el cuerpo de la solicitud
+
+  try {
+    const newUser = await User.create({ name, email }); // Crea el usuario en la base de datos
+    res.status(201).json(newUser); // Devuelve el nuevo usuario creado
+  } catch (error) {
+    res.status(500).json({ message: 'Error al crear el usuario', error });
+  }
+};
+
+// Método para actualizar un usuario
+const updateUser = async (req, res) => {
+  const { id } = req.params; // Obtén el id desde los parámetros de la solicitud
+  const { name, email } = req.body; // Obtén los nuevos datos desde el cuerpo de la solicitud
+
+  try {
+    const user = await User.findByPk(id); // Buscar el usuario por id
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    user.name = name; // Actualiza los datos del usuario
+    user.email = email;
+
+    await user.save(); // Guarda los cambios en la base de datos
+    res.status(200).json(user); // Devuelve el usuario actualizado
+  } catch (error) {
+    res.status(500).json({ message: 'Error al actualizar el usuario', error });
+  }
+};
+
+// Método para eliminar un usuario
+const deleteUser = async (req, res) => {
+  const { id } = req.params; // Obtén el id desde los parámetros de la solicitud
+
+  try {
+    const user = await User.findByPk(id); // Buscar el usuario por id
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    await user.destroy(); // Eliminar el usuario de la base de datos
+    res.status(200).json({ message: 'Usuario eliminado exitosamente' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al eliminar el usuario', error });
+  }
+};
+
+module.exports = {
+  getAllUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser
+};

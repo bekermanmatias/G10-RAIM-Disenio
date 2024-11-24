@@ -1,3 +1,5 @@
+const { defaultValueSchemable } = require("sequelize/lib/utils");
+
 module.exports = (sequelize, DataTypes) => {
     const Requirement = sequelize.define(
       'Requirement',
@@ -13,21 +15,28 @@ module.exports = (sequelize, DataTypes) => {
         },
         codigo: {
           type: DataTypes.TEXT,
+          allowNull: false,
         },
         fechaHora: {
           type: DataTypes.DATE,
+          allowNull: false,
         },
         idEstado: {
             type: DataTypes.INTEGER,
+            allowNull: false,
         },
         idPrioridad:{
             type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 1,
         },
         idTipoReq:{
             type: DataTypes.INTEGER,
+            allowNull: false,
         },
         idUser:{
             type: DataTypes.INTEGER,
+            allowNull: false,
         },
         idUserDetinatario:{
             type: DataTypes.INTEGER,
