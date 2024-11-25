@@ -14,13 +14,16 @@ import {
 const CrearRequerimiento = () => {
     const navigate = useNavigate();
     const [users, setUsers] = useState([]);
+    const [tipos, setTipos] = useState([]);
+    const [categorias, setCategorias] = useState([]);
     const [formData, setFormData] = useState({
         descTipoReq: '',
         descPrioridad: '',
         asunto: '',
         descripcion: '',
-        dueno: 'jperez', // Usuario actual hardcodeado por ahora
-        descEstado: 'Abierto', // Estado por defecto
+        dueno: 'jperez', //hardcodeado por ahora
+        descEstado: '', 
+        nombreCategoria: '',
         destinatario: '',
         relacionados: '',
         archivos: null,
@@ -67,6 +70,7 @@ const CrearRequerimiento = () => {
               descPrioridad: formData.descPrioridad,
               descTipoReq: formData.descTipoReq,
               dueno: formData.dueno,
+              nombreCategoria: formData.nombreCategoria, 
               // Campos opcionales
               ...(formData.destinatario && { destinatario: formData.destinatario }),
               ...(formData.relacionados && { relacionados: formData.relacionados })
@@ -106,40 +110,45 @@ const CrearRequerimiento = () => {
         }
     };
 
+    
     return (
-        <div className="content">
-            <CreateContainer setUsers={setUsers} />
-            <h2>Agregar Nuevo Requerimiento</h2>
-            <form className="requerimiento-form" onSubmit={handleSubmit}>
-                <div className="form-container">
-                    {/* Columna Izquierda */}
-                    <div className="form-left">
-                        <div className="form-row">
-                            <label>Tipo</label>
-                            <select 
-                                name="descTipoReq" 
-                                value={formData.descTipoReq} 
-                                onChange={handleChange}
-                            >
-                                <option value="">Seleccione el Tipo</option>
-                                <option value="Bug">Bug</option>
-                                <option value="Mejora">Mejora</option>
-                                <option value="Consulta">Consulta</option>  
-                                <option value="Requerimiento hardware">Requerimiento hardware</option>
-                            </select>
-                        </div>
-                        <div className="form-row">
-                            <label>Categoría</label>
-                            <select 
-                                name="descCategoria" 
-                                value={formData.descCategoria} 
-                                onChange={handleChange}
-                            >
-                                <option value="">Seleccione la Categoría</option>
-                                <option value="Software">Software</option>
-                                <option value="Hardware">Hardware</option>
-                            </select>
-                        </div>
+      <div className="content">
+          <CreateContainer 
+              setUsers={setUsers} 
+              setTipos={setTipos} 
+              setCategorias={setCategorias} 
+          />
+          <h2>Agregar Nuevo Requerimiento</h2>
+          <form className="requerimiento-form" onSubmit={handleSubmit}>
+              <div className="form-container">
+                  {/* Columna Izquierda */}
+                  <div className="form-left">
+                      <div className="form-row">
+                          <label>Tipo</label>
+                          <select 
+                              name="descTipoReq" 
+                              value={formData.descTipoReq} 
+                              onChange={handleChange}
+                          >
+                              <option value="">Seleccione el Tipo</option>
+                              {tipos.map(tipo => (
+                                  <option key={tipo} value={tipo}>{tipo}</option>
+                              ))}
+                          </select>
+                      </div>
+                      <div className="form-row">
+                          <label>Categoría</label>
+                          <select 
+                              name="nombreCategoria" 
+                              value={formData.nombreCategoria} 
+                              onChange={handleChange}
+                          >
+                              <option value="">Seleccione la Categoría</option>
+                              {categorias.map(categoria => (
+                                  <option key={categoria} value={categoria}>{categoria}</option>
+                              ))}
+                          </select>
+                      </div>
                         <div className="form-row">
                             <label>Asunto</label>
                             <input
@@ -221,7 +230,7 @@ const CrearRequerimiento = () => {
                     </button>
                     <button 
                         type="submit" 
-                        className="btn- submit"
+                        className="btn-submit"
                     >
                         Guardar Requerimiento
                     </button>

@@ -1,9 +1,7 @@
-// src/components/requirements/RequirementDetail.js
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import RequirementContainer from './RequirementContainer';
 import './requirementDetail.css';
-
 
 const RequirementDetail = () => {
     const { codigo } = useParams();
@@ -16,7 +14,7 @@ const RequirementDetail = () => {
         navigate('/requirements');
     };
 
-    // Si aún está cargando, renderiza el mensaje de carga
+    // Renderiza el mensaje de carga
     if (loading) {
         return (
             <div>
@@ -31,7 +29,7 @@ const RequirementDetail = () => {
         );
     }
 
-    // Si hay un error, muestra el mensaje de error
+    // Muestra el mensaje de error
     if (error) {
         return (
             <div>
@@ -61,33 +59,28 @@ const RequirementDetail = () => {
         );
     }
 
-    // Renderiza el detalle del requerimiento
     return (
         <div className="requirement-detail-container">
-            <RequirementContainer 
-                codigo={codigo} 
-                setRequerimiento={setRequerimiento} 
-                setLoading={setLoading} 
-                setError={setError} 
-            />
             <div className="requirement-detail-header">
-                <h1>Detalle Requerimiento {codigo}</h1>
+                <h1>Detalle Requerimiento: { codigo}</h1>
             </div>
             
             <div className="requirement-detail-content">
-                <p><strong>Código:</strong> {requerimiento.codigo}</p>
                 <p><strong>Asunto:</strong> {requerimiento.asunto}</p>
-                <p><strong>Descripcion:</strong> {requerimiento.descripcion}</p>
+                <p><strong>Descripción:</strong> {requerimiento.descripcion}</p>
                 <p><strong>Estado:</strong> {requerimiento.estado}</p>
+                <p><strong>Emisor:</strong> {requerimiento.emisor}</p>
                 <p><strong>Propietario:</strong> {requerimiento.propietario}</p>
                 <p><strong>Prioridad:</strong> {requerimiento.prioridad}</p>
                 <p><strong>Tipo:</strong> {requerimiento.tipo}</p>
                 <p><strong>Categoría:</strong> {requerimiento.categoria}</p>
-                <p><strong>Fecha de Alta:</strong> {requerimiento.fechaAlta}</p>
+                <p><strong>Fecha de Alta:</strong> {requerimiento.fechaCreacion}</p>
+                <p><strong>Última Actualización:</strong> {requerimiento.fechaActualizacion}</p>
+                
             </div>
             <button onClick={handleBack} className="back-button">
-                    ← Volver
-                </button>
+                ← Volver
+            </button>
         </div>
     );
 };

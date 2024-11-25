@@ -1,9 +1,9 @@
-// src/components/requirements/RequirementContainer.js
 import React, { useEffect } from 'react';
 
 const RequirementContainer = ({ codigo, setRequerimiento, setLoading, setError }) => {
     useEffect(() => {
         const fetchRequirementDetail = async () => {
+            setLoading(true); 
             try {
                 const response = await fetch(`https://g10-raim-disenio.onrender.com/api/requirement/${codigo}`);
                 if (!response.ok) {
@@ -11,72 +11,38 @@ const RequirementContainer = ({ codigo, setRequerimiento, setLoading, setError }
                 }
                 const data = await response.json();
                 
-                // Funciones de mapeo (mantener igual que en versión anterior)
-                const getPrioridadTexto = (idPrioridad) => {
-                    switch(idPrioridad) {
-                        case 1: return 'Urgente';
-                        case 2: return 'Alta';
-                        case 3: return 'Media';
-                        case 4: return 'Baja';
-                        default: return 'Sin prioridad';
-                    }
-                };
-
-                const getEstadoTexto = (idEstado) => {
-                    switch(idEstado) {
-                        case 1: return 'Abierto';
-                        case 2: return 'Asignado';
-                        default: return 'Sin estado';
-                    }
-                };
-
-                const getTipoTexto = (idTipo) => {
-                    switch(idTipo) {
-                        case 1: return 'Bug';
-                        case 2: return 'Mejora';
-                        case 3: return 'Consulta';
-                        default: return 'Sin tipo';
-                    }
-                };
-
-                const getCategoriaTexto = (idCategoria) => {
-                    switch(idCategoria) {
-                        case 1: return 'Software';
-                        case 2: return 'Hardware';
-                        case 3: return 'General';
-                        default: return 'Sin categoría';
-                    }
-                };
+                const getPrioridadTexto = (prioridad) => prioridad.descripcion || 'Sin prioridad';
+                const getEstadoTexto = (estado) => estado.descripcion || 'Sin estado';
+                const getTipoTexto = (tipoReq) => tipoReq.descripcion || 'Sin tipo';
+                const getCategoriaTexto = (categoria) => categoria.nombre || 'Sin categoría';
 
                 // Mapeo del requerimiento
                 const requerimientoData = {
                     codigo: data.codigo,
-                    prioridad: getPrioridadTexto(data.idPrioridad),
-                    tipo: getTipoTexto(data.idTipoReq),
-                    categoria: getCategoriaTexto(data.idTipoRequerimiento),
-                    fechaAlta: new Date(data.fechaHora).toLocaleDateString(),
-                    estado: getEstadoTexto(data.idEstado),
+                    prioridad: getPrioridadTexto(data.prioridad),
+                    tipo: getTipoTexto(data.tipoReq),
+                    categoria: getCategoriaTexto(data.categoria),
+                    estado: getEstadoTexto(data.estado),
                     asunto: data.asunto,
                     descripcion: data.descripcion,
-                    propietario: data.idUser ? `Usuario ${data.idUser}` : 'Sin propietario'
+                    propietario: data.idUserDetinatario ? `Usuario ${data.idUserDetinatario}` : 'Sin propietario',
+                    fechaCreacion: new Date(data.createdAt).toLocaleString(),
+                    fechaActualizacion: new Date(data.updatedAt).toLocaleString(),
+                    emisor: data.idUsuarioCreador.nombre 
                 };
 
-                // Actualizar estados
                 setRequerimiento(requerimientoData);
-                setLoading(false);
             } catch (error) {
-                // Actualizar estados en caso de error
-                setError(error.message);
-                setLoading(false);
+                setError(error.message); 
+            } finally {
+                setLoading(false); 
             }
         };
 
-        // Llamar a la función de fetch
         fetchRequirementDetail();
     }, [codigo, setRequerimiento, setLoading, setError]);
 
-    // Retornar null ya que este componente no renderiza nada
-    return null;
+    return null; 
 };
 
 export default RequirementContainer;

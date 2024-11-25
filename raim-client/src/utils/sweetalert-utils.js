@@ -59,15 +59,8 @@ export const showSuccessAlert = (onClose) => {
         icon: 'success',
         title: 'Requerimiento Registrado',
         text: 'El requerimiento se ha guardado exitosamente',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: false,
-        showClass: {
-            popup: ''
-        },
-        hideClass: {
-            popup: ''
-        },
+        showConfirmButton: true,
+        confirmButtonText: 'Cerrar',
         buttonsStyling: false,
         customClass: {
             popup: 'professional-alert',
@@ -76,8 +69,10 @@ export const showSuccessAlert = (onClose) => {
         backdrop: 'rgba(0,0,0,0.2)',
         background: '#ffffff',
         width: '380px'
-    }).then(() => {
-        onClose();
+    }).then((result) => {
+        if (result.isConfirmed) {
+            onClose(); // Solo ejecuta onClose si el usuario hizo clic en "Cerrar"
+        }
     });
 };
 

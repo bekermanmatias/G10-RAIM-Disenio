@@ -7,16 +7,15 @@ body {
 .app {
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Ocupa toda la altura de la ventana */
+    min-height: 100vh;
 }
 
 .container {
     display: flex;
-    flex: 1;
-    width: 100%; /* Asegúrate de que el contenedor ocupe todo el ancho */
+    flex-grow: 1;
 }
 
 .main-content {
-    flex: 1; /* Permite que el contenido principal ocupe el espacio disponible */
-    overflow-y: auto; /* Permite el desplazamiento si el contenido es más grande que la pantalla */
+    flex-grow: 1;
+    position: relative;
 }

@@ -30,7 +30,7 @@
 }
 
 .table-row.row-hovered {
-    background-color: rgba(0, 123, 255, 0.2); /* Azul claro transparente */
+    background-color: rgba(0, 123, 255, 0.2); 
 }
 
 .table-row:hover {
@@ -101,7 +101,6 @@
     background-color: #f80505; 
 }
 
-/* Añade esto a tu TableRequirements.css */
 thead th {
     cursor: pointer;
     user-select: none;

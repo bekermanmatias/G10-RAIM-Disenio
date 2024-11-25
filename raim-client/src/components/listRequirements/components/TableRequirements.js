@@ -46,7 +46,6 @@ const TableRequirements = ({ requirements }) => {
         }
     };
 
-    // Función para ordenar
     const handleSort = (key) => {
         let direction = 'ascending';
         if (sortConfig.key === key && sortConfig.direction === 'ascending') {
@@ -55,11 +54,9 @@ const TableRequirements = ({ requirements }) => {
         setSortConfig({ key, direction });
     };
 
-    // Función de comparación para ordenar
     const sortedRequirements = React.useMemo(() => {
         if (!sortConfig.key) return requirements;
 
-        // Ordenamiento personalizado para prioridad
         if (sortConfig.key === 'prioridad') {
             return [...requirements].sort((a, b) => {
                 const priorityA = priorityOrder[a.prioridad];
@@ -73,7 +70,6 @@ const TableRequirements = ({ requirements }) => {
             });
         }
 
-        // Ordenamiento para el resto de columnas
         return [...requirements].sort((a, b) => {
             if (a[sortConfig.key] < b[sortConfig.key]) {
                 return sortConfig.direction === 'ascending' ? -1 : 1;
@@ -85,7 +81,6 @@ const TableRequirements = ({ requirements }) => {
         });
     }, [requirements, sortConfig]);
 
-    // Renderizar icono de ordenamiento
     const renderSortIcon = (key) => {
         if (sortConfig.key !== key) return '⇅';
         return sortConfig.direction === 'ascending' ? '▲' : '▼';
@@ -109,16 +104,14 @@ const TableRequirements = ({ requirements }) => {
                     </th>
                     <th onClick={() => handleSort('fechaAlta')}>
                         Fecha de Alta {renderSortIcon('fechaAlta')}
+                    </th>   
+                    <th onClick={() => handleSort('asunto')}>
+                        Asunto {renderSortIcon('asunto')}
                     </th>
                     <th onClick={() => handleSort('estado')}>
                         Estado {renderSortIcon('estado')}
                     </th>
-                    <th onClick={() => handleSort('asunto')}>
-                        Asunto {renderSortIcon('asunto')}
-                    </th>
-                    <th onClick={() => handleSort('propietario')}>
-                        Propietario {renderSortIcon('propietario')}
-                    </th>
+
                 </tr>
             </thead>
             <tbody>
@@ -138,10 +131,9 @@ const TableRequirements = ({ requirements }) => {
                         </td>
                         <td className="table-cell">{req.tipo}</td>
                         <td className="table-cell">{req.categoria}</td>
-                        <td className="table-cell">{req.fechaAlta}</td>
-                        <td className="table-cell">{req.estado}</td>
+                        <td className="table-cell">{req.fechaAlta.split('T')[0]}</td>
                         <td className="table-cell">{req.asunto}</td>
-                        <td className="table-cell">{req.propietario}</td>
+                        <td className="table-cell">{req.estado}</td>
                     </tr>
                 ))}
             </tbody>

@@ -11,6 +11,7 @@ const UserContainer = ({ nombreUsuario, setUsuario, setLoading, setError }) => {
                     throw new Error('Error al obtener los detalles del usuario');
                 }
                 const data = await response.json();
+
                 const usuarioDetalle = {
                     legajo: data.legajo || 'Sin legajo',
                     nombreCompleto: data.nombre || 'Sin nombre',
@@ -19,6 +20,7 @@ const UserContainer = ({ nombreUsuario, setUsuario, setLoading, setError }) => {
                     cargo: data.cargo || 'Sin cargo',
                     departamento: data.nombreDepa.nombre,
                 };
+
                 setUsuario(usuarioDetalle);
                 setLoading(false);
             } catch (error) {
