@@ -19,7 +19,6 @@ const App = () => {
     const location = useLocation();
 
     const noSidebarRoutes = ['/login', '/register'];
-    const noFooterRoutes = ['/login', '/register'];
     return (
         <div className="app">
             <Header />
@@ -40,7 +39,7 @@ const App = () => {
                     <FloatingCreateButton />
                 </main>
             </div>
-            {!noFooterRoutes.includes(location.pathname) && <Footer />}
+            { <Footer />}
         </div>
     );
 };
