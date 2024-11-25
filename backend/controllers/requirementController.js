@@ -1,8 +1,8 @@
-const { Requirement, Estado, Prioridad, TipoRequerimiento, User } = require('../models');
+const { Requirement, Estado, Prioridad, TipoRequerimiento, User, CategoriaTR } = require('../models');
 
 
 const createRequirement = async (req, res) => {
-  const { asunto, descripcion, descEstado, descPrioridad, descTipoReq, dueno, destinatario } = req.body;
+  const { asunto, descripcion, descEstado, descPrioridad, descTipoReq, dueno, destinatario, descCategoriaTR } = req.body;
 
   try {
 
@@ -77,7 +77,15 @@ const createRequirement = async (req, res) => {
       return res.status(400).json({message: 'El estado no es correcto.'});
     }
 
-    const newRequirement = await Requirement.create({ asunto, descripcion, codigo, fechaHora, idEstado, idPrioridad, idTipoReq, idUser, idDestinatario });
+    const CategoriaTR = await CategoriaTR.findOne({
+      where: {descripcion: descCategoriaTR},
+  });
+  if(!CategoriaTR){
+    return res.status(404).json({message: 'Categoria de tipo de requerimiento no encontrada.'});
+  }
+  const idCategoriaTR = CategoriaTR.idCategoriaTR;
+
+    const newRequirement = await Requirement.create({ asunto, descripcion, codigo, fechaHora, idEstado, idPrioridad, idTipoReq, idUser, idDestinatario, idCategoriaTR });
     res.status(201).json( newRequirement);
   } catch (error) {
     res.status(500).json({ message: 'Error al crear el requerimiento', error: error.message });

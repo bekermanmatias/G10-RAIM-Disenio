@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'idTipoReq',
             targetKey:'idTipoReq'
         });
+        CategoriaTR.hasMany(models.Requirement, {
+          foreignKey: 'idCategoriaTR',
+          as:'requerimientos'
+      });
     }
   
     return CategoriaTR;
