@@ -112,7 +112,7 @@
   text-decoration: underline;
 }
 
-/* Responsive Design */
+/* Responsive  */
 @media (max-width: 480px) {
   .login-wrapper {
       max-width: 100%;

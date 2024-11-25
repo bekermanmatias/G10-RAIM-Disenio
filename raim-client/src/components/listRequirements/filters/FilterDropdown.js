@@ -16,7 +16,6 @@ const FilterDropdown = ({
         participacion: []
     });
 
-    // Efecto para cargar los filtros iniciales
     useEffect(() => {
         if (initialFilters) {
             setFilters(initialFilters);
@@ -25,8 +24,8 @@ const FilterDropdown = ({
 
     const filterOptions = {
         estados: ['Abierto', 'Asignado'],
-        tipos: tipos, // Ahora recibido como prop
-        categorias: categorias, // Ahora recibido como prop
+        tipos: tipos, 
+        categorias: categorias, 
         participacion: ['Emisor','Asignado']
     };
 

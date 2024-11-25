@@ -13,7 +13,6 @@ const FilterDropdownUsers = ({
         departamentos: []
     });
 
-    // Efecto para cargar los filtros iniciales
     useEffect(() => {
         if (initialFilters) {
             setFilters(initialFilters);
@@ -40,11 +39,10 @@ const FilterDropdownUsers = ({
     };
 
     const handleApply = () => {
-        onApply(filters); // Aplicar los filtros
-        onClose(); // Cerrar el menú después de aplicar
+        onApply(filters); 
+        onClose(); // cerrar el menú después de aplicar
     };
 
-    // Función para dividir opciones en dos columnas
     const splitOptionsIntoColumns = (options) => {
         const halfLength = Math.ceil(options.length / 2);
         return [

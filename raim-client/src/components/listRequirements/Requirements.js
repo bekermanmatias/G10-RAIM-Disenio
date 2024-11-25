@@ -6,7 +6,7 @@ import TableRequirements from './components/TableRequirements';
 import FilterDropdown from './filters/FilterDropdown';
 import FloatingCreateButton from './components/FloatingCreateButton';
 import RequirementsContainer from './RequirementsContainer';
-import FilterContainer from './filters/FilterContainer'; // Importa el nuevo FilterContainer
+import FilterContainer from './filters/FilterContainer'; 
 import './Requirements.css';
 
 const Requerimientos = () => {
@@ -16,8 +16,8 @@ const Requerimientos = () => {
     const [requerimientosData, setRequerimientosData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [tipos, setTipos] = useState([]); // Nuevo estado para tipos
-    const [categorias, setCategorias] = useState([]); // Nuevo estado para categorías
+    const [tipos, setTipos] = useState([]); 
+    const [categorias, setCategorias] = useState([]); 
     const [activeFilters, setActiveFilters] = useState({
         estados: [],
         tipos: [],
@@ -90,7 +90,7 @@ const Requerimientos = () => {
         if (filters.participacion && filters.participacion.length > 0) {
             result = result.filter(req => {
                 if (filters.participacion.includes('Emisor')) {
-                    return req.emisor === 7; // Ajusta al usuario actual
+                    return req.emisor === 'jperez'; // Ajusta al usuario actual
                 }
                 return true;
             });

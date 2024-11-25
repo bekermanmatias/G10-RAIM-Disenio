@@ -12,15 +12,13 @@ function Login() {
     e.preventDefault();
     setError('');
 
-    // Validación básica
     if (!username || !password) {
       setError('Por favor, complete todos los campos');
       return;
     }
 
     try {
-      // Ejemplo de llamada a API de autenticación
-      const response = await fetch('/api/login', {
+      const response = await fetch('https://g10-raim-disenio.onrender.com/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -31,13 +29,10 @@ function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        // Guardar token de autenticación
         localStorage.setItem('authToken', data.token);
         
-        // Redirigir al dashboard o página principal
         navigate('/dashboard');
       } else {
-        // Manejar errores de inicio de sesión
         setError(data.message || 'Error de inicio de sesión');
       }
     } catch (err) {
@@ -91,7 +86,7 @@ function Login() {
           </div>
           
           <div className="login-links">
-            <Link to="/registro" className="login-link">
+            <Link to="/register" className="login-link">
               Registrarse
             </Link>
             <Link to="/recuperar-password" className="login-link">

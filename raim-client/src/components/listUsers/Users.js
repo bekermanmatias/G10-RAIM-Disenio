@@ -33,7 +33,6 @@ const Users = () => {
             departamentos: []
         });
         
-        // Restaura los usuarios originales
         filterUsers('', { cargo: [], departamentos: [] });
     };
 
@@ -79,7 +78,6 @@ const Users = () => {
 
     return (
         <div className="usuarios-container">
-            {/* Añade el FilterContainerUsers para cargar cargos y departamentos */}
             <FilterContainerUsers 
                 setCargos={setCargos} 
                 setDepartamentos={setDepartamentos} 

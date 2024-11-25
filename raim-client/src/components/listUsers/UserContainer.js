@@ -12,7 +12,6 @@ const UserContainer = ({ nombreUsuario, setUsuario, setLoading, setError }) => {
                 }
                 const data = await response.json();
 
-                // Mapear datos del usuario
                 const usuarioDetalle = {
                     legajo: data.legajo || 'Sin legajo',
                     nombreCompleto: data.nombre || 'Sin nombre',
@@ -20,7 +19,6 @@ const UserContainer = ({ nombreUsuario, setUsuario, setLoading, setError }) => {
                     email: data.email || 'Sin email',
                     cargo: data.cargo || 'Sin cargo',
                     departamento: data.nombreDepa.nombre,
-                    // Campos adicionales que puedas necesitar
                 };
 
                 setUsuario(usuarioDetalle);

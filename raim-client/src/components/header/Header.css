@@ -3,7 +3,7 @@
     align-items: center;
     padding: 10px 20px;
     background-color: #040247; 
-    border-bottom: 1px solid #ccc; /* linea inferior */
+    border-bottom: 1px solid #ccc; 
 }
 
 .logo-container {

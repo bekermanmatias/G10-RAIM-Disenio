@@ -11,18 +11,19 @@ const RequirementsContainer = ({ setFilteredRequirements, setRequerimientosData,
                 }
                 const data = await response.json();
 
-                // Mapeo de requerimientos
                 const requerimientosData = data.map(req => ({
-                    codigo: req.codigo,
+                    codigo: req.codigo, 
                     prioridad: req.prioridad.descripcion, 
                     tipo: req.tipoReq.descripcion, 
                     categoria: req.categoria.nombre, 
-                    fechaAlta: req.fechaHora.split('T')[0], 
-                    estado: req.estado.descripcion,
+                    fechaAlta: req.fechaHora,
+                    estado: req.estado.descripcion, 
                     asunto: req.asunto,
                     propietario: req.idUserDetinatario ? `Usuario ${req.idUserDetinatario}` : 'Sin asignar', 
-                    emisor: req.idUser
+                    emisor: req.idUsuarioCreador.nombreUsuario 
                 }));
+
+                requerimientosData.sort((a, b) => new Date(b.fechaAlta) - new Date(a.fechaAlta));
 
                 setFilteredRequirements(requerimientosData);
                 setRequerimientosData(requerimientosData);
