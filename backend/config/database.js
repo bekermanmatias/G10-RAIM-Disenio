@@ -1,11 +1,11 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('bwun2qhdmgfmhc5gx6ho', 'ul8oif1qwqaznik1', 'gmzXhxjjNDfDNkzqx4cg', {
- host: 'bwun2qhdmgfmhc5gx6ho-mysql.services.clever-cloud.com',
+const sequelize = new Sequelize('b9dnj5xxk26sofb5qmpw', 'uldp1z8gvugvv5lk', 'gh9WNzDelqYoSWnB8Ipp', {
+ host: 'b9dnj5xxk26sofb5qmpw-mysql.services.clever-cloud.com',
  dialect: 'mysql'
 });
 
-//sequelize.sync({ force: true})
+sequelize.sync({ alter: true})
 //.then(() => {
 //console.log('Database synced successfully');
 //})

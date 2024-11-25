@@ -1,4 +1,5 @@
 const { Requirement, Estado, Prioridad, TipoRequerimiento, User } = require('../models');
+const categoriatr = require('../models/categoriatr');
 
 
 const createRequirement = async (req, res) => {
@@ -102,6 +103,11 @@ const getRequirements = async (req, res) => {
           model: TipoRequerimiento,
           as: 'tipoReq',
           attributes: ['descripcion', 'codigo'], 
+        },
+        {
+          model: CategoriaTR,
+          as: 'categoria',
+          attributes: ['descripcion'],
         },
       ],
     });
