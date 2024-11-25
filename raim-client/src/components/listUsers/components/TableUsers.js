@@ -11,7 +11,6 @@ const TableUsers = ({ users = [] }) => {
     });
     const navigate = useNavigate();
 
-    // Añade un useEffect para depuración
     useEffect(() => {
         console.log('Usuarios actualizados:', users);
     }, [users]);
@@ -28,7 +27,6 @@ const TableUsers = ({ users = [] }) => {
         navigate(`/users/${user.usuario}`);
     };
 
-    // Función para ordenar
     const handleSort = (key) => {
         let direction = 'ascending';
         if (sortConfig.key === key && sortConfig.direction === 'ascending') {
@@ -37,13 +35,11 @@ const TableUsers = ({ users = [] }) => {
         setSortConfig({ key, direction });
     };
 
-    // Renderizar icono de ordenamiento
     const renderSortIcon = (key) => {
         if (sortConfig.key !== key) return '⇅';
         return sortConfig.direction === 'ascending' ? '▲' : '▼';
     };
 
-    // Función de comparación para ordenar
     const sortedUsers = useMemo(() => {
         if (!sortConfig.key) return users;
 

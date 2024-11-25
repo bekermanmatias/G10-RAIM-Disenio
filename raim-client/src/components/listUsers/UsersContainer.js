@@ -17,7 +17,7 @@ const UsersContainer = ({ setFilteredUsers, setLoading, setError }) => {
                     legajo: user.legajo ? String(user.legajo) : 'Sin legajo',
                     nombreCompleto: user.nombre || 'Sin nombre',
                     cargo: user.cargo || 'Sin cargo',
-                    departamento: user.idDepartamento || 'Sin departamento',
+                    departamento: user.nombreDepa.nombre || 'Sin departamento',
                     email: user.email || 'Sin email',
                     usuario: user.nombreUsuario || 'Sin usuario'
                 }));
