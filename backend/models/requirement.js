@@ -76,10 +76,10 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'idUser',
             as:'idUsuarioCreador'
         });
-        Requirement.belongsTo(models.User,{
-            foreignKey: 'idUsuarioDestinatario',
-            as: 'UsuarioDestinatario'
-        });
+        Requirement.belongsTo(models.User, {
+          foreignKey: 'idUserDetinatario', 
+          as: 'UsuarioDestinatario', 
+      });
         Requirement.hasMany(models.Comentario,{
             foreignKey: 'idRequerimiento',
             as: 'comentarios'
