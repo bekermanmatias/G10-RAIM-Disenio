@@ -88,10 +88,10 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'idRequerimiento',
             as: 'archivosAdjuntos'
         });
-        Requirement.belongsTo(models.CategoriaTR,{
+        Requirement.belongsTo(models.CategoriaTR, {
           foreignKey: 'idCategoriaTR',
-          targetKey:'idCategoriaTR'
-      });
+          as: 'categoria'
+        });
     }
     
   

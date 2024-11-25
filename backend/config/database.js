@@ -12,7 +12,7 @@ const sequelize = new Sequelize(
     }
 );
 
-sequelize.sync({ force: true }) // Usa { force: true } para recrear tablas (solo en desarrollo)
+sequelize.sync({ alter: true }) 
   .then(() => {
     console.log('Database synced successfully');
   })

@@ -111,6 +111,11 @@ const getRequirements = async (req, res) => {
           as: 'tipoReq',
           attributes: ['descripcion', 'codigo'], 
         },
+        {
+          model: CategoriaTR,
+          as: 'categoria',
+          attributes: ['descripcion'],
+        },
       ],
     });
     if(requirements.length === 0){
