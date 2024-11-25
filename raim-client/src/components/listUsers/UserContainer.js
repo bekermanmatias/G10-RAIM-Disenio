@@ -19,6 +19,7 @@ const UserContainer = ({ nombreUsuario, setUsuario, setLoading, setError }) => {
                     email: data.email || 'Sin email',
                     cargo: data.cargo || 'Sin cargo',
                     departamento: data.nombreDepa.nombre,
+                    fechaIngreso: new Date(data.createdAt).toLocaleString(),
                 };
 
                 setUsuario(usuarioDetalle);
