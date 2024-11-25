@@ -62,7 +62,7 @@ const RequirementDetail = () => {
     return (
         <div className="requirement-detail-container">
             <div className="requirement-detail-header">
-                <h1>Detalle Requerimiento: { codigo}</h1>
+                <h1>Detalle Requerimiento: {codigo}</h1>
             </div>
             
             <div className="requirement-detail-content">
@@ -76,11 +76,25 @@ const RequirementDetail = () => {
                 <p><strong>Categoría:</strong> {requerimiento.categoria}</p>
                 <p><strong>Fecha de Alta:</strong> {requerimiento.fechaCreacion}</p>
                 <p><strong>Última Actualización:</strong> {requerimiento.fechaActualizacion}</p>
-                
             </div>
+            
+            <div className="comment-container">
+                <h3>Comentarios:</h3>
+            </div>
+          
+            <div className="comment-detail-content">
+                <p><strong>Asunto:</strong> {requerimiento.asunto}</p>
+                <p><strong>Descripción:</strong> {requerimiento.descripcion}</p>
+                <p><strong>Fecha:</strong> {requerimiento.fechaActualizacion}</p>
+                <p><strong>Emisor:</strong> {requerimiento.emisor}</p>
+            </div>
+            
+            <div className="button-detail-content">
             <button onClick={handleBack} className="back-button">
                 ← Volver
             </button>
+            </div>
+
         </div>
     );
 };
