@@ -5,6 +5,10 @@
     gap: 20px;
 }
 
+.content {
+    margin-left: 1%;
+}
+
 .form-left,
 .form-right {
     display: flex;
