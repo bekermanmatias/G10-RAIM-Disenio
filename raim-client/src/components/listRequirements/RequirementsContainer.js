@@ -14,11 +14,11 @@ const RequirementsContainer = ({ setFilteredRequirements, setRequerimientosData,
                 // Mapeo de requerimientos
                 const requerimientosData = data.map(req => ({
                     codigo: req.codigo,
-                    prioridad: req.prioridad.descripcion, // Usar la descripción directamente
-                    tipo: req.tipoReq.descripcion, // Usar la descripción directamente
-                    categoria: req.tipoReq.descripcion, // Usar la descripción del tipo de requerimiento
+                    prioridad: req.prioridad.descripcion, 
+                    tipo: req.tipoReq.descripcion, 
+                    categoria: req.categoria.nombre, 
                     fechaAlta: req.fechaHora.split('T')[0], 
-                    estado: req.estado.descripcion, // Usar la descripción directamente
+                    estado: req.estado.descripcion,
                     asunto: req.asunto,
                     propietario: req.idUserDetinatario ? `Usuario ${req.idUserDetinatario}` : 'Sin asignar', 
                     emisor: req.idUser

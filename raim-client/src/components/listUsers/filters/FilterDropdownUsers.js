@@ -1,4 +1,3 @@
-// src/components/listUsers/filters/FilterDropdownUsers.js
 import React, { useState, useEffect } from 'react';
 import './FilterDropdown.css';
 
@@ -41,7 +40,8 @@ const FilterDropdownUsers = ({
     };
 
     const handleApply = () => {
-        onApply(filters);
+        onApply(filters); // Aplicar los filtros
+        onClose(); // Cerrar el menú después de aplicar
     };
 
     // Función para dividir opciones en dos columnas

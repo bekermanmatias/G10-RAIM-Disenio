@@ -1,5 +1,5 @@
 // src/components/listRequirements/filters/FilterContainer.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 const FilterContainer = ({ setTipos, setCategorias }) => {
     useEffect(() => {
@@ -11,9 +11,11 @@ const FilterContainer = ({ setTipos, setCategorias }) => {
                 setTipos(tiposData.map(tipo => tipo.descripcion));
 
                 // Fetch de categorías
-                const categoriasResponse = await fetch('https://g10-raim-disenio.onrender.com/api/catiporeq');
+                const categoriasResponse = await fetch('https://g10-raim-disenio.onrender.com/api/categoria/categorias-req');
                 const categoriasData = await categoriasResponse.json();
-                setCategorias(categoriasData.map(categoria => categoria.descripcion));
+                
+                // Accediendo a la propiedad 'categorias' y mapeando los nombres
+                setCategorias(categoriasData.categorias.map(categoria => categoria.nombre));
 
             } catch (error) {
                 console.error('Error al cargar datos de filtros:', error);

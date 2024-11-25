@@ -24,21 +24,21 @@ const RequirementContainer = ({ codigo, setRequerimiento, setLoading, setError }
                     return tipoReq.descripcion || 'Sin tipo';
                 };
 
-                const getCategoriaTexto = (tipoReq) => {
-                    return tipoReq.descripcion || 'Sin categoría';
+                const getCategoriaTexto = (categoria) => {
+                    return categoria.nombre || 'Sin categoría'; // Cambiado a categoria.nombre
                 };
-
+                
                 // Mapeo del requerimiento
                 const requerimientoData = {
                     codigo: data.codigo,
                     prioridad: getPrioridadTexto(data.prioridad),
                     tipo: getTipoTexto(data.tipoReq),
-                    categoria: getCategoriaTexto(data.tipoReq),
+                    categoria: getCategoriaTexto(data.categoria), // Cambiado aquí
                     fechaAlta: new Date(data.fechaHora).toLocaleDateString(),
                     estado: getEstadoTexto(data.estado),
                     asunto: data.asunto,
                     descripcion: data.descripcion,
-                    propietario: data.idUser ? `Usuario ${data.idUser}` : 'Sin propietario',
+                    propietario: data.idUser  ? `Usuario ${data.idUser }` : 'Sin propietario',
                     fechaCreacion: new Date(data.createdAt).toLocaleString(),
                     fechaActualizacion: new Date(data.updatedAt).toLocaleString()
                 };

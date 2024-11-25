@@ -61,7 +61,6 @@ const RequirementDetail = () => {
         );
     }
 
-    // Renderiza el detalle del requerimiento
     return (
         <div className="requirement-detail-container">
             <RequirementContainer 

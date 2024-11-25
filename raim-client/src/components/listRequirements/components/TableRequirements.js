@@ -109,16 +109,14 @@ const TableRequirements = ({ requirements }) => {
                     </th>
                     <th onClick={() => handleSort('fechaAlta')}>
                         Fecha de Alta {renderSortIcon('fechaAlta')}
+                    </th>   
+                    <th onClick={() => handleSort('asunto')}>
+                        Asunto {renderSortIcon('asunto')}
                     </th>
                     <th onClick={() => handleSort('estado')}>
                         Estado {renderSortIcon('estado')}
                     </th>
-                    <th onClick={() => handleSort('asunto')}>
-                        Asunto {renderSortIcon('asunto')}
-                    </th>
-                    <th onClick={() => handleSort('propietario')}>
-                        Propietario {renderSortIcon('propietario')}
-                    </th>
+
                 </tr>
             </thead>
             <tbody>
@@ -139,9 +137,8 @@ const TableRequirements = ({ requirements }) => {
                         <td className="table-cell">{req.tipo}</td>
                         <td className="table-cell">{req.categoria}</td>
                         <td className="table-cell">{req.fechaAlta}</td>
-                        <td className="table-cell">{req.estado}</td>
                         <td className="table-cell">{req.asunto}</td>
-                        <td className="table-cell">{req.propietario}</td>
+                        <td className="table-cell">{req.estado}</td>
                     </tr>
                 ))}
             </tbody>

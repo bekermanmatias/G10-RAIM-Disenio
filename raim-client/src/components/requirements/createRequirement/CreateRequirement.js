@@ -21,9 +21,9 @@ const CrearRequerimiento = () => {
         descPrioridad: '',
         asunto: '',
         descripcion: '',
-        dueno: 'jperez', // Usuario actual hardcodeado por ahora
-        descEstado: 'Abierto', // Estado por defecto
-        descCategoria: '',
+        dueno: 'jperez', //hardcodeado por ahora
+        descEstado: '', 
+        nombreCategoria: '',
         destinatario: '',
         relacionados: '',
         archivos: null,
@@ -70,6 +70,7 @@ const CrearRequerimiento = () => {
               descPrioridad: formData.descPrioridad,
               descTipoReq: formData.descTipoReq,
               dueno: formData.dueno,
+              nombreCategoria: formData.nombreCategoria, 
               // Campos opcionales
               ...(formData.destinatario && { destinatario: formData.destinatario }),
               ...(formData.relacionados && { relacionados: formData.relacionados })
@@ -109,6 +110,7 @@ const CrearRequerimiento = () => {
         }
     };
 
+    
     return (
       <div className="content">
           <CreateContainer 
@@ -137,8 +139,8 @@ const CrearRequerimiento = () => {
                       <div className="form-row">
                           <label>Categoría</label>
                           <select 
-                              name="descCategoria" 
-                              value={formData.descCategoria} 
+                              name="nombreCategoria" 
+                              value={formData.nombreCategoria} 
                               onChange={handleChange}
                           >
                               <option value="">Seleccione la Categoría</option>
