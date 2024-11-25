@@ -8,6 +8,8 @@ const TRRoutes = require('./tipoReqRoutes');
 const stateRoutes = require('./stateRoutes');
 const prioridadRoutes = require('./prioridadRoutes');
 const departRoutes = require('./departamentoRoutes');
+const categoriaRoutes = require('./categoriaRoutes');
+const loginRoutes = require('./loginRoutes');
 
 router.use('/user', userRoutes);
 router.use('/requirement', reqRoutes);
@@ -16,5 +18,7 @@ router.use('/tiporeq',TRRoutes);
 router.use('/estado', stateRoutes);
 router.use('/prioridad', prioridadRoutes);
 router.use('/departamento', departRoutes);
+router.use('/categoria', categoriaRoutes);
+router.use('/login', loginRoutes);
 
 module.exports = router;
