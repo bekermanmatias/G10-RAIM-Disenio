@@ -3,10 +3,10 @@ const categoriatr = require('../models/categoriatr');
 
 
 const createRequirement = async (req, res) => {
-  const { asunto, descripcion, descEstado, descPrioridad, descTipoReq, dueno, destinatario, nombreCategoria  } = req.body;
+  const { asunto, descripcion, descPrioridad, descTipoReq, dueno, destinatario, nombreCategoria } = req.body;
 
   try {
-
+    // Validaciones de longitud
     if(String(asunto).length >= 50){
       return res.status(400).json({message: 'Asunto excede el maximo de caracteres.'})
     }
@@ -16,6 +16,7 @@ const createRequirement = async (req, res) => {
 
     const fechaHora = new Date();
 
+    // Validar y obtener tipo de requerimiento
     const tipoReq = await TipoRequerimiento.findOne({
         where: {descripcion: descTipoReq},
     });
@@ -23,29 +24,23 @@ const createRequirement = async (req, res) => {
       return res.status(404).json({message: 'Tipo de requerimiento no encontrado.'});
     }
     const idTipoReq = tipoReq.idTipoReq;
-  
     const codTipoReq = tipoReq.codigo; 
 
+    // Generar código de requerimiento
     const ultReq = await getReqMasReciente();
-    ultReq === null ? ultCodigo = 1000000000 : ultCodigo = parseInt(ultReq.codigo.slice(-10));
+    const ultCodigo = ultReq === null ? 1000000000 : parseInt(ultReq.codigo.slice(-10));
     const nuevoCodigo = (ultCodigo + 1).toString().padStart(10, '0');
-    console.log(codTipoReq);
     const codigo = codTipoReq + '-' + (new Date()).getFullYear() + '-' + nuevoCodigo;
 
-    const existeCod = Requirement.findOne({
+    // Verificar código único
+    const existeCod = await Requirement.findOne({
       where: {codigo},
-    })
-    if(!existeCod){
+    });
+    if(existeCod){
       return res.status(500).json({message: 'Codigo ya existente'})
     }
-    const estado = await Estado.findOne({
-        where: {descripcion: descEstado},
-    });
-    if(!estado){
-      return res.status(404).json({message: 'Estado no encontrado.'});
-    }
-    const idEstado = estado.idEstado;
 
+    // Validar prioridad
     const prioridad = await Prioridad.findOne({
         where: {descripcion: descPrioridad},
     });
@@ -54,6 +49,7 @@ const createRequirement = async (req, res) => {
     }
     const idPrioridad = prioridad.idPrioridad;
 
+    // Validar usuario creador
     const user = await User.findOne({
         where: { nombreUsuario: dueno }
     });
@@ -62,20 +58,20 @@ const createRequirement = async (req, res) => {
     }
     const idUser = user.idUsuario;
 
- 
-    const idDestinatario = null;
+    // Manejar destinatario y estado
+    let idDestinatario = null;
+    let estadoFinal = 1; // Por defecto "Abierto"
+
     if(destinatario){
         const userD = await User.findOne({
             where: {nombreUsuario: destinatario},
         });
         if(userD){
-        const idDestinatario = userD.idUsuario;
-      }else{
-        return res.status(404).json({message: 'Usuario destinatario no encontrado'});
-      }
-    }
-    if (idDestinatario && estado==='Abierto'){
-      return res.status(400).json({message: 'El estado no es correcto.'});
+            idDestinatario = userD.idUsuario;
+            estadoFinal = 2; // "Asignado"
+        } else {
+            return res.status(404).json({message: 'Usuario destinatario no encontrado'});
+        }
     }
 
     // Buscar la categoría por nombre
@@ -91,8 +87,22 @@ const createRequirement = async (req, res) => {
     }
 
     const idCategoriaReq = categoria.idCategoriaReq;
-    const newRequirement = await Requirement.create({ asunto, descripcion, codigo, fechaHora, idEstado, idPrioridad, idTipoReq, idUser, idDestinatario, idCategoriaReq });
-    res.status(201).json( newRequirement);
+
+    // Crear requerimiento
+    const newRequirement = await Requirement.create({ 
+      asunto, 
+      descripcion, 
+      codigo, 
+      fechaHora, 
+      idEstado: estadoFinal, 
+      idPrioridad, 
+      idTipoReq, 
+      idUser, 
+      idDestinatario, 
+      idCategoriaReq 
+    });
+
+    res.status(201).json(newRequirement);
   } catch (error) {
     res.status(500).json({ message: 'Error al crear el requerimiento', error: error.message });
   }
@@ -122,6 +132,16 @@ const getRequirements = async (req, res) => {
           as: 'categoria',
           attributes: ['nombre'],  // Cambié 'descripcion' por 'nombre'
         },
+        {
+          model: User,
+          as: 'idUsuarioCreador', 
+          attributes: ['nombreUsuario', 'nombre']
+        },
+        {
+          model: User,
+          as: 'UsuarioDestinatario', 
+          attributes: ['nombreUsuario', 'nombre']
+        }
       ],
     });
     
@@ -158,10 +178,20 @@ const getReqByCodigo = async (req,res) => {
           attributes: ['descripcion', 'codigo'], 
         },
         {
-          model: CategoriaReq,  // Añadí include para CategoriaReq
+          model: CategoriaReq,  
           as: 'categoria',
-          attributes: ['nombre'],  // Traer el nombre de la categoría
+          attributes: ['nombre'], 
         },
+        {
+          model: User,
+          as: 'idUsuarioCreador', 
+          attributes: ['nombreUsuario', 'nombre']
+        },
+        {
+          model: User,
+          as: 'UsuarioDestinatario', 
+          attributes: ['nombreUsuario', 'nombre']
+        }
       ],
     });
     
