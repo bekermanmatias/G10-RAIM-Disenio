@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Header from './components/header/Header';
+import Footer from './components/footer/Footer'; 
 import Sidebar from './components/sidebar/Sidebar';
 import Users from './components/listUsers/Users';
 import UserDetail from './components/listUsers/UserDetail';
@@ -18,6 +19,7 @@ const App = () => {
     const location = useLocation();
 
     const noSidebarRoutes = ['/login', '/register'];
+    const noFooterRoutes = ['/login', '/register'];
     return (
         <div className="app">
             <Header />
@@ -38,6 +40,7 @@ const App = () => {
                     <FloatingCreateButton />
                 </main>
             </div>
+            {!noFooterRoutes.includes(location.pathname) && <Footer />}
         </div>
     );
 };
