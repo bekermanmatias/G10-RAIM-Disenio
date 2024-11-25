@@ -1,9 +1,9 @@
-const { Requirement, Estado, Prioridad, TipoRequerimiento, User } = require('../models');
+const { Requirement, Estado, Prioridad, TipoRequerimiento, User, CategoriaReq  } = require('../models');
 const categoriatr = require('../models/categoriatr');
 
 
 const createRequirement = async (req, res) => {
-  const { asunto, descripcion, descEstado, descPrioridad, descTipoReq, dueno, destinatario } = req.body;
+  const { asunto, descripcion, descEstado, descPrioridad, descTipoReq, dueno, destinatario, nombreCategoria  } = req.body;
 
   try {
 
@@ -78,7 +78,20 @@ const createRequirement = async (req, res) => {
       return res.status(400).json({message: 'El estado no es correcto.'});
     }
 
-    const newRequirement = await Requirement.create({ asunto, descripcion, codigo, fechaHora, idEstado, idPrioridad, idTipoReq, idUser, idDestinatario });
+    // Buscar la categoría por nombre
+    const categoria = await CategoriaReq.findOne({
+      where: { nombre: nombreCategoria },
+    });
+
+    if (!categoria) {
+      return res.status(404).json({ 
+        message: 'Categoría no encontrada.',
+        detalles: `No existe una categoría con el nombre: ${nombreCategoria}`
+      });
+    }
+
+    const idCategoriaReq = categoria.idCategoriaReq;
+    const newRequirement = await Requirement.create({ asunto, descripcion, codigo, fechaHora, idEstado, idPrioridad, idTipoReq, idUser, idDestinatario, idCategoriaReq });
     res.status(201).json( newRequirement);
   } catch (error) {
     res.status(500).json({ message: 'Error al crear el requerimiento', error: error.message });
@@ -105,26 +118,27 @@ const getRequirements = async (req, res) => {
           attributes: ['descripcion', 'codigo'], 
         },
         {
-          model: CategoriaTR,
+          model: CategoriaReq,  // Cambié CategoriaTR por CategoriaReq
           as: 'categoria',
-          attributes: ['descripcion'],
+          attributes: ['nombre'],  // Cambié 'descripcion' por 'nombre'
         },
       ],
     });
+    
     if(requirements.length === 0){
       return res.status(203).json({message: 'No hay requerimientos almacenados'})
     }
+    
     res.status(200).json(requirements);
   }
   catch (error){
-    res.status(500).json( { message: 'Error al obtener los requerimientos', error});
+    res.status(500).json({ message: 'Error al obtener los requerimientos', error});
   }
 }
 
 const getReqByCodigo = async (req,res) => {
   const {codigo} = req.params;
   try{
-
     const requirement = await Requirement.findOne({
       where: {codigo: codigo},
       include: [
@@ -143,17 +157,23 @@ const getReqByCodigo = async (req,res) => {
           as: 'tipoReq',
           attributes: ['descripcion', 'codigo'], 
         },
+        {
+          model: CategoriaReq,  // Añadí include para CategoriaReq
+          as: 'categoria',
+          attributes: ['nombre'],  // Traer el nombre de la categoría
+        },
       ],
     });
+    
     if(!requirement){
       return res.status(404).json({message: 'Requerimiento no encontrado'});
     }
+    
     res.status(201).json(requirement);
   }
   catch (error){
     res.status(500).json({message: 'Error al obtener el requerimiento.', error: error.message});
   }
-    
 }
 
 const actualizarDatosReq = async (req, res) => {

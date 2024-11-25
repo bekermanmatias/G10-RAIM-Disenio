@@ -44,7 +44,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         idUserDetinatario:{
             type: DataTypes.INTEGER,
-        }
+        },
+        idCategoriaReq: {
+          type: DataTypes.INTEGER,
+          allowNull: true, // Dependiendo de si quieres que sea obligatorio
+      },
       },
       {
         tableName: 'requirement',
@@ -84,13 +88,15 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'idRequerimiento',
             as: 'archivosAdjuntos'
         });
-        Requirement.belongsTo(models.CategoriaTR,{
-          foreignKey: 'idCategoriaTR',
-          targetKey:'idCategoriaTR',
+        Requirement.belongsTo(models.CategoriaReq, {
+          foreignKey: 'idCategoriaReq',
           as: 'categoria'
       });
+
+      
     
     }
+    
     
   
     return Requirement;
