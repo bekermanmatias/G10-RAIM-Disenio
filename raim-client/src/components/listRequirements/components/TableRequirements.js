@@ -11,7 +11,6 @@ const TableRequirements = ({ requirements }) => {
     });
     const navigate = useNavigate();
 
-    // Mapeo de prioridades para ordenamiento
     const priorityOrder = {
         'Urgente': 1,
         'Alta': 2,
