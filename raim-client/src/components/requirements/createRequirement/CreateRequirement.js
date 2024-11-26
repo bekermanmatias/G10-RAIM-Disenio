@@ -1,3 +1,4 @@
+// src/components/requirements/createRequirement/createRequirement.js
 import React, { useState, useCallback } from 'react';
 import { 
     Box, 
@@ -28,6 +29,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import CreateContainer from './CreateContainer';
 import { ChevronDownIcon } from '@chakra-ui/icons';
+import CustomButton from '../../../utils/CustomButton';
 
 const getPriorityStyle = (prioridad) => {
     switch(prioridad) {
@@ -583,28 +585,18 @@ const handleSubmitWithConfirmation = async (e) => {
                         width="full"
                         gap={4}
                     >
-                        <Button 
-                            colorScheme="red"
-                            variant="solid"
-                            bg="red.600"
-                            _hover={{
-                                bg: "red.500"
-                            }}
+                        <CustomButton 
+                            variant="cancel" 
                             onClick={handleCancel}
                         >
                             Cancelar
-                        </Button>
-                        <Button 
-                            colorScheme="blue"
-                            variant="solid"
-                            bg="blue.900"
-                            _hover={{
-                                bg: "blue.800"
-                            }}
+                        </CustomButton>
+                        <CustomButton 
+                            variant="apply" 
                             type="submit"
                         >
                             Guardar Requerimiento
-                        </Button>
+                        </CustomButton>
                     </Flex>
                 </HStack>
             </form>
@@ -618,12 +610,19 @@ const handleSubmitWithConfirmation = async (e) => {
                         ¿Está seguro de que desea cancelar? Perderá todos los cambios.
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme="gray" onClick={onCloseCancel}>
+                        <CustomButton 
+                            variant="cancel" 
+                            onClick={onCloseCancel}
+                            mr={3}
+                        >
                             Cancelar
-                        </Button>
-                        <Button colorScheme="red" onClick={handleConfirmCancel} ml={3}>
+                        </CustomButton>
+                        <CustomButton 
+                            variant="delete" 
+                            onClick={handleConfirmCancel}
+                        >
                             Confirmar
-                        </Button>
+                        </CustomButton>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
@@ -637,12 +636,19 @@ const handleSubmitWithConfirmation = async (e) => {
                         <p>¿Está seguro de que desea guardar el nuevo requerimiento?</p>
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme="gray" onClick={onCloseSave}>
+                        <CustomButton 
+                            variant="cancel" 
+                            onClick={onCloseSave}
+                            mr={3}
+                        >
                             Cancelar
-                        </Button>
-                        <Button colorScheme="blue" onClick={handleConfirmSave} ml={3}>
+                        </CustomButton>
+                        <CustomButton 
+                            variant="confirm" 
+                            onClick={handleConfirmSave}
+                        >
                             Confirmar
-                        </Button>
+                        </CustomButton>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
