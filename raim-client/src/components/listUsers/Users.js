@@ -5,6 +5,7 @@ import TableUsers from './components/TableUsers';
 import FilterDropdownUsers from './filters/FilterDropdownUsers';
 import FilterContainerUsers from './filters/FilterContainerUsers';
 import UsersContainer from './UsersContainer';
+import LoadingSpinner from '../../utils/LoadingSpinner';
 import './Users.css';
 
 const Users = () => {
@@ -106,7 +107,7 @@ const Users = () => {
                 setError={setError}
             />
 
-            {loading && <p>Cargando usuarios...</p>}
+            {loading && <LoadingSpinner />} 
             {error && <p>Error: {error}</p>}
 
             <TableUsers users={filterUsers(searchTerm, activeFilters)} />

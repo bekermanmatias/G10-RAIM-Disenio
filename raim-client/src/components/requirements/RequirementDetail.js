@@ -76,7 +76,7 @@ const RequirementDetail = () => {
                 />
                 <Spinner 
                     size="xl" 
-                    color="blue.500" 
+                    color="blue.900" 
                     thickness="4px" 
                     speed="0.65s" 
                     emptyColor="gray.200"
@@ -143,11 +143,11 @@ const RequirementDetail = () => {
                     <VStack align="start" spacing={6} width="full">
                         <Grid templateColumns="repeat(2, 1fr)" gap={4} width="full">
                             <GridItem>
-                                <Heading size="sm" mb={2} color="blue.700">Estado</Heading>
+                                <Heading size="sm" mb={2} color="blue.900">Estado</Heading>
                                 <Text>{requerimiento.estado}</Text>
                             </GridItem>
                             <GridItem>
-                                <Heading size="sm" mb={2} color="blue.700">Prioridad</Heading>
+                                <Heading size="sm" mb={2} color="blue.900">Prioridad</Heading>
                                 <Flex 
                                     align="center" 
                                     bg={priorityStyle.bgColor}
@@ -170,38 +170,38 @@ const RequirementDetail = () => {
                                 </Flex>
                             </GridItem>
                             <GridItem>
-                                <Heading size="sm" mb={2} color="blue.700">Tipo</Heading>
+                                <Heading size="sm" mb={2} color="blue.900">Tipo</Heading>
                                 <Text>{requerimiento.tipo}</Text>
                             </GridItem>
                             <GridItem>
-                                <Heading size="sm" mb={2} color="blue.700">Categoría</Heading>
+                                <Heading size="sm" mb={2} color="blue.900">Categoría</Heading>
                                 <Text>{requerimiento.categoria}</Text>
                             </GridItem>
                         </Grid>
     
                         <Grid templateColumns="repeat(2, 1fr)" gap={4} width="full">
                             <GridItem>
-                                <Heading size="sm" mb={2} color="blue.700">Emisor</Heading>
+                                <Heading size="sm" mb={2} color="blue.900">Emisor</Heading>
                                 <Text>{requerimiento.emisor}</Text>
                             </GridItem>
                             <GridItem>
-                                <Heading size="sm" mb={2} color="blue.700">Propietario</Heading>
+                                <Heading size="sm" mb={2} color="blue.900">Propietario</Heading>
                                 <Text>{requerimiento.propietario}</Text>
                             </GridItem>
                             <GridItem>
-                                <Heading size="sm" mb={2} color="blue.700">Fecha de Alta</Heading>
+                                <Heading size="sm" mb={2} color="blue.900">Fecha de Alta</Heading>
                                 <Text>{requerimiento.fechaCreacion}</Text>
                             </GridItem>
                             <GridItem>
-                                <Heading size="sm" mb={2} color="blue.700">Última Actualización</Heading>
+                                <Heading size="sm" mb={2} color="blue.900">Última Actualización</Heading>
                                 <Text>{requerimiento.fechaActualizacion}</Text>
                             </GridItem>
                         </Grid>
                         
                         <Box width="full">
-                            <Heading size="md" mb={3} color="blue.800">Asunto</Heading>
+                            <Heading size="md" mb={3} color="blue.900">Asunto</Heading>
                             <Text 
-                                bg="blue.50" 
+                                bg="gray.100" 
                                 p={3} 
                                 borderRadius="md" 
                                 width="full"
@@ -211,9 +211,9 @@ const RequirementDetail = () => {
                         </Box>
     
                         <Box width="full">
-                            <Heading size="md" mb={3} color="blue.800">Descripción</Heading>
+                            <Heading size="md" mb={3} color="blue.900">Descripción</Heading>
                             <Text 
-                                bg="blue.50" 
+                                bg="gray.100" 
                                 p={3} 
                                 borderRadius="md" 
                                 width="full" 
@@ -227,7 +227,7 @@ const RequirementDetail = () => {
     
                 <GridItem>
                     <Box width="full">
-                        <Heading size="md" mb={4} color="blue.800">Comentarios</Heading>
+                        <Heading size="md" mb={4} color="blue.900">Comentarios</Heading>
                         <VStack spacing={4} width="full" align="stretch">
                             <Box 
                                 border="1px" 
@@ -246,10 +246,10 @@ const RequirementDetail = () => {
                                 </Flex>
                                 
                                 <Box>
-                                    <Heading size="xs" mb={2} color="blue.700">
+                                    <Heading size="xs" mb={2} color="blue.900">
                                         Seguimiento de Requerimiento
                                     </Heading>
-                                    <Text color="gray.700">
+                                    <Text color="gray.900">
                                         Se requiere más información sobre los detalles técnicos del problema reportado. 
                                         Por favor, proporcionar especificaciones detalladas del equipo o sistema afectado.
                                     </Text>

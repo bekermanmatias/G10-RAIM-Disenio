@@ -7,6 +7,7 @@ import FilterDropdown from './filters/FilterDropdown';
 import FloatingCreateButton from './components/FloatingCreateButton';
 import RequirementsContainer from './RequirementsContainer';
 import FilterContainer from './filters/FilterContainer'; 
+import LoadingSpinner from '../../utils/LoadingSpinner';
 import './Requirements.css';
 
 const Requerimientos = () => {
@@ -140,10 +141,11 @@ const Requerimientos = () => {
                 setError={setError} 
             />
 
-            {loading && <p>Cargando...</p>}
-            {error && <p>Error: {error}</p>}
+            
 
             <TableRequirements requirements={filteredRequirements} />
+            {loading && <LoadingSpinner />} 
+            {error && <p>Error: {error}</p>}
             <FloatingCreateButton />
         </div>
     );
