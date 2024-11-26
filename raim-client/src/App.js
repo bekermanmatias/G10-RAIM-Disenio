@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { ChakraProvider, Box, Flex } from '@chakra-ui/react';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer'; 
 import Sidebar from './components/sidebar/Sidebar';
@@ -12,19 +13,17 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register'; 
 import RequirementDetail from './components/requirements/RequirementDetail';
 import FloatingCreateButton from './components/listRequirements/components/FloatingCreateButton';
-import './styles/App.css';
-
 
 const App = () => {
     const location = useLocation();
 
     const noSidebarRoutes = ['/login', '/register'];
     return (
-        <div className="app">
+        <Flex direction="column" minHeight="100vh">
             <Header />
-            <div className="container">
+            <Flex flex={1}>
                 {!noSidebarRoutes.includes(location.pathname) && <Sidebar />}
-                <main className="main-content">
+                <Box flex={1} p={4}>
                     <Routes>
                         <Route path="/users" element={<Users />} />
                         <Route path="/users/:nombreUsuario" element={<UserDetail />} />
@@ -37,17 +36,19 @@ const App = () => {
                         <Route path="/" element={<Requerimientos />} />
                     </Routes>
                     <FloatingCreateButton />
-                </main>
-            </div>
-            { <Footer />}
-        </div>
+                </Box>
+            </Flex>
+            <Footer />
+        </Flex>
     );
 };
 
 const AppWrapper = () => (
-    <Router>
-        <App />
-    </Router>
+    <ChakraProvider>
+        <Router>
+            <App />
+        </Router>
+    </ChakraProvider>
 );
 
 export default AppWrapper;
