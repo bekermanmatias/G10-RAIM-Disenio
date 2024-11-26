@@ -14,8 +14,8 @@
 .table-header th {
     padding: 15px;
     text-align: center;
-    white-space: nowrap; /* Evita que el texto se divida */
-    min-width: 120px; /* Ancho mínimo para cada columna */
+    white-space: nowrap;
+    min-width: 120px; 
 }
 
 .table-row {
@@ -46,9 +46,6 @@
     text-align: center;
     border-bottom: 1px solid #ccc;
 }
-
-
-
 
 .priority-dot {
     display: inline-flex;
