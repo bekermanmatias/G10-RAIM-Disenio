@@ -18,6 +18,7 @@ import {
 import { useParams, useNavigate } from 'react-router-dom';
 import UserContainer from './UserContainer';
 import { EmailIcon, CalendarIcon, InfoIcon } from '@chakra-ui/icons';
+import CustomButton from '../../utils/CustomButton';
 
 const UserDetail = () => {
     const { nombreUsuario } = useParams();
@@ -176,17 +177,13 @@ const UserDetail = () => {
             </Grid>
     
             <Flex justifyContent="flex-start" mt={6}>
-                <Button 
+                <CustomButton 
                     onClick={handleBack} 
-                    colorScheme="blue"
-                    variant="solid"
-                    bg="blue.900"
-                    _hover={{
-                        bg: "blue.800"
-                    }}
+                    variant="apply" 
+                   
                 >
                     ← Volver
-                </Button>
+                </CustomButton>
             </Flex>
         </Box>
     );

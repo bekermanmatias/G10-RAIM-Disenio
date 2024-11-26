@@ -34,10 +34,25 @@ const CustomButton = ({ variant = 'apply', children, ...props }) => {
             _hover: { bg: '#070370' }
         },
         secondary: {
-            bg: 'gray.200',
+            bg: 'gray.100',
             color: 'gray.800',
-            _hover: { bg: 'gray.300' }
-        }
+            _hover: { bg: 'gray.100' }
+        },
+        link: {
+            bg: 'transparent',
+            color: 'blue.500',
+            textDecoration: 'underline',
+            _hover: { bg: 'blue.50' },
+        },
+        outline: {
+            bg: 'transparent',
+            color: 'gray.900',
+            border: '0.5px solid',
+            borderColor: 'gray.300',
+            _hover: { bg: 'gray.50',borderColor: 'blue.900'
+                    
+            }
+        },
     };
 
     return (

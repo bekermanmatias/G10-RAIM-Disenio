@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './FilterDropdown.css';
+import CustomButton from '../../../utils/CustomButton';
 
 const FilterDropdownUsers = ({ 
     onClose, 
@@ -91,18 +92,21 @@ const FilterDropdownUsers = ({
                     })}
                 </div>
                 <div className="filter-actions">
-                    <button 
-                        className="filter-cancel-btn" 
+                <CustomButton 
+                        variant="cancel" 
                         onClick={onClose}
+                        width="100px" // Ajusta el tamaño según sea necesario
+                        mr={2}
                     >
                         Cancelar
-                    </button>
-                    <button 
-                        className="filter-apply-btn" 
+                    </CustomButton>
+                    <CustomButton 
+                        variant="apply" 
                         onClick={handleApply}
+                        width="100px" // Debe ser el mismo tamaño que el botón de cancelar
                     >
                         Aplicar
-                    </button>
+                    </CustomButton>
                 </div>
             </div>
         </div>

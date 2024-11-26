@@ -25,11 +25,15 @@ import {
     Alert,
     AlertDescription,
     useDisclosure,
+    Tag,
+    TagCloseButton,
+    TagLabel
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import CreateContainer from './CreateContainer';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import CustomButton from '../../../utils/CustomButton';
+import RelateRequirementsModalContainer from './RelateRequirementsModalContainer'; // Corrige la ruta de importación
 
 const getPriorityStyle = (prioridad) => {
     switch(prioridad) {
@@ -86,7 +90,7 @@ const LeftFormColumn = ({
                 borderColor="gray.300"
                 focusBorderColor="blue.900"
                 _hover={{
-                    borderColor: 'blue.600'
+                    borderColor: 'blue.900'
                 }}
                 icon={<Icon as={ChevronDownIcon} />}
                 iconColor="gray.600"
@@ -123,7 +127,7 @@ const LeftFormColumn = ({
                 borderColor="gray.300"
                 focusBorderColor="blue.900"
                 _hover={{
-                    borderColor: 'blue.600'
+                    borderColor: 'blue.900'
                 }}
                 icon={<Icon as={ChevronDownIcon} />}
                 iconColor="gray.600"
@@ -147,10 +151,10 @@ const LeftFormColumn = ({
                     </option>
                 ))}
             </Select>
-        </FormControl>
+ </FormControl>
 
         <FormControl>
- <FormLabel>Asunto *</FormLabel>
+            <FormLabel>Asunto *</FormLabel>
             <Input
                 type="text"
                 name="asunto"
@@ -161,7 +165,7 @@ const LeftFormColumn = ({
                 borderColor="gray.300"
                 focusBorderColor="blue.900"
                 _hover={{
-                    borderColor: 'blue.600'
+                    borderColor: 'blue.900'
                 }}
                 size="md"
                 borderRadius="md"
@@ -187,7 +191,7 @@ const LeftFormColumn = ({
                 borderColor="gray.300"
                 focusBorderColor="blue.900"
                 _hover={{
-                    borderColor: 'blue.600'
+                    borderColor: 'blue.900'
                 }}
                 size="md"
                 borderRadius="md"
@@ -204,46 +208,6 @@ const LeftFormColumn = ({
                 rows={4}
             />
         </FormControl>
-
-        <FormControl>
-            <FormLabel>Archivos Adjuntos</FormLabel>
-            <Input 
-                type="file" 
-                name="archivos" 
-                multiple 
-                onChange={handleFileChange}
-                variant="outline"
-                borderColor="gray.300"
-                focusBorderColor="blue.900"
-                _hover={{
-                    borderColor: 'blue.600'
-                }}
-                borderRadius="md"
-                size="md"
-                backgroundColor="white"
-                color="gray.800"
-                fontWeight="medium"
-                boxShadow="sm"
-                p={1}
-                sx={{
-                    '::file-selector-button': {
-                        height: '100%',
-                        mr: 4,
-                        border: 'none',
-                        background: 'gray.100',
-                        color: 'gray.700',
-                        fontWeight: 'medium',
-                        px: 4,
-                        borderRadius: 'md',
-                        _hover: {
-                            background: 'gray.200'
-                        }
-                    }
-                }}
-                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif"
-                placeholder="Seleccione archivos"
-            />
-        </FormControl>
     </VStack>
 );
 
@@ -251,9 +215,15 @@ const LeftFormColumn = ({
 const RightFormColumn = ({ 
     users, 
     formData, 
-    handleChange 
+    handleChange,
+    onOpenRelateRequirements,
+    relatedRequirements,
+    handleRemoveRequirement,
+    handleFileChange // Añadido aquí
 }) => (
     <VStack width="50%" spacing={4}>
+        
+
         <FormControl>
             <FormLabel>Prioridad *</FormLabel>
             <RadioGroup 
@@ -266,7 +236,7 @@ const RightFormColumn = ({
                 })} 
                 value={formData.descPrioridad}
             >
-                <HStack spacing={4}>
+                <HStack spacing={4} >
                     {['Urgente', 'Alta', 'Media', 'Baja'].map((priority) => {
                         const priorityStyle = getPriorityStyle(priority);
                         return (
@@ -276,7 +246,8 @@ const RightFormColumn = ({
                                 sx={{
                                     '.chakra-radio__control': {
                                         display: 'none' // Oculta el radio original
-                                    }
+                                    },
+                                    
                                 }}
                             >
                                 <Flex 
@@ -313,12 +284,12 @@ const RightFormColumn = ({
                 onChange={handleChange}
                 placeholder="Seleccione el Destinatario"
                 variant="outline"
-                borderColor="gray.300"
+                borderColor=" gray.300"
                 focusBorderColor="blue.900"
                 _hover={{
-                    borderColor: 'blue.600'
+                    borderColor: 'blue.900'
                 }}
-                icon={<Icon as={ChevronDownIcon} />}  // Cambiado aquí
+                icon={<Icon as={ChevronDownIcon} />}  
                 iconColor="gray.600"
                 size="md"
                 borderRadius="md"
@@ -343,13 +314,69 @@ const RightFormColumn = ({
         </FormControl>
 
         <FormControl>
-            <FormLabel>Requerimientos Relacionados</FormLabel>
-            <Textarea
-                name="relacionados"
-                value={formData.relacionados}
-                onChange={handleChange}
-                maxLength="500"
+            <FormLabel>Archivos Adjuntos</FormLabel>
+            <Input 
+                type="file" 
+                name="archivos" 
+                multiple 
+                onChange={handleFileChange}
+                variant="outline"
+                borderColor="gray.300"
+                focusBorderColor="blue.900"
+                _hover={{
+                    borderColor: 'blue.900'
+                }}
+                borderRadius="md"
+                size="md"
+                backgroundColor="white"
+                color="gray.800"
+                fontWeight="medium"
+                boxShadow="sm"
+                p={1}
+                sx={{
+                    '::file-selector-button': {
+                        height: '100%',
+                        mr: 4,
+                        border: 'none',
+                        background: 'gray.100',
+                        color: 'gray.700',
+                        fontWeight: 'medium',
+                        px: 4,
+                        borderRadius: 'md',
+                        _hover: {
+                            background: 'gray.200'
+                        }
+                    }
+                }}
+                accept=".pdf,.docx,.excel"
+                placeholder="Seleccione archivos"
             />
+        </FormControl>
+
+
+        <FormControl>
+            <FormLabel>Requerimientos Relacionados</FormLabel>
+            <Flex>
+                <CustomButton 
+                    onClick={onOpenRelateRequirements} 
+                    variant="outline" 
+                    width="full"
+                >
+                    Seleccionar
+                </CustomButton>
+            </Flex>
+            {relatedRequirements.length > 0 && (
+                <Box mt={2} p={2} border="1px" borderColor="gray.200" borderRadius="md">
+                    <Flex wrap="wrap">
+                        {relatedRequirements.map(req => (
+                            <Tag key={req.value} m={1} colorScheme="gray">
+                                <TagLabel>{req.value} - {req.label}</TagLabel>
+                                <TagCloseButton onClick={() => handleRemoveRequirement(req.value)} />
+                            </Tag>
+                        ))}
+                    </Flex>
+                </Box>
+            )}
         </FormControl>
     </VStack>
 );
@@ -432,7 +459,7 @@ const useRequirementForm = (initialState, createRequirement, navigate, toast) =>
         handleChange,
         handleFileChange,
         handleSubmit,
-        validateForm // Asegúrate de que validateForm esté incluido
+        validateForm 
     };
 };
 
@@ -447,8 +474,8 @@ const createRequirementService = async (formData) => {
         dueno: formData.dueno,
         nombreCategoria: formData.nombreCategoria, 
         ...(formData.destinatario && { destinatario: formData.destinatario }),
-        ...(formData.relacionados && { relacionados: formData.relacionados })
-    };
+        relacionados: formData.relacionados
+        };
 
     const response = await fetch('https://g10-raim-disenio.onrender.com/api/requirement', {
         method: 'POST',
@@ -502,7 +529,16 @@ const CrearRequerimiento = () => {
     const { isOpen: isOpenSave, onOpen: onOpenSave, onClose: onCloseSave } = useDisclosure();
     const [missingFields, setMissingFields] = useState([]);
     const [showMissingFieldsAlert, setShowMissingFieldsAlert] = useState(false);
+    const [relatedRequirements, setRelatedRequirements] = useState([]);
+    const { isOpen: isOpenRelateRequirements, onOpen: onOpenRelateRequirements, onClose: onCloseRelateRequirements } = useDisclosure();
 
+    // Función para manejar la eliminación de un requerimiento relacionado
+    const handleRemoveRequirement = (value) => {
+        setRelatedRequirements(prevRequirements =>
+            prevRequirements.filter(req => req.value !== value)
+        );
+    };
+    
     const handleCancel = () => {
         onOpenCancel(); // Abre el modal de confirmación de cancelación
     };
@@ -518,32 +554,46 @@ const CrearRequerimiento = () => {
         await handleSubmit(new Event('submit')); // Pasa un nuevo evento de submit
     };
 
-// Mapeo de nombres de campos para mostrar etiquetas legibles
-const fieldLabels = {
-    descTipoReq: 'Tipo',
-    nombreCategoria: 'Categoría',
-    descPrioridad: 'Prioridad',
-    asunto: 'Asunto',
-    descripcion: 'Descripción'
-};
+    // Mapeo de nombres de campos para mostrar etiquetas legibles
+    const fieldLabels = {
+        descTipoReq: 'Tipo',
+        nombreCategoria: 'Categoría',
+        descPrioridad: 'Prioridad',
+        asunto: 'Asunto',
+        descripcion: 'Descripción'
+    };
 
-const handleSubmitWithConfirmation = async (e) => {
-    e.preventDefault();
-    
-    // Validar el formulario y obtener los campos faltantes
-    const requiredFields = ['descTipoReq', 'nombreCategoria', 'descPrioridad', 'asunto', 'descripcion'];
-    const missing = requiredFields.filter(field => !formData[field] || formData[field].trim() === '');
+    const handleSubmitWithConfirmation = async (e) => {
+        e.preventDefault();
+        
+        // Validar el formulario y obtener los campos faltantes
+        const requiredFields = ['descTipoReq', 'nombreCategoria', 'descPrioridad', 'asunto', 'descripcion'];
+        const missing = requiredFields.filter(field => !formData[field] || formData[field].trim() === '');
 
-    if (missing.length > 0) {
-        // Mapea los nombres de campos a sus etiquetas legibles
-        const missingFieldLabels = missing.map(field => fieldLabels[field] || field);
-        setMissingFields(missingFieldLabels); // Establece los campos faltantes con etiquetas
-        setShowMissingFieldsAlert(true); // Muestra la alerta
-    } else {
-        // Si no hay campos faltantes, abre el modal de confirmación de guardado
-        onOpenSave();
-    }
-};
+        if (missing.length > 0) {
+            // Mapea los nombres de campos a sus etiquetas legibles
+            const missingFieldLabels = missing.map(field => fieldLabels[field] || field);
+            setMissingFields(missingFieldLabels); // Establece los campos faltantes con etiquetas
+            setShowMissingFieldsAlert(true); // Muestra la alerta
+        } else {
+            // Si no hay campos faltantes, abre el modal de confirmación de guardado
+            onOpenSave();
+        }
+    };
+
+    // Función para manejar la selección de requerimientos relacionados
+    const handleSelectRelatedRequirements = (selected) => {
+        setRelatedRequirements(selected);
+        // Actualizar el campo relacionados en el formulario
+        handleChange({
+            target: {
+                name: 'relacionados', 
+                value: selected.map(req => req.value).join(', ')
+            }
+        });
+        onCloseRelateRequirements();
+    };
+
     return (
         <Box p={6}>
             <CreateContainer 
@@ -551,7 +601,7 @@ const handleSubmitWithConfirmation = async (e) => {
                 setTipos={setTipos} 
                 setCategorias={setCategorias} 
             />
-            <Heading mb={6} color="blue.900"> Agregar Nuevo Requerimiento</Heading>
+            <Heading mb ={6} color="blue.900"> Agregar Nuevo Requerimiento</Heading>
             
             {showMissingFieldsAlert && (
                 <Alert status="error" mb={4}>
@@ -574,6 +624,9 @@ const handleSubmitWithConfirmation = async (e) => {
                         users={users} 
                         formData={formData} 
                         handleChange={handleChange} 
+                        onOpenRelateRequirements={onOpenRelateRequirements}
+                        relatedRequirements={relatedRequirements}
+                        handleRemoveRequirement={handleRemoveRequirement} // Asegúrate de pasar la función aquí
                     />
                 </Flex>
 
@@ -601,6 +654,13 @@ const handleSubmitWithConfirmation = async (e) => {
                 </HStack>
             </form>
 
+            {/* Modal de Relacionar Requerimientos */}
+            <RelateRequirementsModalContainer
+                isOpen={isOpenRelateRequirements}
+                onClose={onCloseRelateRequirements}
+                onSelect={handleSelectRelatedRequirements}
+                selectedRequirements={relatedRequirements}
+            />
             {/* Modal de confirmación de cancelación */}
             <Modal isOpen={isOpenCancel} onClose={onCloseCancel}>
                 <ModalOverlay />
@@ -621,7 +681,8 @@ const handleSubmitWithConfirmation = async (e) => {
                             variant="delete" 
                             onClick={handleConfirmCancel}
                         >
-                            Confirmar
+                            Descartar cambios
+                        
                         </CustomButton>
                     </ModalFooter>
                 </ModalContent>

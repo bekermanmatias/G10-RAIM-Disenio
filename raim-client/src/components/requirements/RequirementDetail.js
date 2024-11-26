@@ -17,6 +17,8 @@ import {
 } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 import RequirementContainer from './RequirementContainer';
+import CustomButton from '../../utils/CustomButton';
+
 
 const RequirementDetail = () => {
     const { codigo } = useParams();
@@ -246,7 +248,7 @@ const RequirementDetail = () => {
                                 </Flex>
                                 
                                 <Box>
-                                    <Heading size="xs" mb={2} color="blue.900">
+                                    <Heading size="xs" mb={2} color="gray.700">
                                         Seguimiento de Requerimiento
                                     </Heading>
                                     <Text color="gray.900">
@@ -273,10 +275,10 @@ const RequirementDetail = () => {
                                 </Flex>
                                 
                                 <Box>
-                                    <Heading size="xs" mb={2} color="blue.700">
+                                    <Heading size="xs" mb={2} color="gray.700">
                                         Respuesta al Seguimiento
                                     </Heading>
-                                    <Text color="gray.700">
+                                    <Text color="gray.900">
                                         Adjuntaré un informe técnico con los detalles solicitados. 
                                         El equipo está presentando problemas de conectividad en la red local.
                                     </Text>
@@ -288,17 +290,13 @@ const RequirementDetail = () => {
             </Grid>
     
             <Flex justifyContent="flex-start" mt={6}>
-                <Button 
+                <CustomButton 
                     onClick={handleBack} 
-                    colorScheme="blue"
-                    variant="solid"
-                    bg="blue.900"
-                    _hover={{
-                        bg: "blue.800"
-                    }}
+                    variant="apply" 
+                    width="100px" 
                 >
                     ← Volver
-                </Button>
+                </CustomButton>
             </Flex>
         </Box>
     );
