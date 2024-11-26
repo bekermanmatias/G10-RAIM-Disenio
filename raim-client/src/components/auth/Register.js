@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Box,
-    Button,
     FormControl,
     FormLabel,
     Input,
@@ -24,7 +23,26 @@ const Register = () => {
         department: ''
     });
 
+    const [departments, setDepartments] = useState([]); // Estado para almacenar los departamentos
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchDepartments = async () => {
+            try {
+                const response = await fetch('https://g10-raim-disenio.onrender.com/api/departamento');
+                if (response.ok) {
+                    const data = await response.json();
+                    setDepartments(data); // Asumiendo que la respuesta es un array de departamentos
+                } else {
+                    console.error('Error al obtener los departamentos:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error al obtener los departamentos:', error);
+            }
+        };
+
+        fetchDepartments();
+    }, []); // Se ejecuta una vez al montar el componente
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -116,15 +134,15 @@ const Register = () => {
                             onChange={handleChange}
                             placeholder="Selecciona un departamento"
                         >
-                            <option value="tecnologia">Tecnología</option>
-                            <option value="marketing">Marketing</option>
-                            <option value="ventas">Ventas</option>
-                            <option value="rrhh">Recursos Humanos</option>
-                            {/* Agrega más departamentos según sea necesario */}
+                            {departments.map((department) => (
+                                <option key={department.idDepartamento} value={ department.nombre}>
+                                    {department.nombre}
+                                </option>
+                            ))}
                         </Select>
                     </FormControl>
                     <Flex justifyContent="flex-end" mt={4}>
-                    <CustomButton 
+                        <CustomButton 
                             variant="cancel" 
                             onClick={handleCancel} 
                             width="100px"
@@ -139,7 +157,6 @@ const Register = () => {
                         >
                             Registrarse
                         </CustomButton>
-                        
                     </Flex>
                 </form>
             </Box>
