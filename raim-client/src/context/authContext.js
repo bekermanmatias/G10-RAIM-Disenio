@@ -9,7 +9,6 @@ export const AuthProvider = ({ children }) => {
     });
 
     const login = (token, usuario) => {
-        console.log(token, usuario)
         localStorage.setItem('jwtToken', token);
         localStorage.setItem('usuario', usuario);
         localStorage.setItem('isAuthenticated', 'true');

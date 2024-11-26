@@ -1,24 +1,24 @@
 const { Sequelize } = require('sequelize');
-require('dotenv').config(); // Cargar las variables de entorno desde el archivo .env
+require('dotenv').config(); 
 
 const sequelize = new Sequelize(
-    process.env.DB_NAME,       // Nombre de la base de datos
-    process.env.DB_USER,       // Usuario de la base de datos
-    process.env.DB_PASSWORD,   // Contraseña de la base de datos
+    process.env.DB_NAME,      
+    process.env.DB_USER,       
+    process.env.DB_PASSWORD,  
     {
-        host: process.env.DB_HOST,     // Host de la base de datos
-        dialect: process.env.DB_DIALECT, // Dialecto (en este caso, MySQL)
+        host: process.env.DB_HOST,
+        dialect: process.env.DB_DIALECT, 
         logging: console.log
     }
 );
 
-sequelize.sync({ alter: true }) 
-  .then(() => {
-    console.log('Database synced successfully');
-  })
-  .catch((error) => {
-    console.error('Error syncing database:', error);
-  });
+//sequelize.sync({ alter: true }) 
+//  .then(() => {
+//    console.log('Database synced successfully');
+//  })
+//  .catch((error) => {
+//    console.error('Error syncing database:', error);
+//  });
 
 
 module.exports = sequelize;

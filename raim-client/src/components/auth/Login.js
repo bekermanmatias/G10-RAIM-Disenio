@@ -2,29 +2,33 @@ import React, { useState } from 'react';
 import './Login.css';
 import { useAuth } from '../../context/authContext';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../../utils/api';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [usuario, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); 
-  const { login } = useAuth(); 
+  const login = useAuth(); 
 
   
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
         const credentials = {
-            username,
+            usuario,
             password
         }
-
-        const response = await api.login(credentials);
-
+        console.log(credentials);
+        const response = await fetch('https://g10-raim-disenio.onrender.com/api/login', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(credentials),
+      });
 
     if (response.status === 200) {
         const { token } = response.data;
-        const set_local_storage_res = login(token, username); 
+        const set_local_storage_res = login(token, usuario); 
         if (set_local_storage_res){
             console.log('Navigating to /requirement...');
             navigate('/requirement');
@@ -51,7 +55,7 @@ const Login = () => {
             type="text"
             id="username"
             name="username"
-            value={username}
+            value={usuario}
             onChange={(e) => setUsername(e.target.value)}
             required
             placeholder="Ingresa tu email o usuario"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { ChakraProvider, Box, Flex } from '@chakra-ui/react';
 import Header from './components/header/Header';
@@ -13,11 +13,15 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register'; 
 import RequirementDetail from './components/requirements/RequirementDetail';
 import FloatingCreateButton from './components/listRequirements/components/FloatingCreateButton';
-import { AuthProvider } from './context/authContext';
 
 const App = () => {
     const location = useLocation();
+    const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isAuthenticated') === 'true');
 
+    useEffect(() => {
+        const authStatus = localStorage.getItem('isAuthenticated') === 'true';
+        setIsAuthenticated(authStatus);
+      }, []);
     const noSidebarRoutes = ['/login', '/register'];
     return (
         <Flex direction="column" minHeight="100vh">
@@ -47,9 +51,7 @@ const App = () => {
 const AppWrapper = () => (
     <ChakraProvider>
         <Router>
-            <AuthProvider>
-                < App />
-            </AuthProvider>
+            <App />
         </Router>
     </ChakraProvider>
 );
