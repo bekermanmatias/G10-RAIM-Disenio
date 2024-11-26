@@ -13,6 +13,7 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register'; 
 import RequirementDetail from './components/requirements/RequirementDetail';
 import FloatingCreateButton from './components/listRequirements/components/FloatingCreateButton';
+import { AuthProvider } from './context/authContext';
 
 const App = () => {
     const location = useLocation();
@@ -46,7 +47,9 @@ const App = () => {
 const AppWrapper = () => (
     <ChakraProvider>
         <Router>
-            <App />
+            <AuthProvider>
+                < App />
+            </AuthProvider>
         </Router>
     </ChakraProvider>
 );
