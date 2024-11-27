@@ -5,90 +5,86 @@ const createRequirement = async (req, res) => {
   const { asunto, descripcion, descEstado, descPrioridad, descTipoReq, dueno, destinatario, descCategoriaTR } = req.body;
 
   try {
+      if (String(asunto).length >= 50) {
+          return res.status(400).json({ message: 'Asunto excede el maximo de caracteres.' });
+      }
+      if (String(descripcion).length >= 5000) {
+          return res.status(400).json({ message: 'Descripcion excede el maximo de caracteres.' });
+      }
 
-    if(String(asunto).length >= 50){
-      return res.status(400).json({message: 'Asunto excede el maximo de caracteres.'})
-    }
-    if(String(descripcion).length >= 5000){
-      return res.status(400).json({message: 'Descripcion excede el maximo de caracteres.'})
-    }
+      const fechaHora = new Date();
 
-    const fechaHora = new Date();
+      const tipoReq = await TipoRequerimiento.findOne({
+          where: { descripcion: descTipoReq },
+      });
+      if (!tipoReq) {
+          return res.status(404).json({ message: 'Tipo de requerimiento no encontrado.' });
+      }
+      const idTipoReq = tipoReq.idTipoReq;
+      const codTipoReq = tipoReq.codigo;
 
-    const tipoReq = await TipoRequerimiento.findOne({
-        where: {descripcion: descTipoReq},
-    });
-    if(!tipoReq){
-      return res.status(404).json({message: 'Tipo de requerimiento no encontrado.'});
-    }
-    const idTipoReq = tipoReq.idTipoReq;
-  
-    const codTipoReq = tipoReq.codigo; 
+      const ultReq = await getReqMasReciente();
+      const ultCodigo = ultReq === null ? 1000000000 : parseInt(ultReq.codigo.slice(-10));
+      const nuevoCodigo = (ultCodigo + 1).toString().padStart(10, '0');
+      const codigo = codTipoReq + '-' + (new Date()).getFullYear() + '-' + nuevoCodigo;
 
-    const ultReq = await getReqMasReciente();
-    ultReq === null ? ultCodigo = 1000000000 : ultCodigo = parseInt(ultReq.codigo.slice(-10));
-    const nuevoCodigo = (ultCodigo + 1).toString().padStart(10, '0');
-    console.log(codTipoReq);
-    const codigo = codTipoReq + '-' + (new Date()).getFullYear() + '-' + nuevoCodigo;
-
-    const existeCod = Requirement.findOne({
-      where: {codigo},
-    })
-    if(!existeCod){
-      return res.status(500).json({message: 'Codigo ya existente'})
-    }
-    const estado = await Estado.findOne({
-        where: {descripcion: descEstado},
-    });
-    if(!estado){
-      return res.status(404).json({message: 'Estado no encontrado.'});
-    }
-    const idEstado = estado.idEstado;
-
-    const prioridad = await Prioridad.findOne({
-        where: {descripcion: descPrioridad},
-    });
-    if(!prioridad){
-      return res.status(404).json({message: 'Prioridad no encontrada.'});
-    }
-    const idPrioridad = prioridad.idPrioridad;
-
-    const user = await User.findOne({
-        where: { nombreUsuario: dueno }
-    });
-    if(!user){
-      return res.status(404).json({message: 'Usuario dueño no encontrado.'});
-    }
-    const idUser = user.idUsuario;
+      const existeCod = await Requirement.findOne({
+          where: { codigo },
+      });
+      if (existeCod) {
+          return res.status(500).json({ message: 'Codigo ya existente' });
+      }
 
  
-    const idUserDestinatario = null;
-    if(destinatario){
-        const Destinatario = await User.findOne({
-            where: {nombreUsuario: destinatario},
-        });
-      if(Destinatario){
-        const idUserDestinatario = Destinatario.idUsuario;
-      }else{
-        return res.status(404).json({message: 'Usuario destinatario inexistente.'});
+      let idEstado;
+      if (dueno) {
+ 
+          idEstado = 1
+      } else {
+
+          idEstado = 2; 
       }
-    }
-    if (idDestinatario && estado==='Abierto'){
-      return res.status(400).json({message: 'Estado incorrecto'});
-    }
 
-    const CategoriaTR = await CategoriaTR.findOne({
-      where: {descripcion: descCategoriaTR},
-  });
-  if(!CategoriaTR){
-    return res.status(404).json({message: 'Categoria de tipo de requerimiento no encontrada.'});
-  }
-  const idCategoriaTR = CategoriaTR.idCategoriaTR;
+      const prioridad = await Prioridad.findOne({
+          where: { descripcion: descPrioridad },
+      });
+      if (!prioridad) {
+          return res.status(404).json({ message: 'Prioridad no encontrada.' });
+      }
+      const idPrioridad = prioridad.idPrioridad;
 
-    const newRequirement = await Requirement.create({ asunto, descripcion, codigo, fechaHora, idEstado, idPrioridad, idTipoReq, idUser, idUserDestinatario, idCategoriaTR });
-    res.status(201).json( newRequirement);
+      const user = await User.findOne({
+          where: { nombreUsuario: dueno }
+      });
+      if (!user) {
+          return res.status(404).json({ message: 'Usuario dueño no encontrado.' });
+      }
+      const idUser  = user.idUsuario;
+
+      let idUserDestinatario = null;
+      if (destinatario) {
+          const destinatarioUser  = await User.findOne({
+              where: { nombreUsuario: destinatario },
+          });
+          if (destinatarioUser ) {
+              idUserDestinatario = destinatarioUser .idUsuario;
+          } else {
+              return res.status(404).json({ message: 'Usuario destinatario inexistente.' });
+          }
+      }
+
+      const CategoriaTR = await CategoriaTR.findOne({
+          where: { descripcion: descCategoriaTR },
+      });
+      if (!CategoriaTR) {
+          return res.status(404).json({ message: 'Categoria de tipo de requerimiento no encontrada.' });
+      }
+      const idCategoriaTR = CategoriaTR.idCategoriaTR;
+
+      const newRequirement = await Requirement.create({ asunto, descripcion, codigo, fechaHora, idEstado, idPrioridad, idTipoReq, idUser , idUserDestinatario, idCategoriaTR });
+      res.status(201).json(newRequirement);
   } catch (error) {
-    res.status(500).json({ message: 'Error al crear el requerimiento', error: error.message });
+      res.status(500).json({ message: 'Error al crear el requerimiento', error: error.message });
   }
 };
 
