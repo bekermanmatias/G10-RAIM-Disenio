@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        idUserDetinatario:{
+        idUserDestinatario:{
             type: DataTypes.INTEGER,
         },
         idCategoriaTR:{
@@ -77,7 +77,7 @@ module.exports = (sequelize, DataTypes) => {
             as:'idUsuarioCreador'
         });
         Requirement.belongsTo(models.User, {
-          foreignKey: 'idUserDetinatario', 
+          foreignKey: 'idUserDestinatario', 
           as: 'UsuarioDestinatario', 
       });
         Requirement.hasMany(models.Comentario,{

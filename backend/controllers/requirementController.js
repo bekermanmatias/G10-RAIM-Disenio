@@ -62,19 +62,19 @@ const createRequirement = async (req, res) => {
     const idUser = user.idUsuario;
 
  
-    const idDestinatario = null;
+    const idUserDestinatario = null;
     if(destinatario){
-        const userD = await User.findOne({
+        const Destinatario = await User.findOne({
             where: {nombreUsuario: destinatario},
         });
-        if(userD){
-        const idDestinatario = userD.idUsuario;
+      if(Destinatario){
+        const idUserDestinatario = Destinatario.idUsuario;
       }else{
-        return res.status(404).json({message: 'Usuario destinatario no encontrado'});
+        return res.status(404).json({message: 'Usuario destinatario inexistente.'});
       }
     }
     if (idDestinatario && estado==='Abierto'){
-      return res.status(400).json({message: 'El estado no es correcto.'});
+      return res.status(400).json({message: 'Estado incorrecto'});
     }
 
     const CategoriaTR = await CategoriaTR.findOne({
@@ -85,7 +85,7 @@ const createRequirement = async (req, res) => {
   }
   const idCategoriaTR = CategoriaTR.idCategoriaTR;
 
-    const newRequirement = await Requirement.create({ asunto, descripcion, codigo, fechaHora, idEstado, idPrioridad, idTipoReq, idUser, idDestinatario, idCategoriaTR });
+    const newRequirement = await Requirement.create({ asunto, descripcion, codigo, fechaHora, idEstado, idPrioridad, idTipoReq, idUser, idUserDestinatario, idCategoriaTR });
     res.status(201).json( newRequirement);
   } catch (error) {
     res.status(500).json({ message: 'Error al crear el requerimiento', error: error.message });
@@ -116,6 +116,17 @@ const getRequirements = async (req, res) => {
           as: 'categoria',
           attributes: ['descripcion'],
         },
+        {
+          model: User,
+          as: 'IdUsuarioCreador',
+          attributes: ['nombre'],
+        },
+        {
+          model:User,
+          as:'UsuarioDestinatario',
+          attributes:['nombre'],
+        }
+
       ],
     });
     if(requirements.length === 0){

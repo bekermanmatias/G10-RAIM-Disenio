@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
 
     User.associate = (models) => {
         User.hasMany(models.Requirement, {
-            foreignKey: 'idUsuario',
+            foreignKey: 'idUser',
             as:'requerimientos'
         });
         User.belongsTo(models.Departamento, {
@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
             as:'nombreDepa'
         });
         User.hasMany(models.Requirement, {
-            foreignKey: 'idUsuarioDestinatario',
+            foreignKey: 'idUserDestinatario',
             as:'requerimientosAsignados'
         });
         
