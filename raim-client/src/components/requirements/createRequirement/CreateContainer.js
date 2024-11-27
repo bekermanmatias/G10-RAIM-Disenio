@@ -10,7 +10,12 @@ const CreateContainer = ({
             try {
                 const usersResponse = await fetch('https://g10-raim-disenio.onrender.com/api/user');
                 const usersData = await usersResponse.json();
-                setUsers(usersData.map(user => ({
+                
+                const sortedUsers = usersData.sort((a, b) => {
+                    return a.nombre.localeCompare(b.nombre);
+                });
+
+                setUsers(sortedUsers.map(user => ({
                     value: user.nombreUsuario,
                     label: `${user.nombre} (${user.nombreUsuario})`
                 })));
@@ -19,9 +24,9 @@ const CreateContainer = ({
                 const tiposData = await tiposResponse.json();
                 setTipos(tiposData.map(tipo => tipo.descripcion));
 
-                const categoriasResponse = await fetch('https://g10-raim-disenio.onrender.com/api/categoria/categorias-req');
+                const categoriasResponse = await fetch('https://g10-raim-disenio.onrender.com/api/catiporeq');
                 const categoriasData = await categoriasResponse.json();
-                setCategorias(categoriasData.categorias.map(categoria => categoria.nombre));
+                setCategorias(categoriasData.map(categoria => categoria.descripcion));
 
             } catch (error) {
                 console.error('Error al cargar datos:', error);

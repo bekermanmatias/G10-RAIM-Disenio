@@ -9,10 +9,11 @@ const FilterContainer = ({ setTipos, setCategorias }) => {
                 const tiposData = await tiposResponse.json();
                 setTipos(tiposData.map(tipo => tipo.descripcion));
 
-                const categoriasResponse = await fetch('https://g10-raim-disenio.onrender.com/api/categoria/categorias-req');
+                const categoriasResponse = await fetch('https://g10-raim-disenio.onrender.com/api/catiporeq');
                 const categoriasData = await categoriasResponse.json();
                 
-                setCategorias(categoriasData.categorias.map(categoria => categoria.nombre));
+                // Cambiar de categoriasData.categorias a categoriasData directamente
+                setCategorias(categoriasData.map(categoria => categoria.descripcion));
 
             } catch (error) {
                 console.error('Error al cargar datos de filtros:', error);

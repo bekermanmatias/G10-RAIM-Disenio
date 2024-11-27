@@ -9,16 +9,14 @@ import {
     Container, 
     Grid, 
     GridItem,
-    Badge,
-    Spinner,
     Alert,
     AlertIcon,
+    Spinner,
     HStack
 } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 import RequirementContainer from './RequirementContainer';
 import CustomButton from '../../utils/CustomButton';
-
 
 const RequirementDetail = () => {
     const { codigo } = useParams();
@@ -26,41 +24,6 @@ const RequirementDetail = () => {
     const [requerimiento, setRequerimiento] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    const getPriorityStyle = (prioridad) => {
-        switch(prioridad) {
-            case 'Urgente':
-                return {
-                    dotColor: '#f80505',
-                    bgColor: 'rgba(231, 86, 86, 0.3)',
-                    textColor: '#fc0909'
-                };
-            case 'Alta':
-                return {
-                    dotColor: '#ec5721',
-                    bgColor: 'rgba(255, 116, 65, 0.2)',
-                    textColor: '#f35b35'
-                };
-            case 'Media':
-                return {
-                    dotColor: '#DAA520',
-                    bgColor: 'rgba(218, 165, 32, 0.2)',
-                    textColor: '#B8860B'
-                };
-            case 'Baja':
-                return {
-                    dotColor: '#2E8B57',
-                    bgColor: 'rgba(80, 194, 129, 0.2)',
-                    textColor: '#2E8B57'
-                };
-            default:
-                return {
-                    dotColor: 'gray.500',
-                    bgColor: 'gray.100',
-                    textColor: 'gray.700'
-                };
-        }
-    };
 
     const handleBack = () => {
         navigate('/requirements');
@@ -77,7 +40,7 @@ const RequirementDetail = () => {
                     setError={setError} 
                 />
                 <Spinner 
-                    size="xl" 
+                    size ="xl" 
                     color="blue.900" 
                     thickness="4px" 
                     speed="0.65s" 
@@ -123,8 +86,6 @@ const RequirementDetail = () => {
         );
     }
 
-    const priorityStyle = getPriorityStyle(requerimiento.prioridad);
-
     return (
         <Box p={8}>
             <Flex 
@@ -150,26 +111,7 @@ const RequirementDetail = () => {
                             </GridItem>
                             <GridItem>
                                 <Heading size="sm" mb={2} color="blue.900">Prioridad</Heading>
-                                <Flex 
-                                    align="center" 
-                                    bg={priorityStyle.bgColor}
-                                    color={priorityStyle.textColor}
-                                    px={2}
-                                    py={1}
-                                    borderRadius="12px"
-                                    fontSize="0.9rem"
-                                    fontWeight={500}
-                                    width="fit-content"
-                                >
-                                    <Box 
-                                        mr={2}
-                                        width="8px"
-                                        height="8px"
-                                        borderRadius="50%"
-                                        bg={priorityStyle.dotColor}
-                                    />
-                                    {requerimiento.prioridad}
-                                </Flex>
+                                <Text>{requerimiento.prioridad}</Text>
                             </GridItem>
                             <GridItem>
                                 <Heading size="sm" mb={2} color="blue.900">Tipo</Heading>
