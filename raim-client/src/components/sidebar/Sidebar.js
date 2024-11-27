@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Sidebar.css';
 
-const Sidebar = () => {
+const Sidebar = ({ onLogout }) => {
     const location = useLocation();
 
     return (
@@ -32,6 +32,7 @@ const Sidebar = () => {
                         Configuración
                     </Link>
                 </li>
+                
             </ul>
         </nav>
     );

@@ -13,10 +13,13 @@ import {
     Alert,
     AlertIcon,
     Avatar,
-    Center
+    Center,
+    FormControl,
+    FormLabel,
+    Input
 } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
-import UserContainer from './UserContainer';
+import UserContainer from './UserContainer'; // Asegúrate de que este sea el nombre correcto
 import { EmailIcon, CalendarIcon, InfoIcon } from '@chakra-ui/icons';
 import CustomButton from '../../utils/CustomButton';
 
@@ -89,68 +92,11 @@ const UserDetail = () => {
     }
 
     return (
-        <Box p={8}>
-            <Flex 
-                justifyContent="space-between" 
-                alignItems="center" 
-                mb={8}
-            >
-                <Heading 
-                    color="blue.900" 
-                    size="xl"
-                >
-                    Usuario: {nombreUsuario}
-                </Heading>
-            </Flex>
+        <Container maxW="container.xl" p={8}>
     
-            <Grid templateColumns="2fr 1fr" gap={8}>
-                <GridItem>
-                    <VStack align="start" spacing={6} width="full">
-                        <Box width="full">
-                            <Heading size="md" mb={4} color="blue.900">Información Personal</Heading>
-                            <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-                                <GridItem>
-                                    <Heading size="sm" mb={2} color="blue.900">
-                                        <EmailIcon mr={2} />
-                                        Correo Electrónico
-                                    </Heading>
-                                    <Text>{usuario.email}</Text>
-                                </GridItem>
-                                <GridItem>
-                                    <Heading size="sm" mb={2} color="blue.900">
-                                        <InfoIcon mr={2} />
-                                        Legajo
-                                    </Heading>
-                                    <Text>{usuario.legajo}</Text>
-                                </GridItem>
-                            </Grid>
-                        </Box>
-
-                        <Box width="full">
-                            <Heading size="md" mb={4} color="blue.900">Información Laboral</Heading>
-                            <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-                                <GridItem>
-                                    <Heading size="sm" mb={2} color="blue.900">Cargo</Heading>
-                                    <Text>{usuario.cargo}</Text>
-                                </GridItem>
-                                <GridItem>
-                                    <Heading size="sm" mb={2} color="blue.900">Departamento</Heading>
-                                    <Text>{usuario.departamento}</Text>
-                                </GridItem>
-                                <GridItem>
-                                    <Heading size="sm" mb={2} color="blue.900">
-                                        <CalendarIcon mr={2} />
-                                        Fecha de Ingreso
-                                    </Heading>
-                                    <Text>{usuario.fechaIngreso}</Text>
-                                </GridItem>
-                            </Grid>
-                        </Box>
-                    </VStack>
-                </GridItem>
-    
+            <Grid templateColumns="repeat(2, 1fr)" gap={6}>
                 {/* Sección de Perfil */}
-                <GridItem>
+                <GridItem colSpan={2}>
                     <Center height="full">
                         <Box 
                             width="full" 
@@ -174,18 +120,91 @@ const UserDetail = () => {
                         </Box>
                     </Center>
                 </GridItem>
+
+                {/* Información Personal */}
+                <GridItem>
+                    <FormControl isReadOnly>
+                        <FormLabel color="blue.900">Correo Electrónico</FormLabel>
+                        <Input 
+                            value={usuario.email}
+                            isReadOnly
+                            bg="gray.100"
+                            color="gray.600"
+                        />
+                    </FormControl>
+                </GridItem>
+
+                <GridItem>
+                    <FormControl isReadOnly>
+                        <FormLabel color="blue.900">Legajo</FormLabel>
+                        <Input 
+                            value={usuario.legajo}
+                            isReadOnly
+                            bg="gray.100"
+                            color="gray.600"
+                        />
+                    </FormControl>
+                </ GridItem>
+
+                <GridItem>
+                    <FormControl isReadOnly>
+                        <FormLabel color="blue.900">Cargo</FormLabel>
+                        <Input 
+                            value={usuario.cargo}
+                            isReadOnly
+                            bg="gray.100"
+                            color="gray.600"
+                        />
+                    </FormControl>
+                </GridItem>
+
+                <GridItem>
+                    <FormControl isReadOnly>
+                        <FormLabel color="blue.900">Departamento</FormLabel>
+                        <Input 
+                            value={usuario.departamento}
+                            isReadOnly
+                            bg="gray.100"
+                            color="gray.600"
+                        />
+                    </FormControl>
+                </GridItem>
+
+                <GridItem>
+                    <FormControl isReadOnly>
+                        <FormLabel color="blue.900">Fecha de Ingreso</FormLabel>
+                        <Input 
+                            value={usuario.fechaIngreso}
+                            isReadOnly
+                            bg="gray.100"
+                            color="gray.600"
+                        />
+                    </FormControl>
+                </GridItem>
+
+
+                <GridItem>
+                    <FormControl isReadOnly>
+                        <FormLabel color="blue.900">Última Conexión</FormLabel>
+                        <Input 
+                            value={(usuario.fechaIngreso)}
+                            isReadOnly
+                            bg="gray.100"
+                            color="gray.600"
+                        />
+                    </FormControl>
+                </GridItem>
             </Grid>
     
             <Flex justifyContent="flex-start" mt={6}>
                 <CustomButton 
                     onClick={handleBack} 
                     variant="apply" 
-                   
                 >
                     ← Volver
                 </CustomButton>
             </Flex>
-        </Box>
+        </Container>
     );
 };
 
