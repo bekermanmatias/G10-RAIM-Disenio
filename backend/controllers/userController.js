@@ -48,6 +48,7 @@ const getUsers = async (req, res) => {
           attributes: ['nombre'], 
         },
       ],
+      attributes: { exclude: ['password']}
     });
 
     res.status(200).json(users);
