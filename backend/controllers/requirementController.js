@@ -118,7 +118,7 @@ const getRequirements = async (req, res) => {
         },
         {
           model: User,
-          as: 'IdUsuarioCreador',
+          as: 'idUsuarioCreador',
           attributes: ['nombre'],
         },
         {
@@ -135,7 +135,7 @@ const getRequirements = async (req, res) => {
     res.status(200).json(requirements);
   }
   catch (error){
-    res.status(500).json( { message: 'Error al obtener los requerimientos', error});
+    res.status(500).json( { message: 'Error al obtener los requerimientos', error: error.message});
   }
 }
 
