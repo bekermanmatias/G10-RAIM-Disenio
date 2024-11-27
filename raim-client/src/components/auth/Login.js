@@ -77,7 +77,7 @@ const Login = () => {
 
   return (
     <Box display="flex" flexDirection="column" minHeight="84vh" bg="gray.100">
-      <Box flex="1" display="flex" alignItems="center" justifyContent="center" p={4}>
+      <Box flex="1" display=" flex" alignItems="center" justifyContent="center" p={4}>
         <VStack
           spacing={4}
           bg="white"
@@ -87,6 +87,9 @@ const Login = () => {
           width="90%"
           maxWidth="400px"
         >
+          <Box>
+            <img src="../assets/icons/logoLogin.svg" alt="Logo" style={{ width: '170px', height: 'auto' }} />
+          </Box>
           <Heading size="lg">Bienvenido a RAIM</Heading>
           {error && (
             <Alert status="error">
