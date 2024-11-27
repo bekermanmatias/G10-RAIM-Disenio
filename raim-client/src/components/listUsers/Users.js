@@ -49,10 +49,8 @@ const Users = () => {
     const filterUsers = (searchTerm, filters) => {
         let filtered = filteredUsers;
     
-        // Filtro por búsqueda
         if (searchTerm) {
             filtered = filtered.filter(user =>
-                // Convierte legajo a cadena antes de usar toLowerCase
                 String(user.legajo).toLowerCase().includes(searchTerm.toLowerCase()) ||
                 user.nombreCompleto.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 user.cargo.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -60,14 +58,12 @@ const Users = () => {
             );
         }
     
-        // Filtrar por cargo
         if (filters.cargo.length > 0) {
             filtered = filtered.filter(user => 
                 filters.cargo.includes(user.cargo)
             );
         }
     
-        // Filtrar por departamento
         if (filters.departamentos.length > 0) {
             filtered = filtered.filter(user => 
                 filters.departamentos.includes(user.departamento)

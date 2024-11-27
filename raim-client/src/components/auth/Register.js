@@ -17,12 +17,13 @@ import CustomButton from '../../utils/CustomButton';
 
 const Register = () => {
     const [formData, setFormData] = useState({
-        fullName: '',
+        nombre: '',
         email: '',
-        username: '',
+        nombreUsuario: '',
         password: '',
         cargo: '',
-        department: ''
+        legajo: '',
+        nombreDepartamento: ''
     });
 
     const [showPassword, setShowPassword] = useState(false); // Añadir estado para mostrar/ocultar contraseña
@@ -58,8 +59,15 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.register(formData);
-            if (response.status === 200) {
+            console.log(formData);
+            const response = await fetch(`https://g10-raim-disenio.onrender.com/api/user`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)});
+            console.log(response.status);
+            if (response.status === 201) {
                 console.log('Registro exitoso');
                 navigate('/login');
             }
@@ -84,8 +92,8 @@ const Register = () => {
                             <FormLabel>Nombre Completo</FormLabel>
                             <Input
                                 type="text"
-                                name="fullName"
-                                value={formData.fullName}
+                                name="nombre"
+                                value={formData.nombre}
                                 onChange={handleChange}
                                 placeholder="Ingresa tu nombre completo"
                             />
@@ -104,8 +112,8 @@ const Register = () => {
                             <FormLabel>Nombre de Usuario</FormLabel>
                             <Input
                                 type="text"
-                                name="username"
-                                value={formData.username}
+                                name="nombreUsuario"
+                                value={formData.nombreUsuario}
                                 onChange={handleChange}
                                 placeholder="Ingresa tu nombre de usuario"
                             />
@@ -143,10 +151,20 @@ const Register = () => {
                             />
                         </FormControl>
                         <FormControl mb={4} isRequired>
+                            <FormLabel>Legajo</FormLabel>
+                            <Input
+                                type=" text"
+                                name="legajo"
+                                value={formData.legajo}
+                                onChange={handleChange}
+                                placeholder="Ingresa tu legajo"
+                            />
+                        </FormControl>
+                        <FormControl mb={4} isRequired>
                             <FormLabel>Departamento</FormLabel>
                             <Select
-                                name="department"
-                                value={formData.department}
+                                name="nombreDepartamento"
+                                value={formData.nombreDepartamento}
                                 onChange={handleChange}
                                 placeholder="Selecciona un departamento"
                             >

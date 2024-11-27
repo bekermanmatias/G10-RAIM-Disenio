@@ -13,6 +13,13 @@ const createUser = async (req, res) => {
         return res.status(400).json({ message: 'Nombre no disponible'});
     }
 
+    const legajoExiste = await User.findOne ({
+      where: {legajo: legajo},
+    });
+    if (legajoExiste){
+      return res.status(400).json({ message: 'Legajo no disponible'})
+    }
+
     if (!email.includes('@')) {
       return res.status(400).json({message: 'Formato de email invalido'});
     }

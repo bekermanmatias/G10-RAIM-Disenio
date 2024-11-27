@@ -34,7 +34,6 @@ const UserDetail = () => {
         navigate('/users');
     };
 
-    // Loading state
     if (loading) {
         return (
             <Container centerContent>
@@ -55,7 +54,6 @@ const UserDetail = () => {
         );
     }
 
-    // Error state
     if (error) {
         return (
             <Container centerContent>
@@ -73,7 +71,6 @@ const UserDetail = () => {
         );
     }
 
-    // Not found state
     if (!usuario) {
         return (
             <Container centerContent>
@@ -95,7 +92,6 @@ const UserDetail = () => {
         <Container maxW="container.xl" p={8}>
     
             <Grid templateColumns="repeat(2, 1fr)" gap={6}>
-                {/* Sección de Perfil */}
                 <GridItem colSpan={2}>
                     <Center height="full">
                         <Box 
@@ -121,7 +117,6 @@ const UserDetail = () => {
                     </Center>
                 </GridItem>
 
-                {/* Información Personal */}
                 <GridItem>
                     <FormControl isReadOnly>
                         <FormLabel color="blue.900">Correo Electrónico</FormLabel>

@@ -12,7 +12,6 @@ const UsersContainer = ({ setFilteredUsers, setLoading, setError }) => {
                 }
                 const data = await response.json();
 
-                // Mapeo de usuarios
                 const usuariosData = data.map(user => ({
                     legajo: user.legajo ? String(user.legajo) : 'Sin legajo',
                     nombreCompleto: user.nombre || 'Sin nombre',
