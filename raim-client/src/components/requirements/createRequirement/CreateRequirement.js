@@ -466,7 +466,7 @@ const createRequirementService = async (formData) => {
         descripcion: formData.descripcion,
         descPrioridad: formData.descPrioridad,
         descTipoReq: formData.descTipoReq,
-        dueno: 'jperez',
+        dueno: localStorage.getItem('usuario'),
         descCategoriaTR: formData.descCategoriaTR, 
         destinatario: formData.destinatario, 
     };
@@ -639,14 +639,12 @@ const CrearRequerimiento = () => {
                 </HStack>
             </form>
 
-            {/* Modal de Relacionar Requerimientos */}
             <RelateRequirementsModalContainer
                 isOpen={isOpenRelateRequirements}
                 onClose={onCloseRelateRequirements}
                 onSelect={handleSelectRelatedRequirements}
                 selectedRequirements={relatedRequirements}
             />
-            {/* Modal de confirmación de cancelación */}
             <Modal isOpen={isOpenCancel} onClose={onCloseCancel}>
                 <ModalOverlay />
                 <ModalContent>
@@ -673,7 +671,6 @@ const CrearRequerimiento = () => {
                 </ModalContent>
             </Modal>
 
-            {/* Modal de confirmación de guardado */}
             <Modal isOpen={isOpenSave} onClose={onCloseSave}>
                 <ModalOverlay />
                 <ModalContent>

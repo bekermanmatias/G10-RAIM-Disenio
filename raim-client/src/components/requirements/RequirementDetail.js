@@ -29,7 +29,6 @@ const RequirementDetail = () => {
         navigate('/requirements');
     };
 
-    // Renderiza el mensaje de carga
     if (loading) {
         return (
             <Container centerContent>
@@ -50,7 +49,6 @@ const RequirementDetail = () => {
         );
     }
 
-    // Muestra el mensaje de error
     if (error) {
         return (
             <Container centerContent>
@@ -68,7 +66,6 @@ const RequirementDetail = () => {
         );
     }
 
-    // Si no hay requerimiento después de cargar, muestra mensaje
     if (!requerimiento) {
         return (
             <Container centerContent>

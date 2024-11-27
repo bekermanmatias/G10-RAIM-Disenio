@@ -36,10 +36,10 @@ const createRequirement = async (req, res) => {
       }
 
       let idEstado;
-      if (dueno) {
-          idEstado = 1
+      if (destinatario) {
+          idEstado = 2;
       } else {
-          idEstado = 2; 
+          idEstado = 1; 
       }
 
       const prioridad = await Prioridad.findOne({
