@@ -2,7 +2,7 @@ const { Requirement, Estado, Prioridad, TipoRequerimiento, User, CategoriaTR } =
 
 
 const createRequirement = async (req, res) => {
-  const { asunto, descripcion, descEstado, descPrioridad, descTipoReq, dueno, destinatario, descCategoriaTR } = req.body;
+  const { asunto, descripcion, descPrioridad, descTipoReq, dueno, destinatario, descCategoriaTR } = req.body;
 
   try {
       if (String(asunto).length >= 50) {
