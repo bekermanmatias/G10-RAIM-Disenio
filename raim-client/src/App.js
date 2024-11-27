@@ -30,6 +30,8 @@ const App = () => {
                 {!noSidebarRoutes.includes(location.pathname) && <Sidebar />}
                 <Box flex={1} p={4}>
                     <Routes>
+                        {(isAuthenticated) ? (
+                            <>
                         <Route path="/users" element={<Users />} />
                         <Route path="/users/:nombreUsuario" element={<UserDetail />} />
                         <Route path="/requirements" element={<Requerimientos />} />
@@ -39,6 +41,10 @@ const App = () => {
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/" element={<Requerimientos />} />
+                        </>
+                    ) : (
+                        <Route path="/*" element={<Login />} />
+                    )}
                     </Routes>
                     <FloatingCreateButton />
                 </Box>
