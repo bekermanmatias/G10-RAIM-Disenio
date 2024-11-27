@@ -15,20 +15,19 @@ import {
 } from '@chakra-ui/react';
 import CustomButton from '../../utils/CustomButton';
 import { Link } from 'react-router-dom';
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'; // Importar íconos para ver/ocultar contraseña
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 const Login = () => {
   const [usuario, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
 
   useEffect(() => {
-    // Redirigir si ya está autenticado
-    if (String(localStorage.getItem('isAuthenticated')) === 'true') {
+    if (localStorage.getItem('isAuthenticated') === true) {
       navigate('/requirements');
     }
   }, [navigate]);
@@ -42,10 +41,10 @@ const Login = () => {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Evitar recarga de página
-    if (!validateForm()) return; // Validar el formulario antes de enviar
+    event.preventDefault();
+    if (!validateForm()) return;
     setLoading(true);
-    setError(''); // Limpiar el error antes de intentar iniciar sesión
+    setError('');
 
     try {
       const credentials = {
@@ -55,21 +54,19 @@ const Login = () => {
 
       const response = await api.login(credentials);
 
-      // Asegúrate de que la respuesta tenga el formato esperado
       if (response && response.status === 200) {
         const { token } = response.data;
         const set_local_storage_res = login(token, usuario);
         if (set_local_storage_res) {
           console.log('Navigating to /requirements...');
-          navigate('/requirements'); // Redirigir a la página de requerimientos
+          navigate('/requirements');
         }
       } else {
-        // Si la respuesta no es 200, se considera un error
-        setError('Credenciales inválidas'); // Mantener el error visible
+        setError('Credenciales inválidas');
       }
     } catch (error) {
       console.error('Error logging in:', error);
-      setError('Credenciales inválidas'); // Mensaje de error específico
+      setError('Credenciales inválidas');
     } finally {
       setLoading(false);
     }
@@ -112,8 +109,7 @@ const Login = () => {
               <FormLabel htmlFor="password">Contraseña:</FormLabel>
               <Box position="relative">
                 <Input
-                  type={showPassword ? 'text' : 'password'} // Cambia el tipo según el estado
-                  id="password"
+                  type={showPassword ? 'text' : 'password'} 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Ingresa tu contraseña"
@@ -124,7 +120,7 @@ const Login = () => {
                   top="50%"
                   transform="translateY(-50%)"
                   variant="link"
-                  onClick={() => setShowPassword(!showPassword)} // Alternar visibilidad
+                  onClick={() => setShowPassword(!showPassword)} 
                   icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
                   aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                 />

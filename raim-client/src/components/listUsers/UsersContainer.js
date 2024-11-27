@@ -33,7 +33,7 @@ const UsersContainer = ({ setFilteredUsers, setLoading, setError }) => {
         fetchUsers();
     }, [setFilteredUsers, setLoading, setError]);
 
-    return null; // Este componente no renderiza nada
+    return null;
 };
 
 export default UsersContainer;

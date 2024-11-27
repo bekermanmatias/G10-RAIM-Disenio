@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
     Box, 
     Heading, 
@@ -12,7 +12,7 @@ import {
     Avatar,
     Center,
     Text,
-    useDisclosure, // Para controlar el modal
+    useDisclosure,
     Modal,
     ModalOverlay,
     ModalContent,
@@ -22,35 +22,69 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import CustomButton from '../../utils/CustomButton';
-import { useAuth } from '../../context/authContext'; // Importa el contexto de autenticación
+import { useAuth } from '../../context/authContext'; 
 
 const Settings = () => {
     const navigate = useNavigate();
-    const { logout } = useAuth(); // Obtén la función de logout del contexto
-    const [userData] = useState({
-        fullName: 'Juan Pérez',
-        email: 'juan.perez@empresa.com',
-        legajo: '12345',
-        username: 'jperez',
-        cargo: 'Desarrollador Senior',
-        department: 'Tecnología'
+    const { logout } = useAuth(); 
+    const [userData, setUserData] = useState({
+        nombre: '',
+        email: '',
+        legajo: '',
+        nombreUsuario: '',
+        cargo: '',
+        departamento: ''
     });
 
-    const { isOpen, onOpen, onClose } = useDisclosure(); // Control del modal
+    const { isOpen, onOpen, onClose } = useDisclosure(); 
+    const nombreUsuario = String(localStorage.getItem('usuario'));
+        if (!nombreUsuario) {
+            navigate('/login'); 
+        }
+
+
+    useEffect(() => {
+
+        const fetchUserData = async () => {
+
+            try {
+                const response = await fetch(`https://g10-raim-disenio.onrender.com/api/user/${nombreUsuario}`);
+                if (!response.ok) {
+                    throw new Error('Error al obtener los datos del usuario');
+                }
+                const data = await response.json();
+                const mappedData = {
+                    idUsuario: data.idUsuario,
+                    nombre: data.nombre,
+                    nombreUsuario: data.nombreUsuario,
+                    email: data.email,
+                    cargo: data.cargo,
+                    legajo: data.legajo,
+                    departamento: data.nombreDepa.nombre,
+                    fechaIngreso: data.createdAt, 
+                };
+                setUserData(mappedData);
+            } catch (error) {
+                console.log(error.message);
+                console.log(error);
+            }
+        };
+
+        fetchUserData();
+    });
 
     const handleBack = () => {
-        navigate('/previousPage'); // Cambia esto a la ruta que desees
+        navigate('/requirements'); 
     };
 
     const handleLogout = () => {
-        logout(); // Llama a la función de logout
-        navigate('/login'); // Redirige a la página de login
+        logout(); 
+        navigate('/login');
     };
 
     return (
         <Container maxW="container.xl" p={8}>
             <Grid templateColumns="repeat(2, 1fr)" gap={6}>
-                {/* Sección de Perfil */}
                 <GridItem colSpan={2}>
                     <Center height="full">
                         <Box 
@@ -63,11 +97,11 @@ const Settings = () => {
                         >
                             <Avatar 
                                 size="2xl" 
-                                name={userData.fullName} 
+                                name={userData.nombreUsuario} 
                                 mb={4}
                             />
                             <Heading size="lg" mb={2} color="blue.900">
-                                {userData.fullName}
+                                {userData.nombreUsuario}
                             </Heading>
                             <Text color="gray.500" mb={4}>
                                 {userData.username}
@@ -76,13 +110,12 @@ const Settings = () => {
                     </Center>
                 </GridItem>
                 
-                {/* Columna Izquierda */}
                 <GridItem>
                     <FormControl isReadOnly>
                         <FormLabel color="blue.900">Nombre Completo</FormLabel>
                         <Input 
-                            name="fullName"
-                            value={userData.fullName}
+                            name="nombre"
+                            value={userData.nombre}
                             isReadOnly
                             bg="gray.100"
                             color="gray.600"
@@ -94,8 +127,8 @@ const Settings = () => {
                     <FormControl isReadOnly>
                         <FormLabel color="blue.900">Nombre de Usuario </FormLabel>
                         <Input 
-                            name="username"
-                            value={userData.username}
+                            name="nombreUsuario"
+                            value={userData.nombreUsuario}
                             isReadOnly
                             bg="gray.100"
                             color="gray.600"
@@ -116,7 +149,6 @@ const Settings = () => {
                     </FormControl>
                 </GridItem>
 
-                {/* Columna Derecha */}
                 <GridItem>
                     <FormControl isReadOnly>
                         <FormLabel color="blue.900">Legajo</FormLabel>
@@ -134,8 +166,8 @@ const Settings = () => {
                     <FormControl isReadOnly>
                         <FormLabel color="blue.900">Departamento</FormLabel>
                         <Input 
-                            name="department"
-                            value={userData.department}
+                            name="departamento"
+                            value={userData.departamento}
                             isReadOnly
                             bg=" gray.100"
                             color="gray.600"
@@ -162,13 +194,12 @@ const Settings = () => {
                 <CustomButton 
                     onClick={onOpen} 
                     variant="delete" 
-                    ml={4} // Margen a la izquierda para separar los botones
+                    ml={4}
                 >
                     Cerrar Sesión
                 </CustomButton>
             </Flex>
 
-            {/* Modal de Confirmación */}
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
