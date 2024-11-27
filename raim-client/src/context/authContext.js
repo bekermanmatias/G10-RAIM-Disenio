@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
     const login = (token, user) => {
         localStorage.setItem('jwtToken', token);
         localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userData', JSON.stringify(user)); 
         setIsAuthenticated(true);
         return true;
     };
@@ -16,6 +17,7 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         localStorage.removeItem('jwtToken');
         localStorage.setItem('isAuthenticated', 'false');
+        localStorage.removeItem('userData');
         setIsAuthenticated(false);
     };
 

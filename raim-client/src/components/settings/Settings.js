@@ -1,127 +1,54 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
     Box, 
-    VStack, 
-    Text, 
     Heading, 
-    Button, 
-    Flex, 
-    Container, 
+    FormControl, 
+    FormLabel, 
+    Input, 
     Grid, 
-    GridItem,
-    Spinner,
-    Alert,
-    AlertIcon,
+    GridItem, 
+    Container,
+    Flex,
     Avatar,
     Center,
-    FormControl,
-    FormLabel,
-    Input
+    Text,
+    useDisclosure, // Para controlar el modal
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
 } from '@chakra-ui/react';
-import { useParams, useNavigate } from 'react-router-dom';
-import UserContainer from './UserContainer'; 
+import { useNavigate } from 'react-router-dom';
 import CustomButton from '../../utils/CustomButton';
+import { useAuth } from '../../context/authContext'; // Importa el contexto de autenticación
 
-const UserDetail = () => {
-    const { nombreUsuario } = useParams();
+const Settings = () => {
     const navigate = useNavigate();
-    const [usuario, setUsuario] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const { logout } = useAuth(); // Obtén la función de logout del contexto
+    const [userData] = useState({
+        fullName: 'Juan Pérez',
+        email: 'juan.perez@empresa.com',
+        legajo: '12345',
+        username: 'jperez',
+        cargo: 'Desarrollador Senior',
+        department: 'Tecnología'
+    });
+
+    const { isOpen, onOpen, onClose } = useDisclosure(); // Control del modal
 
     const handleBack = () => {
-        navigate('/users');
+        navigate('/previousPage'); // Cambia esto a la ruta que desees
     };
 
-    // Cargar datos del usuario solo una vez
-    useEffect(() => {
-        const fetchUserData = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const response = await fetch(`https://g10-raim-disenio.onrender.com/api/user/${nombreUsuario}`);
-                if (!response.ok) {
-                    throw new Error('Error al obtener los datos del usuario');
-                }
-                const data = await response.json();
-
-                // Mapeo de datos
-                const mappedData = {
-                    id: data.idUsuario,
-                    nombreCompleto: data.nombre,
-                    usuario: data.nombreUsuario,
-                    email: data.email,
-                    cargo: data.cargo,
-                    legajo: data.legajo,
-                    departamento: data.nombreDepa.nombre,
-                    fechaIngreso: data.createdAt,
-                };
-
-                setUsuario(mappedData);
-            } catch (error) {
-                setError(error.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUserData();
-    }, [nombreUsuario]);
-
-    // Loading state
-    if (loading) {
-        return (
-            <Container centerContent>
-                <Spinner 
-                    size="xl" 
-                    color="blue.900" 
-                    thickness="4px" 
-                    speed="0.65s" 
-                    emptyColor="gray.200"
-                />
-            </Container>
-        );
-    }
-
-    // Error state
-    if (error) {
-        return (
-            <Container centerContent>
-                <Alert status="error">
-                    <AlertIcon />
-                    Error: {error} 
-                </Alert>
-            </Container>
-        );
-    }
-
-    // Not found state
-    if (!usuario) {
-        return (
-            <Container centerContent>
-                <Alert status="warning">
-                    <AlertIcon />
-                    Usuario no encontrado
-                </Alert>
-            </Container>
-        );
-    }
+    const handleLogout = () => {
+        logout(); // Llama a la función de logout
+        navigate('/login'); // Redirige a la página de login
+    };
 
     return (
         <Container maxW="container.xl" p={8}>
-            <Flex 
-                justifyContent="space-between" 
-                alignItems="center" 
-                mb={8}
-            >
-                <Heading 
-                    color="blue.900" 
-                    size="xl"
-                >
-                    Usuario: {nombreUsuario}
-                </Heading>
-            </Flex>
-    
             <Grid templateColumns="repeat(2, 1fr)" gap={6}>
                 {/* Sección de Perfil */}
                 <GridItem colSpan={2}>
@@ -134,27 +61,54 @@ const UserDetail = () => {
                             p={6} 
                             textAlign="center"
                         >
-                            < Avatar 
+                            <Avatar 
                                 size="2xl" 
-                                name={usuario.nombreCompleto} 
+                                name={userData.fullName} 
                                 mb={4}
                             />
                             <Heading size="lg" mb={2} color="blue.900">
-                                {usuario.nombreCompleto}
+                                {userData.fullName}
                             </Heading>
                             <Text color="gray.500" mb={4}>
-                                {usuario.usuario}
+                                {userData.username}
                             </Text>
                         </Box>
                     </Center>
                 </GridItem>
+                
+                {/* Columna Izquierda */}
+                <GridItem>
+                    <FormControl isReadOnly>
+                        <FormLabel color="blue.900">Nombre Completo</FormLabel>
+                        <Input 
+                            name="fullName"
+                            value={userData.fullName}
+                            isReadOnly
+                            bg="gray.100"
+                            color="gray.600"
+                        />
+                    </FormControl>
+                </GridItem>
 
-                {/* Información Personal */}
+                <GridItem>
+                    <FormControl isReadOnly>
+                        <FormLabel color="blue.900">Nombre de Usuario </FormLabel>
+                        <Input 
+                            name="username"
+                            value={userData.username}
+                            isReadOnly
+                            bg="gray.100"
+                            color="gray.600"
+                        />
+                    </FormControl>
+                </GridItem>
+
                 <GridItem>
                     <FormControl isReadOnly>
                         <FormLabel color="blue.900">Correo Electrónico</FormLabel>
                         <Input 
-                            value={usuario.email}
+                            name="email"
+                            value={userData.email}
                             isReadOnly
                             bg="gray.100"
                             color="gray.600"
@@ -162,23 +116,13 @@ const UserDetail = () => {
                     </FormControl>
                 </GridItem>
 
+                {/* Columna Derecha */}
                 <GridItem>
                     <FormControl isReadOnly>
                         <FormLabel color="blue.900">Legajo</FormLabel>
                         <Input 
-                            value={usuario.legajo}
-                            isReadOnly
-                            bg="gray.100"
-                            color="gray.600"
-                        />
-                    </FormControl>
-                </GridItem>
-
-                <GridItem>
-                    <FormControl isReadOnly>
-                        <FormLabel color="blue.900">Cargo</FormLabel>
-                        <Input 
-                            value={usuario.cargo}
+                            name="legajo"
+                            value={userData.legajo}
                             isReadOnly
                             bg="gray.100"
                             color="gray.600"
@@ -190,9 +134,10 @@ const UserDetail = () => {
                     <FormControl isReadOnly>
                         <FormLabel color="blue.900">Departamento</FormLabel>
                         <Input 
-                            value={usuario.departamento}
+                            name="department"
+                            value={userData.department}
                             isReadOnly
-                            bg="gray.100"
+                            bg=" gray.100"
                             color="gray.600"
                         />
                     </FormControl>
@@ -200,40 +145,49 @@ const UserDetail = () => {
 
                 <GridItem>
                     <FormControl isReadOnly>
-                        <FormLabel color="blue.900">Fecha de Ingreso</FormLabel>
+                        <FormLabel color="blue.900">Cargo</FormLabel>
                         <Input 
-                            value={usuario.fechaIngreso}
+                            name="cargo"
+                            value={userData.cargo}
                             isReadOnly
                             bg="gray.100"
                             color="gray.600"
                         />
                     </FormControl>
                 </GridItem>
+            </Grid>  
 
-                {/* Última conexión */}
-                <GridItem>
-                    <FormControl isReadOnly>
-                        <FormLabel color="blue.900">Última Conexión</FormLabel>
-                        <Input 
-                            value="2023-10-01 12:00:00" // Valor hardcodeado
-                            isReadOnly
-                            bg="gray.100"
-                            color="gray.600"
-                        />
-                    </FormControl>
-                </GridItem>
-            </Grid>
-    
-            <Flex justifyContent="flex-start" mt={6}>
+            <Flex justifyContent="flex-end" mt={4}>
+
                 <CustomButton 
-                    onClick={handleBack} 
-                    variant="apply" 
+                    onClick={onOpen} 
+                    variant="delete" 
+                    ml={4} // Margen a la izquierda para separar los botones
                 >
-                    ← Volver
+                    Cerrar Sesión
                 </CustomButton>
             </Flex>
+
+            {/* Modal de Confirmación */}
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Confirmar Cierre de Sesión</ModalHeader>
+                    <ModalBody>
+                        ¿Estás seguro de que deseas cerrar sesión?
+                    </ModalBody>
+                    <ModalFooter>
+                        <CustomButton variant="cancel" onClick={onClose}>
+                            Cancelar
+                        </CustomButton>
+                        <CustomButton variant="delete" onClick={handleLogout} ml={3}>
+                            Confirmar
+                        </CustomButton>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </Container>
     );
 };
 
-export default UserDetail;
+export default Settings;

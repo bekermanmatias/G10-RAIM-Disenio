@@ -11,15 +11,18 @@ import {
   VStack,
   Alert,
   AlertIcon,
+  IconButton,
 } from '@chakra-ui/react';
 import CustomButton from '../../utils/CustomButton';
 import { Link } from 'react-router-dom';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'; // Importar íconos para ver/ocultar contraseña
 
 const Login = () => {
   const [usuario, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -104,13 +107,25 @@ const Login = () => {
             </FormControl>
             <FormControl isRequired mt={4}>
               <FormLabel htmlFor="password">Contraseña:</FormLabel>
-              <Input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Ingresa tu contraseña"
-              />
+              <Box position="relative">
+                <Input
+                  type={showPassword ? 'text' : 'password'} // Cambia el tipo según el estado
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Ingresa tu contraseña"
+                />
+                <IconButton
+                  position="absolute"
+                  right="0"
+                  top="50%"
+                  transform="translateY(-50%)"
+                  variant="link"
+                  onClick={() => setShowPassword(!showPassword)} // Alternar visibilidad
+                  icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                  aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                />
+              </Box>
             </FormControl>
             <CustomButton
               mt={6}
