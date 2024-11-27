@@ -464,12 +464,11 @@ const createRequirementService = async (formData) => {
     const dataToSend = {
         asunto: formData.asunto,
         descripcion: formData.descripcion,
-        descEstado: formData.descEstado, 
         descPrioridad: formData.descPrioridad,
         descTipoReq: formData.descTipoReq,
-        dueno: formData.dueno,
-        descCategoriaTR: formData.nombreCategoria,
-        destinatario: formData.destinatario,
+        dueno: 'jperez',
+        descCategoriaTR: formData.descCategoriaTR, 
+        destinatario: formData.destinatario, 
     };
 
     const response = await fetch('https://g10-raim-disenio.onrender.com/api/requirement', {
@@ -482,7 +481,7 @@ const createRequirementService = async (formData) => {
 
     if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'No se pudo crear el requerimiento, intente mas tarde!');
+        throw new Error(errorData.message || 'No se pudo crear el requerimiento, intente más tarde!');
     }
 
     return await response.json();
