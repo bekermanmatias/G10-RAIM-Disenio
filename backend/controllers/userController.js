@@ -16,6 +16,12 @@ const createUser = async (req, res) => {
     if (!email.includes('@')) {
       return res.status(400).json({message: 'Formato de email invalido'});
     }
+    const emailUsuLibre = await User.findOne({
+      where: {email: email},
+    });
+    if (emailUsuLibre){
+        return res.status(400).json({ message: 'Mail no disponible'});
+    }
 
     const departamento = await Departamento.findOne({
       where: {nombre: nombreDepartamento},

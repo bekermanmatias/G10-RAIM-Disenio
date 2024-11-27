@@ -70,7 +70,6 @@ const getPriorityStyle = (prioridad) => {
     }
 };
 
-// Componente para la columna izquierda del formulario
 const LeftFormColumn = ({ 
     tipos, 
     categorias, 
@@ -119,8 +118,8 @@ const LeftFormColumn = ({
         <FormControl width="full" mt={-0.5}>
             <FormLabel>Categoria *</FormLabel>
             <Select 
-                name="nombreCategoria" 
-                value={formData.nombreCategoria} 
+                name="descCategoriaTR" 
+                value={formData.descCategoriaTR} 
                 onChange={handleChange}
                 placeholder="Seleccione la Categoría"
                 variant="outline"
@@ -211,7 +210,6 @@ const LeftFormColumn = ({
     </VStack>
 );
 
-// Componente para la columna derecha del formulario
 const RightFormColumn = ({ 
     users, 
     formData, 
@@ -219,7 +217,7 @@ const RightFormColumn = ({
     onOpenRelateRequirements,
     relatedRequirements,
     handleRemoveRequirement,
-    handleFileChange // Añadido aquí
+    handleFileChange
 }) => (
     <VStack width="50%" spacing={4}>
         
@@ -381,7 +379,6 @@ const RightFormColumn = ({
     </VStack>
 );
 
-// Hook personalizado para manejar el formulario
 const useRequirementForm = (initialState, createRequirement, navigate, toast) => {
     const [formData, setFormData] = useState(initialState);
     const [users, setUsers] = useState([]);
@@ -404,7 +401,7 @@ const useRequirementForm = (initialState, createRequirement, navigate, toast) =>
     }, []);
 
     const validateForm = useCallback(() => {
-        const requiredFields = ['descTipoReq', 'nombreCategoria', 'descPrioridad', 'asunto', 'descripcion'];
+        const requiredFields = ['descTipoReq', 'descCategoriaTR', 'descPrioridad', 'asunto', 'descripcion'];
         const missingFields = requiredFields.filter(field => !formData[field] || formData[field].trim() === '');
 
         if (missingFields.length > 0) {
@@ -422,10 +419,10 @@ const useRequirementForm = (initialState, createRequirement, navigate, toast) =>
     }, [formData, toast]);
 
     const handleSubmit = useCallback(async (e) => {
-        e?.preventDefault(); // Añade optional chaining
+        e?.preventDefault();
         
         if (!validateForm()) {
-            return; // Si la validación falla, no continuar
+            return;
         }
         
         try {
@@ -463,7 +460,6 @@ const useRequirementForm = (initialState, createRequirement, navigate, toast) =>
     };
 };
 
-// Servicio para crear requerimiento (puedes moverlo a un archivo separado)
 const createRequirementService = async (formData) => {
     const dataToSend = {
         asunto: formData.asunto,
@@ -472,7 +468,8 @@ const createRequirementService = async (formData) => {
         descPrioridad: formData.descPrioridad,
         descTipoReq: formData.descTipoReq,
         dueno: formData.dueno,
-        descCategoriaTR: formData.nombreCategoria, 
+        descCategoriaTR: formData.nombreCategoria,
+        destinatario: formData.destinatario,
     };
 
     const response = await fetch('https://g10-raim-disenio.onrender.com/api/requirement', {
@@ -491,7 +488,6 @@ const createRequirementService = async (formData) => {
     return await response.json();
 };
 
-// Componente principal
 const CrearRequerimiento = () => {
     const navigate = useNavigate();
     const toast = useToast();
@@ -500,9 +496,9 @@ const CrearRequerimiento = () => {
         descPrioridad: '',
         asunto: '',
         descripcion: '',
-        dueno: 'jperez',
+        dueno: String(localStorage.getItem('usuario')),
         descEstado: '', 
-        nombreCategoria: '',
+        descCategoriaTR: '',
         destinatario: '',
         relacionados: '',
         archivos: null,
@@ -522,7 +518,6 @@ const CrearRequerimiento = () => {
         validateForm
     } = useRequirementForm(initialState, createRequirementService, navigate, toast);
     
-    // Modales para confirmar acciones
     const { isOpen: isOpenCancel, onOpen: onOpenCancel, onClose: onCloseCancel } = useDisclosure();
     const { isOpen: isOpenSave, onOpen: onOpenSave, onClose: onCloseSave } = useDisclosure();
     const [missingFields, setMissingFields] = useState([]);
@@ -530,7 +525,6 @@ const CrearRequerimiento = () => {
     const [relatedRequirements, setRelatedRequirements] = useState([]);
     const { isOpen: isOpenRelateRequirements, onOpen: onOpenRelateRequirements, onClose: onCloseRelateRequirements } = useDisclosure();
 
-    // Función para manejar la eliminación de un requerimiento relacionado
     const handleRemoveRequirement = (value) => {
         setRelatedRequirements(prevRequirements =>
             prevRequirements.filter(req => req.value !== value)
@@ -538,24 +532,23 @@ const CrearRequerimiento = () => {
     };
     
     const handleCancel = () => {
-        onOpenCancel(); // Abre el modal de confirmación de cancelación
+        onOpenCancel();
     };
 
     const handleConfirmCancel = () => {
-        onCloseCancel(); // Cierra el modal
-        navigate('/requirements'); // Navega a la ruta deseada
+        onCloseCancel();
+        navigate('/requirements'); 
     };
 
     const handleConfirmSave = async (e) => {
-        e?.preventDefault(); // Añade un optional chaining para manejar casos donde el evento podría ser undefined
-        onCloseSave(); // Cierra el modal
-        await handleSubmit(new Event('submit')); // Pasa un nuevo evento de submit
+        e?.preventDefault(); 
+        onCloseSave();
+        await handleSubmit(new Event('submit'));
     };
 
-    // Mapeo de nombres de campos para mostrar etiquetas legibles
     const fieldLabels = {
         descTipoReq: 'Tipo',
-        nombreCategoria: 'Categoría',
+        descCategoriaTR: 'Categoría',
         descPrioridad: 'Prioridad',
         asunto: 'Asunto',
         descripcion: 'Descripción'
@@ -564,25 +557,20 @@ const CrearRequerimiento = () => {
     const handleSubmitWithConfirmation = async (e) => {
         e.preventDefault();
         
-        // Validar el formulario y obtener los campos faltantes
-        const requiredFields = ['descTipoReq', 'nombreCategoria', 'descPrioridad', 'asunto', 'descripcion'];
+        const requiredFields = ['descTipoReq', 'descCategoriaTR', 'descPrioridad', 'asunto', 'descripcion'];
         const missing = requiredFields.filter(field => !formData[field] || formData[field].trim() === '');
 
         if (missing.length > 0) {
-            // Mapea los nombres de campos a sus etiquetas legibles
             const missingFieldLabels = missing.map(field => fieldLabels[field] || field);
-            setMissingFields(missingFieldLabels); // Establece los campos faltantes con etiquetas
-            setShowMissingFieldsAlert(true); // Muestra la alerta
+            setMissingFields(missingFieldLabels);
+            setShowMissingFieldsAlert(true); 
         } else {
-            // Si no hay campos faltantes, abre el modal de confirmación de guardado
             onOpenSave();
         }
     };
 
-    // Función para manejar la selección de requerimientos relacionados
     const handleSelectRelatedRequirements = (selected) => {
         setRelatedRequirements(selected);
-        // Actualizar el campo relacionados en el formulario
         handleChange({
             target: {
                 name: 'relacionados', 
@@ -624,7 +612,7 @@ const CrearRequerimiento = () => {
                         handleChange={handleChange} 
                         onOpenRelateRequirements={onOpenRelateRequirements}
                         relatedRequirements={relatedRequirements}
-                        handleRemoveRequirement={handleRemoveRequirement} // Asegúrate de pasar la función aquí
+                        handleRemoveRequirement={handleRemoveRequirement}
                     />
                 </Flex>
 

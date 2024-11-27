@@ -35,13 +35,10 @@ const createRequirement = async (req, res) => {
           return res.status(500).json({ message: 'Codigo ya existente' });
       }
 
- 
       let idEstado;
       if (dueno) {
- 
           idEstado = 1
       } else {
-
           idEstado = 2; 
       }
 
@@ -73,13 +70,13 @@ const createRequirement = async (req, res) => {
           }
       }
 
-      const CategoriaTR = await CategoriaTR.findOne({
+      const categoriaTR = await CategoriaTR.findOne({
           where: { descripcion: descCategoriaTR },
       });
-      if (!CategoriaTR) {
+      if (!categoriaTR) {
           return res.status(404).json({ message: 'Categoria de tipo de requerimiento no encontrada.' });
       }
-      const idCategoriaTR = CategoriaTR.idCategoriaTR;
+      const idCategoriaTR = categoriaTR.idCategoriaTR;
 
       const newRequirement = await Requirement.create({ asunto, descripcion, codigo, fechaHora, idEstado, idPrioridad, idTipoReq, idUser , idUserDestinatario, idCategoriaTR });
       res.status(201).json(newRequirement);
@@ -157,6 +154,21 @@ const getReqByCodigo = async (req,res) => {
           as: 'tipoReq',
           attributes: ['descripcion', 'codigo'], 
         },
+        {
+          model: CategoriaTR,
+          as: 'categoria',
+          attributes: ['descripcion'],
+        },
+        {
+          model: User,
+          as: 'idUsuarioCreador',
+          attributes: ['nombre'],
+        },
+        {
+          model:User,
+          as:'UsuarioDestinatario',
+          attributes:['nombre'],
+        }
       ],
     });
     if(!requirement){
