@@ -48,25 +48,23 @@ const RelateRequirementsModal = ({
         onClose();
     };
 
-    // Filtrar requerimientos por código o asunto
     const filteredRequirements = requerimientos.filter(req =>
-        req.value.toLowerCase().includes(searchTerm.toLowerCase()) || // Filtrar por código
-        req.label.toLowerCase().includes(searchTerm.toLowerCase())  // Filtrar por asunto
+        req.value.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        req.label.toLowerCase().includes(searchTerm.toLowerCase())  
     );
 
     useEffect(() => {
         if (isOpen) {
-            setDisplayedItems(filteredRequirements.slice(0, itemsPerPage)); // Cargar los primeros 10 elementos
-            setSelectedRequirements(initialSelectedRequirements || []); // Inicializar seleccionados
+            setDisplayedItems(filteredRequirements.slice(0, itemsPerPage)); 
+            setSelectedRequirements(initialSelectedRequirements || []); 
         }
-    }, [isOpen, initialSelectedRequirements, requerimientos]); // Asegúrate de incluir requerimientos aquí
+    }, [isOpen, initialSelectedRequirements, requerimientos]); 
 
     const loadMoreItems = () => {
         const newItems = filteredRequirements.slice(displayedItems.length, displayedItems.length + itemsPerPage);
         setDisplayedItems(prevItems => [...prevItems, ...newItems]);
     };
 
-    // Si hay un error, muestra un mensaje de error
     if (error) {
         return (
             <Modal isOpen={isOpen} onClose={onClose}>
@@ -84,7 +82,6 @@ const RelateRequirementsModal = ({
         );
     }
 
-    // Si hay contenido de children (como un spinner), renderízalo
     if (children) {
         return (
             <Modal isOpen={isOpen} onClose={onClose}>
