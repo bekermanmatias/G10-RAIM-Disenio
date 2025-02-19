@@ -13,21 +13,21 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register'; 
 import RequirementDetail from './components/requirements/RequirementDetail';
 import FloatingCreateButton from './components/listRequirements/components/FloatingCreateButton';
-import { useAuth } from './context/authContext'; // Asegúrate de importar el contexto de autenticación
+import { useAuth } from './context/authContext';
 
 const App = () => {
     const location = useLocation();
-    const { isAuthenticated, setIsAuthenticated } = useAuth(); // Desestructurar isAuthenticated y setIsAuthenticated del contexto
+    const { isAuthenticated, setIsAuthenticated } = useAuth();
 
     useEffect(() => {
         const authStatus = localStorage.getItem('isAuthenticated') === 'true';
         setIsAuthenticated(authStatus);
         console.log('Auth status changed:', authStatus);
-    }, [setIsAuthenticated]); // Asegúrate de añadir setIsAuthenticated como dependencia
+    }, [setIsAuthenticated]); 
 
     const handleLogout = () => {
-        localStorage.setItem('isAuthenticated', 'false'); // Cambiar el estado de autenticación
-        setIsAuthenticated(false); // Actualizar el estado local
+        localStorage.setItem('isAuthenticated', 'false'); 
+        setIsAuthenticated(false); 
     };
 
     const noSidebarRoutes = ['/login', '/register'];

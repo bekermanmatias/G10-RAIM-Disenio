@@ -87,7 +87,12 @@ const createRequirement = async (req, res) => {
 
 const getRequirements = async (req, res) => {
   try {
-    const requirements = await Requirement.findAll({
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 50;
+    const offset = (page - 1) * limit;
+
+    const { count, rows } = await Requirement.findAndCountAll({
       include: [
         {
           model: Estado,
@@ -119,13 +124,24 @@ const getRequirements = async (req, res) => {
           as:'UsuarioDestinatario',
           attributes:['nombre'],
         }
-
       ],
+      limit,
+      offset,
     });
-    if(requirements.length === 0){
+
+    if(rows.length === 0){
       return res.status(203).json({message: 'No hay requerimientos almacenados'})
     }
-    res.status(200).json(requirements);
+
+    const totalPages = Math.ceil(count/limit);
+
+    res.status(200).json({
+      requirements: rows,
+      totalPages,
+      currentPage: page,
+      totalCount: count,
+    });
+    
   }
   catch (error){
     res.status(500).json( { message: 'Error al obtener los requerimientos', error: error.message});
@@ -174,7 +190,7 @@ const getReqByCodigo = async (req,res) => {
     if(!requirement){
       return res.status(404).json({message: 'Requerimiento no encontrado'});
     }
-    res.status(201).json(requirement);
+    res.status(200).json(requirement);
   }
   catch (error){
     res.status(500).json({message: 'Error al obtener el requerimiento.', error: error.message});
@@ -201,7 +217,7 @@ const actualizarDatosReq = async (req, res) => {
     });
 
     await requeriment.save();
-    res.status(200).json(User);
+    res.status(200).json(Requirement);
   } catch (error) {
     res.status(500).json({ message: 'Error al actualizar los datos del requerimiento', error });
   }

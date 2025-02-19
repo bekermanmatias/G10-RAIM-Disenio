@@ -1,5 +1,4 @@
-// src/components/listRequirements/Requirements.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from './components/SearchBar';
 import TableRequirements from './components/TableRequirements';
@@ -25,7 +24,43 @@ const Requerimientos = () => {
         categorias: [],
         participacion: []
     });
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
     const navigate = useNavigate();
+
+    useEffect(() => {
+        fetchRequirements(currentPage);
+    }, [currentPage]);
+
+    const fetchRequirements = async (page) => {
+        setLoading(true);
+        try {
+            const response = await fetch(`http://tu-api.com/requerimientos?page=${page}`);
+            const data = await response.json();
+            
+            setFilteredRequirements(data.requerimientos);
+            setTotalPages(data.totalPages);
+            setCurrentPage(page);
+        } catch (error) {
+            setError('Error al cargar los datos');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
 
     const handleSearch = (event) => {
         const term = event.target.value;
@@ -90,28 +125,16 @@ const Requerimientos = () => {
 
         if (filters.participacion && filters.participacion.length > 0) {
             result = result.filter(req => {
-                if (filters.participacion.includes('Emisor')) {
-                    return req.emisor === 'jperez'; // Ajusta al usuario actual
-                }
-                return true;
+                const filtrarEmisor = filters.participacion.includes('Emisor') ? req.emisor === 'jperez' : true;
+                const filtrarAsignado = filters.participacion.includes('Asignado') ? req.propietario === 7 : true;
+                return filtrarEmisor && filtrarAsignado;
             });
         }
-
-        if (filters.participacion && filters.participacion.length > 0) {
-            result = result.filter(req => {
-                if (filters.participacion.includes('Asignado')) {
-                    return req.propietario === 7; // Ajusta al usuario actual
-                }
-                return true;
-            });
-        }
-
         setFilteredRequirements(result);
     };
 
     return (
         <div className="requerimientos-container">
-            {/* Añade el FilterContainer para cargar tipos y categorías */}
             <FilterContainer 
                 setTipos={setTipos} 
                 setCategorias={setCategorias} 
@@ -146,6 +169,25 @@ const Requerimientos = () => {
             <TableRequirements requirements={filteredRequirements} />
             {loading && <LoadingSpinner />} 
             {error && <p>Error: {error}</p>}
+
+            <div className="pagination">
+                <button 
+                    onClick={handlePreviousPage} 
+                    disabled={currentPage === 1}
+                >
+                      Anterior
+                </button>
+
+                <span>Página {currentPage} de {totalPages}</span>
+
+                <button 
+                    onClick={handleNextPage} 
+                    disabled={currentPage === totalPages}
+                >
+                       Siguiente
+                </button>
+            </div>
+            
             <FloatingCreateButton />
         </div>
     );

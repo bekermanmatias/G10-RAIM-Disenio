@@ -7,7 +7,7 @@ const routes = require('./routes/indexRoutes');
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use('/api', routes);
 
 app.use((req,res) =>{

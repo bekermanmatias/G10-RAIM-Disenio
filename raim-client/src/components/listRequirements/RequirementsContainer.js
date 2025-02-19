@@ -1,15 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const RequirementsContainer = ({ setFilteredRequirements, setRequerimientosData, setLoading, setError }) => {
+
+
+    const [ requirements, setRequirements ] = useState([]);
+    const [ currentPage, setCurrentPage ] = useState(1);
+    const [ totalPages, setTotalPages ] = useState(1);
+
     useEffect(() => {
         const fetchRequirements = async () => {
             setLoading(true);
             try {
-                const response = await fetch('https://g10-raim-disenio.onrender.com/api/requirement');
+                const response = await fetch(`https://g10-raim-disenio.onrender.com/api/requirement?page=${currentPage}&limit=50`);
+                
                 if (!response.ok) {
                     throw new Error('Error al obtener los requerimientos');
                 }
                 const data = await response.json();
+                setRequirements(data.requirements);
+                setTotalPages(data.totalPages);
 
                 const requerimientosData = data.map(req => ({
                     codigo: req.codigo, 
@@ -35,7 +44,13 @@ const RequirementsContainer = ({ setFilteredRequirements, setRequerimientosData,
         };
 
         fetchRequirements();
-    }, [setFilteredRequirements, setRequerimientosData, setLoading, setError]);
+    }, [ currentPage, setFilteredRequirements, setRequerimientosData, setLoading, setError]);
+
+    const handlePageChange = (page) => {
+        if (page >= 1 && page <= totalPages) {
+          setCurrentPage(page);
+        }
+      };
 
     return null;
 };
