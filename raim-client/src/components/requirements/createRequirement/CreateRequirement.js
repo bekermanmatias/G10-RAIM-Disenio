@@ -33,42 +33,24 @@ import { useNavigate } from 'react-router-dom';
 import CreateContainer from './CreateContainer';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import CustomButton from '../../../utils/CustomButton';
+import '../../listRequirements/components/TableRequirements.css';
 import RelateRequirementsModalContainer from './RelateRequirementsModalContainer'; // Corrige la ruta de importación
 
 const getPriorityStyle = (prioridad) => {
     switch(prioridad) {
         case 'Urgente':
-            return {
-                dotColor: '#f80505',
-                bgColor: 'rgba(231, 86, 86, 0.3)',
-                textColor: '#fc0909'
-            };
+            return 'priority-urgent';
         case 'Alta':
-            return {
-                dotColor: '#ec5721',
-                bgColor: 'rgba(255, 116, 65, 0.2)',
-                textColor: '#f35b35'
-            };
+            return 'priority-high';
         case 'Media':
-            return {
-                dotColor: '#DAA520',
-                bgColor: 'rgba(218, 165, 32, 0.2)',
-                textColor: '#B8860B'
-            };
+            return 'priority-medium';
         case 'Baja':
-            return {
-                dotColor: '#2E8B57',
-                bgColor: 'rgba(80, 194, 129, 0.2)',
-                textColor: '#2E8B57'
-            };
+            return 'priority-low';
         default:
-            return {
-                dotColor: 'gray.500',
-                bgColor: 'gray.100',
-                textColor: 'gray.700'
-            };
+            return '';
     }
 };
+
 
 const LeftFormColumn = ({ 
     tipos, 
@@ -223,56 +205,37 @@ const RightFormColumn = ({
         
 
         <FormControl>
-            <FormLabel>Prioridad *</FormLabel>
-            <RadioGroup 
-                name="descPrioridad" 
-                onChange={(value) => handleChange({ 
-                    target: { 
-                        name: 'descPrioridad', 
-                        value 
-                    } 
-                })} 
-                value={formData.descPrioridad}
-            >
-                <HStack spacing={4} >
-                    {['Urgente', 'Alta', 'Media', 'Baja'].map((priority) => {
-                        const priorityStyle = getPriorityStyle(priority);
-                        return (
+                <FormLabel>Prioridad *</FormLabel>
+                <RadioGroup 
+                    name="descPrioridad" 
+                    onChange={(value) => handleChange({ 
+                        target: { 
+                            name: 'descPrioridad', 
+                            value 
+                        } 
+                    })} 
+                    value={formData.descPrioridad}
+                >
+                    <HStack spacing={4}>
+                        {['Urgente', 'Alta', 'Media', 'Baja'].map((priority) => (
                             <Radio 
                                 key={priority} 
                                 value={priority}
                                 sx={{
                                     '.chakra-radio__control': {
-                                        display: 'none' // Oculta el radio original
-                                    },
-                                    
+                                        display: 'none'
+                                    }
                                 }}
                             >
-                                <Flex 
-                                    align="center" 
-                                    bg={priorityStyle.bgColor}
-                                    color={priorityStyle.textColor}
-                                    px={2}
-                                    py={1}
-                                    borderRadius="12px"
-                                    fontSize="0.9rem"
-                                    fontWeight={500}
-                                >
-                                    <Box 
-                                        mr={2}
-                                        width="8px"
-                                        height="8px"
-                                        borderRadius="50%"
-                                        bg={priorityStyle.dotColor}
-                                    />
+                                <span className={`priority-dot ${getPriorityStyle(priority)}`}>
                                     {priority}
-                                </Flex>
+                                </span>
                             </Radio>
-                        );
-                    })}
-                </HStack>
-            </RadioGroup>
-        </FormControl>
+                        ))}
+                    </HStack>
+                </RadioGroup>
+            </FormControl>
+
 
         <FormControl mt={2}>
             <FormLabel>Destinatario</FormLabel>

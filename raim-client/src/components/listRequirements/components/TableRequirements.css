@@ -50,55 +50,40 @@
 .priority-dot {
     display: inline-flex;
     align-items: center;
-    padding: 4px 8px;
+    padding: 4px 12px;
     border-radius: 12px;
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 600;
 }
 
-.priority-dot::before {
-    content: '';
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-right: 6px;
-}
+
 
 .priority-low {
     background-color: rgba(80, 194, 129, 0.2); 
-    color: #2E8B57; 
+    color: #156741; 
 }
 
-.priority-low::before {
-    background-color: #2E8B57;
-}
+
 
 .priority-medium {
     background-color: rgba(218, 165, 32, 0.2); 
-    color: #B8860B; 
+    color: #a35d08; 
 }
 
-.priority-medium::before {
-    background-color: #DAA520; 
-}
+
 
 .priority-high {
-    background-color: rgba(255, 116, 65, 0.2); 
-    color: #f35b35; 
+    background-color: rgba(175, 60, 18, 0.281); 
+    color: #ff3300; 
 }
 
-.priority-high::before {
-    background-color: #ec5721; 
-}
+
 
 .priority-urgent {
-    background-color: rgba(231, 86, 86, 0.3); 
+    background-color: rgba(141, 11, 11, 0.3); 
     color: #fc0909; 
 }
 
-.priority-urgent::before {
-    background-color: #f80505; 
-}
 
 thead th {
     cursor: pointer;
