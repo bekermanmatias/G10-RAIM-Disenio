@@ -2,11 +2,11 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Sidebar.css';
 
-const Sidebar = ({ onLogout }) => {
+const Sidebar = ({ onLogout, isOpen }) => {
     const location = useLocation();
 
     return (
-        <nav className="sidebar">
+        <nav className={`sidebar ${isOpen ? 'active' : ''}`}>
             <ul>
                 <li>
                     <Link 

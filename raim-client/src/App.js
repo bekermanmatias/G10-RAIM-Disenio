@@ -18,6 +18,11 @@ import { useAuth } from './context/authContext';
 const App = () => {
     const location = useLocation();
     const { isAuthenticated, setIsAuthenticated } = useAuth();
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    const toggleSidebar = () => {
+        setIsSidebarOpen(!isSidebarOpen);
+    };
 
     useEffect(() => {
         const authStatus = localStorage.getItem('isAuthenticated') === 'true';
@@ -34,10 +39,28 @@ const App = () => {
 
     return (
         <Flex direction="column" minHeight="100vh">
-            <Header />
+            <Header toggleSidebar={toggleSidebar} />
             <Flex flex={1}>
-                {!noSidebarRoutes.includes(location.pathname) && <Sidebar onLogout={handleLogout} />}
-                <Box flex={1} p={4}>
+                {!noSidebarRoutes.includes(location.pathname) && (
+                    <>
+                        <Sidebar 
+                            onLogout={handleLogout} 
+                            isOpen={isSidebarOpen}
+                        />
+                        {isSidebarOpen && (
+                            <div 
+                                className="overlay" 
+                                onClick={toggleSidebar}
+                            />
+                        )}
+                    </>
+                )}
+                <Box 
+                    flex={1} 
+                    p={4} 
+                    ml={{ base: 0, md: '250px' }}
+                    mt={{ base: '55px', md: '55px' }}
+                >
                     <Routes>
                         {isAuthenticated ? (
                             <>

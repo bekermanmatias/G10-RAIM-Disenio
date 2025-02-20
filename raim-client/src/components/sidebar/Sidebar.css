@@ -2,7 +2,13 @@
     width: 250px;
     background-color: #f4f4f4;
     padding: 20px 0;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    box-shadow: -2px 0 5px rgba(0,0,0,0.1); /* Cambiado para sombra del lado izquierdo */
+    height: calc(100vh - 71px);
+    position: fixed;
+    top: 71px;
+    left: 0; /* Para desktop se mantiene a la izquierda */
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
 }
 
 .sidebar ul {
@@ -21,18 +27,49 @@
     display: block;
     padding: 15px 20px;
     transition: all 0.2s ease;
-
 }
 
 .sidebar ul li a:hover {
     background-color: rgba(85, 85, 99, 0.1);
     color: #040247;
-
 }
 
 .sidebar ul li a.active {
     background-color: rgba(68, 68, 73, 0.2);
     color: #040247;
     border-left-color: #040247;
-    font-weight:bold;
+    font-weight: bold;
+}
+
+/* Media queries para móvil */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        left: auto; /* Elimina left:0 */
+        right: 0; /* Posiciona el sidebar a la derecha */
+        transform: translateX(100%); /* Cambia la dirección de la transformación */
+        top: 56px;
+        height: calc(100vh - 56px);
+    }
+
+    .sidebar.active {
+        transform: translateX(0); /* Mantiene la transformación a 0 */
+    }
+}
+
+/* Overlay solo para móvil */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+@media screen and (max-width: 768px) {
+    .overlay {
+        display: block;
+    }
 }
