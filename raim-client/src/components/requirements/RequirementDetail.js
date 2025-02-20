@@ -15,6 +15,7 @@ import {
     HStack
 } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
+import '../../components/listRequirements/components/TableRequirements.css';
 import RequirementContainer from './RequirementContainer';
 import CustomButton from '../../utils/CustomButton';
 
@@ -83,6 +84,21 @@ const RequirementDetail = () => {
         );
     }
 
+    const getPriorityStyle = (prioridad) => {
+        switch(prioridad) {
+            case 'Urgente':
+                return 'priority-urgent';
+            case 'Alta':
+                return 'priority-high';
+            case 'Media':
+                return 'priority-medium';
+            case 'Baja':
+                return 'priority-low';
+            default:
+                return '';
+        }
+    };
+
     return (
         <Box p={8}>
             <Flex 
@@ -108,7 +124,9 @@ const RequirementDetail = () => {
                             </GridItem>
                             <GridItem>
                                 <Heading size="sm" mb={2} color="blue.900">Prioridad</Heading>
-                                <Text>{requerimiento.prioridad}</Text>
+                                <span className={`priority-dot ${getPriorityStyle(requerimiento.prioridad)}`}>
+                                    {requerimiento.prioridad}
+                                </span>
                             </GridItem>
                             <GridItem>
                                 <Heading size="sm" mb={2} color="blue.900">Tipo</Heading>
