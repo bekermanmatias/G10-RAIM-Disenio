@@ -19,7 +19,6 @@ const RelateRequirementsModalContainer = ({
 
     useEffect(() => {
         const fetchRequirements = async () => {
-            // Solo realizar el fetch cuando el modal se abre
             if (isOpen) {
                 setIsLoading(true);
                 setError(null);
@@ -37,15 +36,12 @@ const RelateRequirementsModalContainer = ({
                     }
 
                     const data = await response.json();
-                    
-                    // Transformar los datos al formato esperado por el modal
                     const formattedRequirements = data.map(req => ({
                         value: req.codigo, 
                         label: req.asunto,
                         fechaCreacion: new Date(req.fechaHora) 
                     }));
 
-                    // Ordenar los requerimientos por fecha desde el más reciente
                     const sortedRequirements = formattedRequirements.sort((a, b) => b.fechaCreacion - a.fechaCreacion);
 
                     setRequirements(sortedRequirements);
@@ -67,7 +63,6 @@ const RelateRequirementsModalContainer = ({
         fetchRequirements();
     }, [isOpen, toast]);
 
-    // Si está cargando, muestra un spinner dentro del modal
     if (isLoading) {
         return (
             <RelateRequirementsModal
@@ -84,7 +79,6 @@ const RelateRequirementsModalContainer = ({
         );
     }
 
-    // Si hay un error, muestra el modal con un mensaje de error
     if (error) {
         return (
             <RelateRequirementsModal
@@ -98,7 +92,6 @@ const RelateRequirementsModalContainer = ({
         );
     }
 
-    // Renderiza el modal con los requerimientos cargados
     return (
         <RelateRequirementsModal
             isOpen={isOpen}

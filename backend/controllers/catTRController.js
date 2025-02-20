@@ -37,6 +37,24 @@ const getCatTR = async (req, res) => {
   }
 }
 
+const getCatByTipo = async (req,res) => {
+  const {idTipo} = req.body;
+  try{
+    
+    const catsTR = await CategoriaTR.findAll({
+      where: { idTipoReq: idTipo },
+    });
+    if (!catsTR) {
+      return res.status(404).json({ message: 'Categorias no encontradas' });
+    }
+    res.status(200).json(catsTR);
+  }
+  catch (error){
+    res.status(500).json({message: 'Error al obtener la categoria.', error: error.message});
+  }
+    
+}
+
 const getCatByDesc = async (req,res) => {
   const {descripcion} = req.body;
   try{
@@ -54,7 +72,6 @@ const getCatByDesc = async (req,res) => {
   }
     
 }
-
 
 const eliminarCat = async (req, res) => {
   const {descripcion} = req.body;
@@ -77,6 +94,7 @@ const eliminarCat = async (req, res) => {
 module.exports = {
   createCatTR,
   getCatTR,
+  getCatByTipo,
   getCatByDesc,
   eliminarCat
 };
