@@ -38,11 +38,24 @@ const Requerimientos = () => {
         setLoading(true);
         try {
             const response = await fetch(`https://g10-raim-disenio.onrender.com/api/requirement?page=${page}&limit=50`);
-            const data = await response.requirements.json();
-            console.log('aca es el error', response, page);
-            setFilteredRequirements(data.requerimientos);
+            const data = await response.json();
+            setFilteredRequirements(data.requirements);
             setTotalPages(data.totalPages);
             setCurrentPage(page);
+
+            const requerimientosData = data.requirements.map(req => ({
+                codigo: req.codigo, 
+                prioridad: req.prioridad.descripcion, 
+                tipo: req.tipoReq.descripcion, 
+                categoria: req.categoria.descripcion, 
+                fechaAlta: req.fechaHora,
+                estado: req.estado.descripcion, 
+                asunto: req.asunto,
+                propietario: req.idUserDetinatario ? `Usuario ${req.idUserDetinatario}` : 'Sin asignar', 
+                emisor: req.idUsuarioCreador.nombreUsuario 
+            }));
+            setFilteredRequirements(requerimientosData);
+
         } catch (error) {
             setError(error.message);
         } finally {
