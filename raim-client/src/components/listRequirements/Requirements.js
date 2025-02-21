@@ -37,14 +37,14 @@ const Requerimientos = () => {
     const fetchRequirements = async (page) => {
         setLoading(true);
         try {
-            const response = await fetch(`http://tu-api.com/requerimientos?page=${page}`);
-            const data = await response.json();
-            
+            const response = await fetch(`https://g10-raim-disenio.onrender.com/api/requirement?page=${page}&limit=50`);
+            const data = await response.requirements.json();
+            console.log('aca es el error', response, page);
             setFilteredRequirements(data.requerimientos);
             setTotalPages(data.totalPages);
             setCurrentPage(page);
         } catch (error) {
-            setError('Error al cargar los datos');
+            setError(error.message);
         } finally {
             setLoading(false);
         }

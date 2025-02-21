@@ -20,7 +20,7 @@ const RequirementsContainer = ({ setFilteredRequirements, setRequerimientosData,
                 setRequirements(data.requirements);
                 setTotalPages(data.totalPages);
 
-                const requerimientosData = data.map(req => ({
+                const requerimientosData = data.requirements.map(req => ({
                     codigo: req.codigo, 
                     prioridad: req.prioridad.descripcion, 
                     tipo: req.tipoReq.descripcion, 
