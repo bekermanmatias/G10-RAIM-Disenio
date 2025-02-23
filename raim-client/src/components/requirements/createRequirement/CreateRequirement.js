@@ -554,11 +554,11 @@ const CrearRequerimiento = () => {
             </Heading>
            
             {showMissingFieldsAlert && (
-                <Alert status="error" mb={4}>
-                    <AlertDescription>
-                        Complete los siguientes campos: {missingFields.join(', ')}
-                    </AlertDescription>
-                </Alert>
+                 <Alert status="error" borderRadius="md" fontSize="lg" fontWeight="bold" p={4} mt={4} bg="red.600" color="white">
+                 <AlertDescription>
+                     ⚠️ Complete los siguientes campos: <strong>Tipo, Categoría, Prioridad, Asunto, Descripción</strong>
+                 </AlertDescription>
+             </Alert>
             )}
 
             <form onSubmit={handleSubmitWithConfirmation}>
@@ -590,24 +590,25 @@ const CrearRequerimiento = () => {
                     direction={{ base: 'column', sm: 'row' }}
                     spacing={4}
                     mt={6}
-                    width="full"
+                    width="100%"
                     justify="flex-end"
-                >
+                    >
                     <CustomButton
                         variant="cancel"
                         onClick={handleCancel}
-                        width={{ base: "full", sm: "auto" }}
+                        width={{ base: "100%", md: "auto" }}
                     >
                         Cancelar
                     </CustomButton>
                     <CustomButton
                         variant="apply"
                         type="submit"
-                        width={{ base: "full", sm: "auto" }}
+                        width={{ base: "100%", md: "auto" }}
                     >
                         Guardar Requerimiento
                     </CustomButton>
-                </Stack>
+                    </Stack>
+
             </form>
 
             <RelateRequirementsModalContainer
