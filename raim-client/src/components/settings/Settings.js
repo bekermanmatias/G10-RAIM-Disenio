@@ -43,6 +43,8 @@ const Settings = () => {
     });
 
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
+
     const nombreUsuario = String(localStorage.getItem('usuario'));
     if (!nombreUsuario) {
         navigate('/login');
@@ -80,10 +82,27 @@ const Settings = () => {
         navigate('/login');
     };
 
+    const handleDeleteAccount = async () => {
+        try {
+            const response = await fetch(`https://g10-raim-disenio.onrender.com/api/user/${nombreUsuario}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al eliminar la cuenta');
+            }
+
+            localStorage.removeItem('usuario');
+            logout();
+            navigate('/register');
+        } catch (error) {
+            console.error("Error deleting user:", error);
+        }
+    };
+
     return (
         <Container maxW="container.xl" p={{ base: 4, md: 8 }}>
             <Stack spacing={6}>
-                {/* Profile Header */}
                 <Box
                     width="full"
                     border="1px"
@@ -105,11 +124,10 @@ const Settings = () => {
                         {userData.nombreUsuario}
                     </Heading>
                     <Text color="gray.500" mb={4}>
-                        {userData.username} {/* Assuming you have a username field */}
+                        {userData.username}
                     </Text>
                 </Box>
 
-                {/* User Details Grid */}
                 <Grid
                     templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
                     gap={{ base: 4, md: 6 }}
@@ -174,11 +192,12 @@ const Settings = () => {
                         </FormControl>
                     </GridItem>
 
-                    {/* Add other fields as needed, mirroring the structure above */}
-
                 </Grid>
 
                 <Flex justifyContent="flex-end" mt={4}>
+                <CustomButton onClick={onDeleteOpen} variant="danger">
+                        Eliminar Cuenta
+                    </CustomButton>
                     <CustomButton onClick={onOpen} variant="delete" ml={4}>
                         Cerrar Sesión
                     </CustomButton>
@@ -201,6 +220,25 @@ const Settings = () => {
                         </ModalFooter>
                     </ModalContent>
                 </Modal>
+
+                <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
+                    <ModalOverlay />
+                    <ModalContent>
+                        <ModalHeader>Confirmar Eliminación de Cuenta</ModalHeader>
+                        <ModalBody>
+                            ¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.
+                        </ModalBody>
+                        <ModalFooter>
+                            <CustomButton variant="cancel" onClick={onDeleteClose}>
+                                Cancelar
+                            </CustomButton>
+                            <CustomButton variant="danger" onClick={handleDeleteAccount} ml={3}>
+                                Eliminar
+                            </CustomButton>
+                        </ModalFooter>
+                    </ModalContent>
+                </Modal>
+
             </Stack>
         </Container>
     );
