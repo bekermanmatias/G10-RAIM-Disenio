@@ -10,6 +10,7 @@ const prioridadRoutes = require('./prioridadRoutes');
 const departRoutes = require('./departamentoRoutes');
 const loginRoutes = require('./loginRoutes');
 const archivoAdjRoutes = require('./uploadFilesRoutes');
+const commentRoutes = require('./commentRoutes');
 
 router.use('/user', userRoutes);
 router.use('/requirement', reqRoutes);
@@ -20,5 +21,6 @@ router.use('/prioridad', prioridadRoutes);
 router.use('/departamento', departRoutes);
 router.use('/login', loginRoutes);
 router.use('/uploadFiles', archivoAdjRoutes);
+router.use('/comment',commentRoutes);
 
 module.exports = router;
