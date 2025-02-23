@@ -4,16 +4,11 @@ import {
     VStack,
     Text,
     Heading,
-    Button,
     Flex,
     Container,
     Grid,
     GridItem,
-    Spinner,
-    Alert,
-    AlertIcon,
     Avatar,
-    Center,
     FormControl,
     FormLabel,
     Input,
@@ -39,7 +34,8 @@ const Settings = () => {
         legajo: '',
         nombreUsuario: '',
         cargo: '',
-        departamento: ''
+        departamento: '',
+        fechaIngreso: '',
     });
 
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,6 +43,20 @@ const Settings = () => {
     if (!nombreUsuario) {
         navigate('/login');
     }
+
+    // Función para formatear la fecha
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses inician en 0
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        return `${day}/${month}/${year}, ${hours}:${minutes}:${seconds}`;
+    };
+  
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -105,7 +115,7 @@ const Settings = () => {
                         {userData.nombreUsuario}
                     </Heading>
                     <Text color="gray.500" mb={4}>
-                        {userData.username} {/* Assuming you have a username field */}
+                        {userData.username} {/* Ajusta este campo según corresponda */}
                     </Text>
                 </Box>
 
@@ -174,12 +184,26 @@ const Settings = () => {
                         </FormControl>
                     </GridItem>
 
-                    {/* Add other fields as needed, mirroring the structure above */}
-
+                    <GridItem>
+                        <FormControl isReadOnly>
+                            <FormLabel color="blue.900">Fecha de Ingreso</FormLabel>
+                            <Input
+                                value={formatDate(userData.fechaIngreso)}
+                                isReadOnly
+                                bg="gray.100"
+                                color="gray.600"
+                            />
+                        </FormControl>
+                    </GridItem>
                 </Grid>
 
-                <Flex justifyContent="flex-end" mt={4}>
-                    <CustomButton onClick={onOpen} variant="delete" ml={4}>
+                <Flex justifyContent={{ base: "center", md: "flex-end" }} mt={4}>
+                    <CustomButton
+                        onClick={onOpen}
+                        variant="delete"
+                        width={{ base: "100%", md: "auto" }}
+                        ml={{ base: 0, md: 4 }}
+                    >
                         Cerrar Sesión
                     </CustomButton>
                 </Flex>
