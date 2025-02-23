@@ -36,7 +36,7 @@ const RelateRequirementsModalContainer = ({
                     }
 
                     const data = await response.json();
-                    const formattedRequirements = data.map(req => ({
+                    const formattedRequirements = data.requirements.map(req => ({
                         value: req.codigo, 
                         label: req.asunto,
                         fechaCreacion: new Date(req.fechaHora) 
