@@ -4,16 +4,11 @@ import {
     VStack,
     Text,
     Heading,
-    Button,
     Flex,
     Container,
     Grid,
     GridItem,
-    Spinner,
-    Alert,
-    AlertIcon,
     Avatar,
-    Center,
     FormControl,
     FormLabel,
     Input,
@@ -39,7 +34,8 @@ const Settings = () => {
         legajo: '',
         nombreUsuario: '',
         cargo: '',
-        departamento: ''
+        departamento: '',
+        fechaIngreso: ''
     });
 
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -58,7 +54,8 @@ const Settings = () => {
                     throw new Error('Error al obtener los datos del usuario');
                 }
                 const data = await response.json();
-                const mappedData = {
+                const fechaFormateada = new Date(data.createdAt).toLocaleString('es-ES'); // Formato dd/mm/yyyy hh:mm:ss
+                setUserData({
                     idUsuario: data.idUsuario,
                     nombre: data.nombre,
                     nombreUsuario: data.nombreUsuario,
@@ -66,9 +63,8 @@ const Settings = () => {
                     cargo: data.cargo,
                     legajo: data.legajo,
                     departamento: data.nombreDepa.nombre,
-                    fechaIngreso: data.createdAt,
-                };
-                setUserData(mappedData);
+                    fechaIngreso: fechaFormateada,
+                });
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
@@ -111,117 +107,95 @@ const Settings = () => {
                     p={{ base: 4, md: 6 }}
                     textAlign="center"
                 >
-                    <Avatar
-                        size={{ base: "xl", md: "2xl" }}
-                        name={userData.nombreUsuario}
-                        mb={4}
-                    />
-                    <Heading
-                        size={{ base: "md", md: "lg" }}
-                        mb={2}
-                        color="blue.900"
-                    >
+                    <Avatar size={{ base: "xl", md: "2xl" }} name={userData.nombreUsuario} mb={4} />
+                    <Heading size={{ base: "md", md: "lg" }} mb={2} color="blue.900">
                         {userData.nombreUsuario}
                     </Heading>
-                    <Text color="gray.500" mb={4}>
-                        {userData.username}
-                        {userData.username} {/* Ajusta este campo según corresponda */}
-                    </Text>
                 </Box>
 
-                <Grid
-                    templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
-                    gap={{ base: 4, md: 6 }}
-                >
+                {/* Datos de usuario con fecha de ingreso */}
+                <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={{ base: 4, md: 6 }}>
                     <GridItem>
                         <FormControl isReadOnly>
                             <FormLabel color="blue.900">Nombre Completo</FormLabel>
-                            <Input
-                                value={userData.nombre}
-                                isReadOnly
-                                bg="gray.100"
-                                color="gray.600"
-                            />
+                            <Input value={userData.nombre} isReadOnly bg="gray.100" color="gray.600" />
                         </FormControl>
                     </GridItem>
 
                     <GridItem>
                         <FormControl isReadOnly>
                             <FormLabel color="blue.900">Correo Electrónico</FormLabel>
-                            <Input
-                                value={userData.email}
-                                isReadOnly
-                                bg="gray.100"
-                                color="gray.600"
-                            />
+                            <Input value={userData.email} isReadOnly bg="gray.100" color="gray.600" />
                         </FormControl>
                     </GridItem>
 
                     <GridItem>
                         <FormControl isReadOnly>
                             <FormLabel color="blue.900">Legajo</FormLabel>
-                            <Input
-                                value={userData.legajo}
-                                isReadOnly
-                                bg="gray.100"
-                                color="gray.600"
-                            />
+                            <Input value={userData.legajo} isReadOnly bg="gray.100" color="gray.600" />
                         </FormControl>
                     </GridItem>
 
                     <GridItem>
                         <FormControl isReadOnly>
                             <FormLabel color="blue.900">Cargo</FormLabel>
-                            <Input
-                                value={userData.cargo}
-                                isReadOnly
-                                bg="gray.100"
-                                color="gray.600"
-                            />
+                            <Input value={userData.cargo} isReadOnly bg="gray.100" color="gray.600" />
                         </FormControl>
                     </GridItem>
 
                     <GridItem>
                         <FormControl isReadOnly>
                             <FormLabel color="blue.900">Departamento</FormLabel>
-                            <Input
-                                value={userData.departamento}
-                                isReadOnly
-                                bg="gray.100"
-                                color="gray.600"
-                            />
+                            <Input value={userData.departamento} isReadOnly bg="gray.100" color="gray.600" />
                         </FormControl>
                     </GridItem>
 
+                    <GridItem>
+                        <FormControl isReadOnly>
+                            <FormLabel color="blue.900">Fecha de Ingreso</FormLabel>
+                            <Input value={userData.fechaIngreso} isReadOnly bg="gray.100" color="gray.600" />
+                        </FormControl>
+                    </GridItem>
                 </Grid>
 
-                <Flex justifyContent="flex-end" mt={4}>
-                <CustomButton onClick={onDeleteOpen} variant="danger">
+                {/* Botones en el fondo */}
+                <Flex direction={{ base: "column", md: "row" }} mt={4} gap={2}>
+                    <CustomButton
+                        onClick={onDeleteOpen}
+                        variant="danger"
+                        width={{ base: "100%", md: "auto" }}
+                    >
                         Eliminar Cuenta
                     </CustomButton>
-                    <CustomButton onClick={onOpen} variant="delete" ml={4}>
+                    <CustomButton
+                        onClick={onOpen}
+                        variant="delete"
+                        width={{ base: "100%", md: "auto" }}
+                    >
                         Cerrar Sesión
                     </CustomButton>
                 </Flex>
 
+                {/* Modal Cerrar Sesión */}
                 <Modal isOpen={isOpen} onClose={onClose}>
                     <ModalOverlay />
                     <ModalContent>
                         <ModalHeader>Confirmar Cierre de Sesión</ModalHeader>
-                        <ModalBody>
-                            ¿Estás seguro de que deseas cerrar sesión?
-                        </ModalBody>
+                        <ModalBody>¿Estás seguro de que deseas cerrar sesión?</ModalBody>
                         <ModalFooter>
-                            <CustomButton variant="cancel" onClick={onClose}>
-                                Cancelar
-                            </CustomButton>
-                            <CustomButton variant="delete" onClick={handleLogout} ml={3}>
-                                Confirmar
-                            </CustomButton>
+                            <Flex width="100%" gap={2}>
+                                <CustomButton variant="cancel" onClick={onClose} width="50%">
+                                    Cancelar
+                                </CustomButton>
+                                <CustomButton variant="delete" onClick={handleLogout} width="50%">
+                                    Confirmar
+                                </CustomButton>
+                            </Flex>
                         </ModalFooter>
                     </ModalContent>
                 </Modal>
 
+                {/* Modal Eliminar Cuenta */}
                 <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
                     <ModalOverlay />
                     <ModalContent>
@@ -230,16 +204,17 @@ const Settings = () => {
                             ¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.
                         </ModalBody>
                         <ModalFooter>
-                            <CustomButton variant="cancel" onClick={onDeleteClose}>
-                                Cancelar
-                            </CustomButton>
-                            <CustomButton variant="danger" onClick={handleDeleteAccount} ml={3}>
-                                Eliminar
-                            </CustomButton>
+                            <Flex width="100%" gap={2}>
+                                <CustomButton variant="cancel" onClick={onDeleteClose} width="50%">
+                                    Cancelar
+                                </CustomButton>
+                                <CustomButton variant="danger" onClick={handleDeleteAccount} width="50%">
+                                    Eliminar
+                                </CustomButton>
+                            </Flex>
                         </ModalFooter>
                     </ModalContent>
                 </Modal>
-
             </Stack>
         </Container>
     );
