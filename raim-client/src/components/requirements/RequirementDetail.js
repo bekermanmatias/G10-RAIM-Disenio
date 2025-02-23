@@ -300,14 +300,15 @@ const RequirementDetail = () => {
       </Grid>
 
       <Flex justifyContent="flex-start" mt={6}>
-        <CustomButton 
-          onClick={handleBack} 
-          variant="apply" 
-          width="100px"
-        >
-          ← Volver
-        </CustomButton>
-      </Flex>
+          <CustomButton 
+            onClick={handleBack} 
+            variant="apply" 
+            width={{ base: '100%', md: '100px' }}
+          >
+            ← Volver
+          </CustomButton>
+        </Flex>
+
     </Box>
   );
 };

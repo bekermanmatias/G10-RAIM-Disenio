@@ -125,6 +125,7 @@ const Settings = () => {
                     </Heading>
                     <Text color="gray.500" mb={4}>
                         {userData.username}
+                        {userData.username} {/* Ajusta este campo según corresponda */}
                     </Text>
                 </Box>
 

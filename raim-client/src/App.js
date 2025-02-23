@@ -58,7 +58,7 @@ const App = () => {
         <Box
           flex={1}
           p={4}
-          ml={{ base: 0, md: '250px' }}
+          ml={{ base: 0, md: noSidebarRoutes.includes(location.pathname) ? 0 : '250px' }}
           mt={{ base: '55px', md: '55px' }} // Ajusta el margen superior según la altura del header en móvil y desktop
         >
           <Routes>
@@ -71,20 +71,19 @@ const App = () => {
                 <Route path="/crear-requerimiento" element={<CrearRequerimiento />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/" element={<Requerimientos />} />
-                {/* Ruta catch-all para usuarios autenticados */}
                 <Route path="*" element={<Navigate to="/" />} />
               </>
             ) : (
               <>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                {/* Ruta catch-all para usuarios no autenticados */}
                 <Route path="*" element={<Navigate to="/login" />} />
               </>
             )}
           </Routes>
           <FloatingCreateButton />
         </Box>
+
       </Flex>
       <Footer />
     </Flex>
