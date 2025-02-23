@@ -1,17 +1,16 @@
-// src/components/requirements/createRequirement/createRequirement.js
 import React, { useState, useCallback } from 'react';
-import { 
-    Box, 
-    VStack, 
-    HStack, 
-    FormControl, 
-    FormLabel, 
-    Input, 
-    Select, 
-    Textarea, 
-    Button, 
-    Heading, 
-    Radio, 
+import {
+    Box,
+    VStack,
+    HStack,
+    FormControl,
+    FormLabel,
+    Input,
+    Select,
+    Textarea,
+    Button,
+    Heading,
+    Radio,
     RadioGroup,
     Flex,
     useToast,
@@ -27,14 +26,16 @@ import {
     useDisclosure,
     Tag,
     TagCloseButton,
-    TagLabel
+    TagLabel,
+    Stack,
+    useBreakpointValue
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import CreateContainer from './CreateContainer';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import CustomButton from '../../../utils/CustomButton';
 import '../../listRequirements/components/TableRequirements.css';
-import RelateRequirementsModalContainer from './RelateRequirementsModalContainer'; // Corrige la ruta de importación
+import RelateRequirementsModalContainer from './RelateRequirementsModalContainer';
 
 const getPriorityStyle = (prioridad) => {
     switch(prioridad) {
@@ -51,20 +52,20 @@ const getPriorityStyle = (prioridad) => {
     }
 };
 
-
-const LeftFormColumn = ({ 
-    tipos, 
-    categorias, 
-    formData, 
-    handleChange, 
-    handleFileChange 
+const LeftFormColumn = ({
+    tipos,
+    categorias,
+    formData,
+    handleChange,
+    handleFileChange,
+    isFullWidth
 }) => (
-    <VStack width="50%" spacing={4}>
+    <VStack width={isFullWidth ? "100%" : "50%"} spacing={4}>
         <FormControl>
             <FormLabel>Tipo *</FormLabel>
-            <Select 
-                name="descTipoReq" 
-                value={formData.descTipoReq} 
+            <Select
+                name="descTipoReq"
+                value={formData.descTipoReq}
                 onChange={handleChange}
                 placeholder="Seleccione el Tipo"
                 variant="outline"
@@ -83,12 +84,12 @@ const LeftFormColumn = ({
                 boxShadow="sm"
             >
                 {tipos.map(tipo => (
-                    <option 
-                        key={tipo} 
+                    <option
+                        key={tipo}
                         value={tipo}
-                        style={{ 
+                        style={{
                             backgroundColor: 'white',
-                            color: 'black' 
+                            color: 'black'
                         }}
                     >
                         {tipo}
@@ -96,12 +97,12 @@ const LeftFormColumn = ({
                 ))}
             </Select>
         </FormControl>
-        
+       
         <FormControl width="full" mt={-0.5}>
             <FormLabel>Categoria *</FormLabel>
-            <Select 
-                name="descCategoriaTR" 
-                value={formData.descCategoriaTR} 
+            <Select
+                name="descCategoriaTR"
+                value={formData.descCategoriaTR}
                 onChange={handleChange}
                 placeholder="Seleccione la Categoría"
                 variant="outline"
@@ -120,19 +121,19 @@ const LeftFormColumn = ({
                 boxShadow="sm"
             >
                 {categorias.map(categoria => (
-                    <option 
-                        key={categoria} 
+                    <option
+                        key={categoria}
                         value={categoria}
-                        style={{ 
+                        style={{
                             backgroundColor: 'white',
-                            color: 'black' 
+                            color: 'black'
                         }}
                     >
                         {categoria}
                     </option>
                 ))}
             </Select>
- </FormControl>
+        </FormControl>
 
         <FormControl>
             <FormLabel>Asunto *</FormLabel>
@@ -155,8 +156,8 @@ const LeftFormColumn = ({
                 fontWeight="medium"
                 boxShadow="sm"
                 placeholder="Ingrese el asunto"
-                _placeholder={{ 
-                    color: 'gray.500' 
+                _placeholder={{
+                    color: 'gray.500'
                 }}
             />
         </FormControl>
@@ -181,8 +182,8 @@ const LeftFormColumn = ({
                 fontWeight="medium"
                 boxShadow="sm"
                 placeholder="Ingrese una descripción detallada"
-                _placeholder={{ 
-                    color: 'gray.500' 
+                _placeholder={{
+                    color: 'gray.500'
                 }}
                 resize="vertical"
                 minHeight="120px"
@@ -192,65 +193,63 @@ const LeftFormColumn = ({
     </VStack>
 );
 
-const RightFormColumn = ({ 
-    users, 
-    formData, 
+const RightFormColumn = ({
+    users,
+    formData,
     handleChange,
     onOpenRelateRequirements,
     relatedRequirements,
     handleRemoveRequirement,
-    handleFileChange
+    handleFileChange,
+    isFullWidth
 }) => (
-    <VStack width="50%" spacing={4}>
-        
-
+    <VStack width={isFullWidth ? "100%" : "50%"} spacing={4}>
         <FormControl>
-                <FormLabel>Prioridad *</FormLabel>
-                <RadioGroup 
-                    name="descPrioridad" 
-                    onChange={(value) => handleChange({ 
-                        target: { 
-                            name: 'descPrioridad', 
-                            value 
-                        } 
-                    })} 
-                    value={formData.descPrioridad}
-                >
-                    <HStack spacing={4}>
-                        {['Urgente', 'Alta', 'Media', 'Baja'].map((priority) => (
-                            <Radio 
-                                key={priority} 
-                                value={priority}
-                                sx={{
-                                    '.chakra-radio__control': {
-                                        display: 'none'
-                                    }
-                                }}
-                            >
-                                <span className={`priority-dot ${getPriorityStyle(priority)}`}>
-                                    {priority}
-                                </span>
-                            </Radio>
-                        ))}
-                    </HStack>
-                </RadioGroup>
-            </FormControl>
-
+            <FormLabel>Prioridad *</FormLabel>
+            <RadioGroup
+                name="descPrioridad"
+                onChange={(value) => handleChange({
+                    target: {
+                        name: 'descPrioridad',
+                        value
+                    }
+                })}
+                value={formData.descPrioridad}
+            >
+                <Stack direction={{ base: 'column', sm: 'row' }} spacing={4}>
+                    {['Urgente', 'Alta', 'Media', 'Baja'].map((priority) => (
+                        <Radio
+                            key={priority}
+                            value={priority}
+                            sx={{
+                                '.chakra-radio__control': {
+                                    display: 'none'
+                                }
+                            }}
+                        >
+                            <span className={`priority-dot ${getPriorityStyle(priority)}`}>
+                                {priority}
+                            </span>
+                        </Radio>
+                    ))}
+                </Stack>
+            </RadioGroup>
+        </FormControl>
 
         <FormControl mt={2}>
             <FormLabel>Destinatario</FormLabel>
-            <Select 
-                name="destinatario" 
-                value={formData.destinatario} 
+            <Select
+                name="destinatario"
+                value={formData.destinatario}
                 onChange={handleChange}
                 placeholder="Seleccione el Destinatario"
                 variant="outline"
-                borderColor=" gray.300"
+                borderColor="gray.300"
                 focusBorderColor="blue.900"
                 _hover={{
                     borderColor: 'blue.900'
                 }}
-                icon={<Icon as={ChevronDownIcon} />}  
+                icon={<Icon as={ChevronDownIcon} />}
                 iconColor="gray.600"
                 size="md"
                 borderRadius="md"
@@ -260,12 +259,12 @@ const RightFormColumn = ({
                 boxShadow="sm"
             >
                 {users.map(user => (
-                    <option 
-                        key={user.value} 
+                    <option
+                        key={user.value}
                         value={user.value}
-                        style={{ 
+                        style={{
                             backgroundColor: 'white',
-                            color: 'black' 
+                            color: 'black'
                         }}
                     >
                         {user.label}
@@ -276,10 +275,10 @@ const RightFormColumn = ({
 
         <FormControl>
             <FormLabel>Archivos Adjuntos</FormLabel>
-            <Input 
-                type="file" 
-                name="archivos" 
-                multiple 
+            <Input
+                type="file"
+                name="archivos"
+                multiple
                 onChange={handleFileChange}
                 variant="outline"
                 borderColor="gray.300"
@@ -314,13 +313,12 @@ const RightFormColumn = ({
             />
         </FormControl>
 
-
         <FormControl>
             <FormLabel>Requerimientos Relacionados</FormLabel>
             <Flex>
-                <CustomButton 
-                    onClick={onOpenRelateRequirements} 
-                    variant="outline" 
+                <CustomButton
+                    onClick={onOpenRelateRequirements}
+                    variant="outline"
                     width="full"
                 >
                     Seleccionar
@@ -355,7 +353,7 @@ const useRequirementForm = (initialState, createRequirement, navigate, toast) =>
             [name]: value
         }));
     }, []);
-    
+   
     const handleFileChange = useCallback((e) => {
         setFormData(prevState => ({
             ...prevState,
@@ -383,11 +381,11 @@ const useRequirementForm = (initialState, createRequirement, navigate, toast) =>
 
     const handleSubmit = useCallback(async (e) => {
         e?.preventDefault();
-        
+       
         if (!validateForm()) {
             return;
         }
-        
+       
         try {
             await createRequirement(formData);
             toast({
@@ -408,6 +406,7 @@ const useRequirementForm = (initialState, createRequirement, navigate, toast) =>
             });
         }
     }, [validateForm, createRequirement, navigate, toast, formData]);
+
     return {
         formData,
         users,
@@ -419,7 +418,7 @@ const useRequirementForm = (initialState, createRequirement, navigate, toast) =>
         handleChange,
         handleFileChange,
         handleSubmit,
-        validateForm 
+        validateForm
     };
 };
 
@@ -430,8 +429,8 @@ const createRequirementService = async (formData) => {
         descPrioridad: formData.descPrioridad,
         descTipoReq: formData.descTipoReq,
         dueno: localStorage.getItem('usuario'),
-        descCategoriaTR: formData.descCategoriaTR, 
-        destinatario: formData.destinatario, 
+        descCategoriaTR: formData.descCategoriaTR,
+        destinatario: formData.destinatario,
     };
 
     const response = await fetch('https://g10-raim-disenio.onrender.com/api/requirement', {
@@ -453,13 +452,15 @@ const createRequirementService = async (formData) => {
 const CrearRequerimiento = () => {
     const navigate = useNavigate();
     const toast = useToast();
+    const isMobile = useBreakpointValue({ base: true, md: false });
+
     const initialState = {
         descTipoReq: '',
         descPrioridad: '',
         asunto: '',
         descripcion: '',
         dueno: String(localStorage.getItem('usuario')),
-        descEstado: '', 
+        descEstado: '',
         descCategoriaTR: '',
         destinatario: '',
         relacionados: '',
@@ -479,7 +480,7 @@ const CrearRequerimiento = () => {
         handleSubmit,
         validateForm
     } = useRequirementForm(initialState, createRequirementService, navigate, toast);
-    
+   
     const { isOpen: isOpenCancel, onOpen: onOpenCancel, onClose: onCloseCancel } = useDisclosure();
     const { isOpen: isOpenSave, onOpen: onOpenSave, onClose: onCloseSave } = useDisclosure();
     const [missingFields, setMissingFields] = useState([]);
@@ -492,18 +493,17 @@ const CrearRequerimiento = () => {
             prevRequirements.filter(req => req.value !== value)
         );
     };
-    
     const handleCancel = () => {
         onOpenCancel();
     };
 
     const handleConfirmCancel = () => {
         onCloseCancel();
-        navigate('/requirements'); 
+        navigate('/requirements');
     };
 
     const handleConfirmSave = async (e) => {
-        e?.preventDefault(); 
+        e?.preventDefault();
         onCloseSave();
         await handleSubmit(new Event('submit'));
     };
@@ -518,14 +518,14 @@ const CrearRequerimiento = () => {
 
     const handleSubmitWithConfirmation = async (e) => {
         e.preventDefault();
-        
+       
         const requiredFields = ['descTipoReq', 'descCategoriaTR', 'descPrioridad', 'asunto', 'descripcion'];
         const missing = requiredFields.filter(field => !formData[field] || formData[field].trim() === '');
 
         if (missing.length > 0) {
             const missingFieldLabels = missing.map(field => fieldLabels[field] || field);
             setMissingFields(missingFieldLabels);
-            setShowMissingFieldsAlert(true); 
+            setShowMissingFieldsAlert(true);
         } else {
             onOpenSave();
         }
@@ -535,7 +535,7 @@ const CrearRequerimiento = () => {
         setRelatedRequirements(selected);
         handleChange({
             target: {
-                name: 'relacionados', 
+                name: 'relacionados',
                 value: selected.map(req => req.value).join(', ')
             }
         });
@@ -543,14 +543,16 @@ const CrearRequerimiento = () => {
     };
 
     return (
-        <Box p={6}>
-            <CreateContainer 
-                setUsers={setUsers} 
-                setTipos={setTipos} 
-                setCategorias={setCategorias} 
+        <Box p={{ base: 4, md: 6 }}>
+            <CreateContainer
+                setUsers={setUsers}
+                setTipos={setTipos}
+                setCategorias={setCategorias}
             />
-            <Heading mb ={6} color="blue.900"> Agregar Nuevo Requerimiento</Heading>
-            
+            <Heading mb={6} color="blue.900" fontSize={{ base: "xl", md: "2xl" }}>
+                Nuevo Requerimiento
+            </Heading>
+           
             {showMissingFieldsAlert && (
                 <Alert status="error" mb={4}>
                     <AlertDescription>
@@ -560,46 +562,52 @@ const CrearRequerimiento = () => {
             )}
 
             <form onSubmit={handleSubmitWithConfirmation}>
-                <Flex gap={6}>
-                    <LeftFormColumn 
-                        tipos={tipos} 
-                        categorias={categorias} 
-                        formData={formData} 
-                        handleChange={handleChange} 
-                        handleFileChange={handleFileChange} 
+                <Stack
+                    direction={{ base: 'column', md: 'row' }}
+                    spacing={{ base: 6, md: 6 }}
+                    align="flex-start"
+                >
+                    <LeftFormColumn
+                        tipos={tipos}
+                        categorias={categorias}
+                        formData={formData}
+                        handleChange={handleChange}
+                        handleFileChange={handleFileChange}
+                        isFullWidth={isMobile}
                     />
-                    <RightFormColumn 
-                        users={users} 
-                        formData={formData} 
-                        handleChange={handleChange} 
+                    <RightFormColumn
+                        users={users}
+                        formData={formData}
+                        handleChange={handleChange}
                         onOpenRelateRequirements={onOpenRelateRequirements}
                         relatedRequirements={relatedRequirements}
                         handleRemoveRequirement={handleRemoveRequirement}
+                        isFullWidth={isMobile}
                     />
-                </Flex>
+                </Stack>
 
-                <HStack spacing={4} mt={6}>
-                    <Flex 
-                        justifyContent="flex-end" 
-                        alignItems="center" 
-                        mt={6} 
-                        width="full"
-                        gap={4}
+                <Stack
+                    direction={{ base: 'column', sm: 'row' }}
+                    spacing={4}
+                    mt={6}
+                    width="full"
+                    justify="flex-end"
+                >
+                    <CustomButton
+                        variant="cancel"
+                        onClick={handleCancel}
+                        width={{ base: "full", sm: "auto" }}
                     >
-                        <CustomButton 
-                            variant="cancel" 
-                            onClick={handleCancel}
-                        >
-                            Cancelar
-                        </CustomButton>
-                        <CustomButton 
-                            variant="apply" 
-                            type="submit"
-                        >
-                            Guardar Requerimiento
-                        </CustomButton>
-                    </Flex>
-                </HStack>
+                        Cancelar
+                    </CustomButton>
+                    <CustomButton
+                        variant="apply"
+                        type="submit"
+                        width={{ base: "full", sm: "auto" }}
+                    >
+                        Guardar Requerimiento
+                    </CustomButton>
+                </Stack>
             </form>
 
             <RelateRequirementsModalContainer
@@ -608,53 +616,67 @@ const CrearRequerimiento = () => {
                 onSelect={handleSelectRelatedRequirements}
                 selectedRequirements={relatedRequirements}
             />
+            
             <Modal isOpen={isOpenCancel} onClose={onCloseCancel}>
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent margin={{ base: 4, md: "auto" }}>
                     <ModalHeader>Confirmar Cancelación</ModalHeader>
                     <ModalBody>
                         ¿Está seguro de que desea cancelar? Perderá todos los cambios.
                     </ModalBody>
                     <ModalFooter>
-                        <CustomButton 
-                            variant="cancel" 
-                            onClick={onCloseCancel}
-                            mr={3}
+                        <Stack
+                            direction={{ base: 'column', sm: 'row' }}
+                            spacing={3}
+                            width={{ base: "full", sm: "auto" }}
                         >
-                            Cancelar
-                        </CustomButton>
-                        <CustomButton 
-                            variant="delete" 
-                            onClick={handleConfirmCancel}
-                        >
-                            Descartar cambios
-                        
-                        </CustomButton>
+                            <CustomButton
+                                variant="cancel"
+                                onClick={onCloseCancel}
+                                width={{ base: "full", sm: "auto" }}
+                            >
+                                Cancelar
+                            </CustomButton>
+                            <CustomButton
+                                variant="delete"
+                                onClick={handleConfirmCancel}
+                                width={{ base: "full", sm: "auto" }}
+                            >
+                                Descartar cambios
+                            </CustomButton>
+                        </Stack>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
 
             <Modal isOpen={isOpenSave} onClose={onCloseSave}>
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent margin={{ base: 4, md: "auto" }}>
                     <ModalHeader>Confirmar Guardado</ModalHeader>
                     <ModalBody>
                         <p>¿Está seguro de que desea guardar el nuevo requerimiento?</p>
                     </ModalBody>
                     <ModalFooter>
-                        <CustomButton 
-                            variant="cancel" 
-                            onClick={onCloseSave}
-                            mr={3}
+                        <Stack
+                            direction={{ base: 'column', sm: 'row' }}
+                            spacing={3}
+                            width={{ base: "full", sm: "auto" }}
                         >
-                            Cancelar
-                        </CustomButton>
-                        <CustomButton 
-                            variant="confirm" 
-                            onClick={handleConfirmSave}
-                        >
-                            Confirmar
-                        </CustomButton>
+                            <CustomButton
+                                variant="cancel"
+                                onClick={onCloseSave}
+                                width={{ base: "full", sm: "auto" }}
+                            >
+                                Cancelar
+                            </CustomButton>
+                            <CustomButton
+                                variant="confirm"
+                                onClick={handleConfirmSave}
+                                width={{ base: "full", sm: "auto" }}
+                            >
+                                Confirmar
+                            </CustomButton>
+                        </Stack>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

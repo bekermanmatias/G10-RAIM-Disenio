@@ -59,7 +59,7 @@ const App = () => {
           flex={1}
           p={4}
           ml={{ base: 0, md: '250px' }}
-          mt={{ base: '142px', md: '55px' }} // Ajusta el margen superior según la altura del header en móvil y desktop
+          mt={{ base: '55px', md: '55px' }} // Ajusta el margen superior según la altura del header en móvil y desktop
         >
           <Routes>
             {isAuthenticated ? (

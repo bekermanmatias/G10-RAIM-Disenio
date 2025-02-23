@@ -1,9 +1,52 @@
+/* Estilos base */
 .usuarios-table {
     width: 100%;
     border-collapse: collapse;
     table-layout: auto;
 }
 
+/* Media query para tablets */
+@media screen and (max-width: 1024px) {
+    .usuarios-table {
+        font-size: 14px;
+    }
+    
+    .table-cell {
+        padding: 10px;
+    }
+}
+
+/* Media query para móviles */
+@media screen and (max-width: 768px) {
+    .usuarios-table {
+        width: 100%;
+        display: table;
+        table-layout: fixed;
+        border-collapse: collapse;
+    }
+
+    .usuarios-table thead,
+    .usuarios-table tbody {
+        width: 100%;
+    }
+
+    .usuarios-table th,
+    .usuarios-table td {
+        width: 33.33%;
+        text-align: center;
+        padding: 8px;
+    }
+
+    /* Ocultar todas las columnas excepto las necesarias */
+    .usuarios-table th:nth-child(n+4),
+    .usuarios-table td:nth-child(n+4) {
+        display: none;
+    }
+}
+
+
+
+/* Resto de estilos */
 .table-header {
     background-color: #040247;
     color: white;
@@ -29,7 +72,7 @@
 }
 
 .table-row.row-hovered {
-    background-color: rgba(0, 123, 255, 0.2); /* Azul claro transparente */
+    background-color: rgba(0, 123, 255, 0.2);
 }
 
 .table-row:hover {
