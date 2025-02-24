@@ -1,4 +1,3 @@
-// RelateRequirementsModal.js
 import React, { useState, useEffect } from 'react';
 import {
     Modal,
@@ -69,12 +68,14 @@ const RelateRequirementsModal = ({
         return (
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent w={{ base: "90%", md: "600px" }}>
                     <ModalHeader>Error</ModalHeader>
                     <ModalBody>
                         <VStack spacing={4}>
                             <Text color="red.500">{error}</Text>
-                            <CustomButton variant="cancel" onClick={onClose}>Cerrar</CustomButton>
+                            <CustomButton variant="cancel" onClick={onClose} width="100%">
+                                Cerrar
+                            </CustomButton>
                         </VStack>
                     </ModalBody>
                 </ModalContent>
@@ -86,7 +87,7 @@ const RelateRequirementsModal = ({
         return (
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent w={{ base: "90%", md: "600px" }}>
                     <ModalHeader>Relacionar Requerimientos</ModalHeader>
                     <ModalBody>
                         {children}
@@ -100,9 +101,8 @@ const RelateRequirementsModal = ({
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent 
-                width="90%"
-                maxWidth="1200px"
-                minWidth="800px"
+                w={{ base: "90%", md: "800px" }}
+                maxW={{ base: "90%", md: "1200px" }}
             >
                 <ModalHeader>Relacionar Requerimientos</ModalHeader>
                 <ModalBody>
@@ -111,15 +111,11 @@ const RelateRequirementsModal = ({
                         value={searchTerm}
                         onChange={(e) => {
                             setSearchTerm(e.target.value);
-                            setDisplayedItems(filteredRequirements.slice(0, itemsPerPage)); // Reiniciar los elementos mostrados al buscar
+                            setDisplayedItems(filteredRequirements.slice(0, itemsPerPage)); // Reiniciar elementos al buscar
                         }}
                         mb={4}
                     />
-                    <Table 
-                        variant="simple" 
-                        size="md"
-                        width="full"
-                    >
+                    <Table variant="simple" size="md" width="full">
                         <Thead>
                             <Tr>
                                 <Th>Seleccionar</Th>
@@ -150,9 +146,23 @@ const RelateRequirementsModal = ({
                         )}
                     </Flex>
                 </ModalBody>
-                <ModalFooter>
-                    <CustomButton variant="cancel" onClick={onClose} mr={2}>Cancelar</CustomButton>
-                    <CustomButton variant="apply" onClick={handleSave}>Guardar</CustomButton>
+                <ModalFooter flexDirection={{ base: "column", md: "row" }} alignItems="center">
+                    <CustomButton 
+                        variant="cancel" 
+                        onClick={onClose} 
+                        mr={{ base: 0, md: 2 }}
+                        width={{ base: "100%", md: "auto" }}
+                        mb={{ base: 2, md: 0 }}
+                    >
+                        Cancelar
+                    </CustomButton>
+                    <CustomButton 
+                        variant="apply" 
+                        onClick={handleSave} 
+                        width={{ base: "100%", md: "auto" }}
+                    >
+                        Guardar
+                    </CustomButton>
                 </ModalFooter>
             </ModalContent>
         </Modal>

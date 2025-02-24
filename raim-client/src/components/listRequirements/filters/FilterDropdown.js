@@ -118,12 +118,16 @@ const FilterDropdown = ({ onApply, onClose, initialFilters, tipos = [], categori
           </Box>
         ))}
       </Flex>
-      <Flex justify="flex-end" mt={4}>
+      <Flex 
+        direction="row" 
+        justify="space-between" 
+        mt={4} 
+        gap={2} 
+      >
         <CustomButton 
           variant="cancel" 
           onClick={onClose}
-          width="100px"
-          mr={2}
+          width={{ base: "50%", md: "100px" }} // Cada botón ocupa el 50% en móvil
           fontSize="1rem"  
         >
           Cancelar
@@ -131,12 +135,14 @@ const FilterDropdown = ({ onApply, onClose, initialFilters, tipos = [], categori
         <CustomButton 
           variant="apply" 
           onClick={handleApply}
-          width="100px"
+          width={{ base: "50%", md: "100px" }} // Cada botón ocupa el 50% en móvil
           fontSize="1rem"
         >
           Aplicar
         </CustomButton>
       </Flex>
+
+
     </Box>
   );
 };
