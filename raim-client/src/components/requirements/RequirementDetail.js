@@ -1,9 +1,19 @@
 // src/components/listRequirements/filters/RequirementDetail.js
 import React, { useState } from 'react';
 import { 
-  Box, 
+  Box,
+  Button,
   VStack, 
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Textarea,
   Text, 
+  Input,
   Heading, 
   Flex, 
   Container, 
@@ -12,7 +22,8 @@ import {
   Alert,
   AlertIcon,
   Spinner,
-  HStack
+  HStack,
+  useDisclosure
 } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../../components/listRequirements/components/TableRequirements.css';
@@ -25,10 +36,85 @@ const RequirementDetail = () => {
   const [requerimiento, setRequerimiento] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [formData, setFormData] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [asunto, setAsunto] = useState(null);
+  const [descripcion, setDescripcion] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const handleBack = () => {
     navigate('/requirements');
   };
+
+  const handleConfirmComment = async () => {
+    const nombreUsuario = String(localStorage.getItem('usuario'));
+    const DataToSend = {
+      asunto: asunto,
+      descripcion: descripcion,
+      emisor: nombreUsuario,
+      codReq: codigo,
+    }
+    try {
+      const response = await fetch('https://g10-raim-disenio.onrender.com/api/comment', {
+      method: 'POST',
+      body: DataToSend
+    });
+    if(response.ok){
+      console.log('Comment submitted successfully!');
+      setAsunto('');
+      setDescripcion('');
+      onClose();
+    } else {
+      console.error('No pudo subirse el comentario.');
+    }
+  } catch (error) {
+    console.error('Error: ', error);
+    }
+  };
+
+    const handleCancelComment = () => {
+      setAsunto('');
+      setDescripcion('');
+      onClose();
+    };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files
+    setSelectedFile(file)
+  }
+
+  const handleConfirmArchivos = async () => {
+    if (!selectedFile || selectedFile.length === 0) {
+      console.error('No hay archivos seleccionados.');
+      return;
+    }
+  
+    const formData = new FormData();
+    const idReq = codigo;
+  
+    Array.from(selectedFile).forEach((file) => {
+      formData.append('archivos', file);
+    });
+  
+    formData.append('idReq', idReq);
+  
+    try {
+      const response = await fetch('https://g10-raim-disenio.onrender.com/api/uploadFiles', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (response.ok) {
+        console.log('El archivo se subió exitosamente.');
+        setSelectedFile(null); 
+        onClose(); 
+      } else {
+        console.error('Error subiendo los archivos', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  
 
   if (loading) {
     return (
@@ -122,7 +208,6 @@ const RequirementDetail = () => {
       >
         <GridItem>
           <VStack align="start" spacing={6} width="full">
-            {/* Primer grupo de datos */}
             <Grid 
               templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} 
               gap={4} 
@@ -162,7 +247,6 @@ const RequirementDetail = () => {
               </GridItem>
             </Grid>
 
-            {/* Segundo grupo de datos */}
             <Grid 
               templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} 
               gap={4} 
@@ -202,7 +286,6 @@ const RequirementDetail = () => {
               </GridItem>
             </Grid>
 
-            {/* Asunto */}
             <Box width="full">
               <Heading size={{ base: 'lg', md: 'md' }} mb={3} color="blue.900">
                 Asunto
@@ -218,7 +301,6 @@ const RequirementDetail = () => {
               </Text>
             </Box>
 
-            {/* Descripción */}
             <Box width="full">
               <Heading size={{ base: 'lg', md: 'md' }} mb={3} color="blue.900">
                 Descripción
@@ -294,21 +376,90 @@ const RequirementDetail = () => {
                   </Text>
                 </Box>
               </Box>
+
+              <CustomButton colorScheme="blue" onClick={onOpen} mt={4}>Agregar Comentario</CustomButton>
             </VStack>
+
+            <Modal isOpen={isOpen} onClose={onClose}>
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>Escribir Comentario</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                <Input
+                  value={asunto}
+                  onChange={(e) => setAsunto(e.target.value)}
+                  placeholder="Asunto"
+                  size="lg"
+                  mb={4}
+                />
+                <Textarea
+                value={descripcion}
+                onChange={(e) => setDescripcion(e.target.value)}
+                placeholder="Descripción"
+                size="lg"
+                minHeight="150px"
+                />
+                </ModalBody>
+                <ModalFooter>
+                  <Button variant="ghost" onClick={handleCancelComment}>Cancelar</Button>
+                  <Button colorScheme="blue" onClick={handleConfirmComment} ml={3}>Confirmar</Button>
+                </ModalFooter>
+              </ModalContent>
+      </Modal>
           </Box>
         </GridItem>
       </Grid>
 
-      <Flex justifyContent="flex-start" mt={6}>
-          <CustomButton 
+      <Flex justifyContent="flex-start" mt={6} wrap="wrap" gap={4}>
+       <CustomButton 
             onClick={handleBack} 
             variant="apply" 
-            width={{ base: '100%', md: '100px' }}
+            width={{ base: '100%', md: '20%' }}
           >
             ← Volver
           </CustomButton>
-        </Flex>
 
+          <CustomButton 
+          onClick={onOpen} 
+          variant="archivoAdjunto" 
+          width={{ base: '100%', md: '20%' }}
+        >
+          Agregar Archivo Adjunto
+        </CustomButton>
+        </Flex>
+        <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Agregar Archivo</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>Seleccione el archivo que desea adjuntar.</Text>
+            <Input
+              type="file"
+              name="archivos"
+              multiple
+              onChange={handleFileChange}
+              variant="outline"
+              borderColor="gray.300"
+              focusBorderColor="blue.900"
+              _hover={{ borderColor: 'blue.900' }}
+              borderRadius="md"
+              size="md"
+              backgroundColor="white"
+              color="gray.800"
+              fontWeight="medium"
+              boxShadow="sm"
+              accept=".pdf,.docx,.excel"
+              placeholder="Seleccione archivos"
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="ghost" onClick={onClose}>Cancelar</Button>
+            <Button colorScheme="blue" ml={3} onClick={handleConfirmArchivos}>Confirmar</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

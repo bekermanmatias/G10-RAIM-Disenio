@@ -26,7 +26,7 @@ const createAA = async (req, res) => {
       
       if (idCom){
         const comentario = Comentario.findOne({
-          where: {codigo: idReq}
+          where: {idComentario: idCom}
         })
       }
       const idCom = comentario.idComentario || null;

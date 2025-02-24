@@ -13,7 +13,7 @@ const createRequirement = async (req, res) => {
       }
 
       const fechaHora = new Date();
-
+      
       const tipoReq = await TipoRequerimiento.findOne({
           where: { descripcion: descTipoReq },
       });

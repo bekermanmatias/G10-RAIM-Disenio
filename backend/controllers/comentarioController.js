@@ -1,7 +1,7 @@
 const { Requirement, User, Comentario } = require('../models');
 
 const createComment = async (req, res) => {
-  const { asunto, descripcion, fechaHora, emisor, codReq } = req.body;
+  const { asunto, descripcion, emisor, codReq } = req.body;
 
   try {
       if (String(asunto).length >= 50) {
@@ -11,13 +11,13 @@ const createComment = async (req, res) => {
           return res.status(400).json({ message: 'Descripcion excede el maximo de caracteres.' });
       }
       const fechaHora = new Date();
-      const emisor = await User.findOne({
+      const uEmisor = await User.findOne({
           where: { nombreUsuario: emisor },
       });
-      if (!emisor) {
+      if (!uEmisor) {
         return res.status(404).json({ message: 'Usuario emisor no encontrado.' });
     }
-    const idUser  = emisor.idUsuario;
+    const idUser  = uEmisor.idUsuario;
       const reqRelacionado = await Requirement.findOne({
         where: { codigo: codReq },
     });
@@ -31,17 +31,19 @@ const createComment = async (req, res) => {
 };
 
 const getCommentsByCodReq = async (req, res) => {
-    const codigo = req.params;
+    const { codigo } = req.params;
   try {
+    const Requerimiento = await Requirement.findOne({
+      where: { codigo: codigo }
+    })
+    if (!Requerimiento){
+      res.status(404).json( { message: 'Requerimiento no encontrado', error: error.message});
+    }
 
-    const Comments = await Requirement.findAll({
-        where: { idComentario: codigo },
+    const idRequerimiento = Requerimiento.idRequerimiento;
+    const Comments = await Comentario.findAll({
+        where: { idRequerimiento: idRequerimiento },
       include: [
-        {
-          model: Requirement,
-          as: 'Requerimientos',
-          attributes: ['codigo'], 
-        },
         {
           model: User,
           as: 'UsuarioEmisor',
@@ -50,7 +52,7 @@ const getCommentsByCodReq = async (req, res) => {
       ],
     });
 
-    if(rows.length === 0){
+    if(Comments.length === 0){
       return res.status(203).json({message: 'No hay comentarios almacenados'})
     }
 

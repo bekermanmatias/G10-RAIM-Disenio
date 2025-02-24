@@ -114,7 +114,7 @@ const TableRequirements = ({ requirements }) => {
                 </tr>
             </thead>
             <tbody>
-                {sortedRequirements.map((req, index) => (
+                {sortedRequirements?.map((req, index) => (
                     <tr 
                         className={`table-row ${hoveredRow === index ? 'row-hovered' : ''}`}
                         key={`${req.codigo}-${index}`}
