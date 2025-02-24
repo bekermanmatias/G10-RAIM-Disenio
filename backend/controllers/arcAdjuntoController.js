@@ -8,28 +8,32 @@ const createAA = async (req, res) => {
     if (!req.file){
       return res.status(400).json({ message: 'No se ha subido ningun archivo' })
     }
-
+    console.log(req.file);
     const url = `/uploads/${req.file.filename}`
     try {
       const urlNoRepite = await ArchivoAdjunto.findOne({
           where: {url: url},
       });
       if (urlNoRepite){
-          return res.status(400).json({ message: 'Datos incosistentes'});
+          return res.status(400).json({ message: 'El archivo no existe'});
       }
-      if (idReq){
-        const requerimiento = await Requirement.findOne({
-          where: {codigo: idReq}
-        })
-      }
-      idRequerimiento = requerimiento.idRequerimiento || null;
       
-      if (idCom){
-        const comentario = Comentario.findOne({
-          where: {idComentario: idCom}
-        })
+      let idRequerimiento = null;
+      if (idReq) {
+         const requerimiento = await Requirement.findOne({
+           where: {codigo: idReq}
+         });
+         idRequerimiento = requerimiento ? requerimiento.idRequerimiento : null;
       }
-      const idComentario = comentario.idComentario || null;
+      
+      let idComentario = null;
+      if (idCom) {
+         const comentario = await Comentario.findOne({
+           where: {idComentario: idCom}
+         });
+         idComentario = comentario ? comentario.idComentario : null;
+      }
+      
 
       const newAA = await ArchivoAdjunto.create({
         extension: path.extname(req.file.originalname),

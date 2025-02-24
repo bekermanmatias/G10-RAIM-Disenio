@@ -1,5 +1,5 @@
 // src/components/listRequirements/filters/RequirementDetail.js
-import React, { useDebugValue, useState } from 'react';
+import React, { useDebugValue, useEffect, useState } from 'react';
 import { 
   Box,
   Button,
@@ -32,6 +32,7 @@ import CustomButton from '../../utils/CustomButton';
 
 const RequirementDetail = () => {
   const { codigo } = useParams();
+  const [cod, setCod] = useState(null);
   const navigate = useNavigate();
   const [requerimiento, setRequerimiento] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -53,7 +54,6 @@ const handleCloseCommentModal = () => {
   setAsunto('');
   setDescripcion('');
 }
-
 const handleOpenFileModal =  () => setFileModalOpen(true);
 const handleCloseFileModal = () => {
   setFileModalOpen(false);
@@ -68,10 +68,15 @@ const handleCloseFileModal = () => {
       emisor: nombreUsuario,
       codReq: codigo,
     }
+
+    console.log(DataToSend);
     try {
       const response = await fetch('https://g10-raim-disenio.onrender.com/api/comment', {
       method: 'POST',
-      body: DataToSend
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(DataToSend),
     });
     if(response.ok){
       console.log('Comment submitted successfully!');
@@ -82,7 +87,7 @@ const handleCloseFileModal = () => {
       console.error('No pudo subirse el comentario.');
     }
   } catch (error) {
-    console.error('Error: ', error);
+    console.error('Error: ', error.message);
     }
   };
 
@@ -98,20 +103,22 @@ const handleCloseFileModal = () => {
   }
 
   const handleConfirmArchivos = async () => {
-    if (!selectedFile || selectedFile.length === 0) {
+    if (!selectedFile) {
       console.error('No hay archivos seleccionados.');
       return;
     }
-  
+    const file = selectedFile[0];
+    console.log(file);
+    
     const formData = new FormData();
-    const idReq = codigo;
+
+    formData.append('file', file);
+    formData.append('idReq', codigo);
   
-    Array.from(selectedFile).forEach((file) => {
-      formData.append('archivos', file);
-    });
-  
-    formData.append('idReq', idReq);
-  
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
+    }
+
     try {
       const response = await fetch('https://g10-raim-disenio.onrender.com/api/uploadFiles', {
         method: 'POST',
@@ -123,10 +130,10 @@ const handleCloseFileModal = () => {
         setSelectedFile(null); 
         handleCloseFileModal(); 
       } else {
-        console.error('Error subiendo los archivos', response.statusText);
+        console.error('Error subiendo los archivos', error.message);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error.message);
     }
   };
   
