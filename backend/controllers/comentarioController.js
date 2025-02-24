@@ -17,7 +17,7 @@ const createComment = async (req, res) => {
       if (!uEmisor) {
         return res.status(404).json({ message: 'Usuario emisor no encontrado.' });
     }
-    const idUser  = uEmisor.idUsuario;
+    const idUsuarioEmisor  = uEmisor.idUsuario;
       const reqRelacionado = await Requirement.findOne({
         where: { codigo: codReq },
     });

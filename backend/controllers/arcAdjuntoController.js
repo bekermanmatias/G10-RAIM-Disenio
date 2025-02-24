@@ -22,21 +22,21 @@ const createAA = async (req, res) => {
           where: {codigo: idReq}
         })
       }
-      idReq = requerimiento.idRequerimiento || null;
+      idRequerimiento = requerimiento.idRequerimiento || null;
       
       if (idCom){
         const comentario = Comentario.findOne({
           where: {idComentario: idCom}
         })
       }
-      const idCom = comentario?.idComentario || null;
+      const idComentario = comentario.idComentario || null;
 
       const newAA = await ArchivoAdjunto.create({
         extension: path.extname(req.file.originalname),
         peso: req.file.size,
         url: `/uploads/${req.file.filename}`,
-        idRequerimiento: idReq,
-        idComentario: idCom
+        idRequerimiento: idRequerimiento,
+        idComentario: idComentario
       });
       res.status(201).json(newAA);
     } catch (error) {
@@ -52,7 +52,7 @@ const createAA = async (req, res) => {
           where: {codigo: idReq}
         })
       }
-      const idRequerimiento = requerimiento?.idRequerimiento || null;
+      const idRequerimiento = requerimiento.idRequerimiento || null;
       
       const ArcA = await ArchivoAdjunto.findAll({
         where: {idRequerimiento: idRequerimiento},
