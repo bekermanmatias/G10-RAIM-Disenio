@@ -1,5 +1,6 @@
 const multer = require('multer');
 const path = require('path');
+const uploadsDirectory = path.resolve(__dirname, '../../uploads');
 
 const allowedDocs = [
     'application/pdf',
@@ -11,7 +12,7 @@ const allowedDocs = [
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); 
+    cb(null, uploadsDirectory); 
   },
   filename: (req, file, cb) => {
     const username = req.body.username || 'anonimo';

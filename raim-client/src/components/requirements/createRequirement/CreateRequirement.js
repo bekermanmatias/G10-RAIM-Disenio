@@ -357,7 +357,7 @@ const useRequirementForm = (initialState, createRequirement, navigate, toast) =>
     const handleFileChange = useCallback((e) => {
         setFormData(prevState => ({
             ...prevState,
-            archivos: e.target.files
+            archivos: Array.from(e.target.archivos)
         }));
     }, []);
 
@@ -405,6 +405,7 @@ const useRequirementForm = (initialState, createRequirement, navigate, toast) =>
                 isClosable: true
             });
         }
+
     }, [validateForm, createRequirement, navigate, toast, formData]);
 
     return {
@@ -432,6 +433,7 @@ const createRequirementService = async (formData) => {
         descCategoriaTR: formData.descCategoriaTR,
         destinatario: formData.destinatario,
     };
+    
 
     const response = await fetch('https://g10-raim-disenio.onrender.com/api/requirement', {
         method: 'POST',
@@ -441,9 +443,29 @@ const createRequirementService = async (formData) => {
         body: JSON.stringify(dataToSend)
     });
 
+    const requirementId = response.codigo;
+
     if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'No se pudo crear el requerimiento, intente más tarde!');
+        throw new Error(errorData.message || 'No se pudo crear el requerimiento');
+    }
+
+    if (formData.archivos && formData.archivos.length > 0) {
+        for (const file of formData.archivos) {
+            const formDataToUploadFile = new FormData();
+            formDataToUploadFile.append('file', file);
+            formDataToUploadFile.append('requirementId', requirementId);
+            const fileUploadResponse = await fetch('https://g10-raim-disenio.onrender.com/api/uploadFiles', {
+                method: 'POST',
+                body: formDataToUploadFile,
+            });
+
+            if (fileUploadResponse.ok) {
+                console.log(`File ${file.name} uploaded successfully`);
+            } else {
+                console.error(`Error uploading file ${file.name}`);
+            }
+        }
     }
 
     return await response.json();

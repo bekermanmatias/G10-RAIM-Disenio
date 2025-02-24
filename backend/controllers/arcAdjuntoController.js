@@ -17,14 +17,26 @@ const createAA = async (req, res) => {
       if (urlNoRepite){
           return res.status(400).json({ message: 'Datos incosistentes'});
       }
-      idReq = idReq || 0;
-      idCom = idCom || 0;
+      if (idReq){
+        const requerimiento = await Requirement.findOne({
+          where: {codigo: idReq}
+        })
+      }
+      idReq = requerimiento.idRequerimiento || null;
+      
+      if (idCom){
+        const comentario = Comentario.findOne({
+          where: {codigo: idReq}
+        })
+      }
+      const idCom = comentario.idComentario || null;
 
       const newAA = await ArchivoAdjunto.create({
         ext: path.extname(req.file.originalname),
         peso: req.file.size,
-        url: `/uploads/${req.file.filename}`, idReq: idReq || 0,
-        idCom: idCom || 0
+        url: `/uploads/${req.file.filename}`,
+        idReq: idReq,
+        idCom: idCom
       });
       res.status(201).json(newAA);
     } catch (error) {
@@ -35,6 +47,12 @@ const createAA = async (req, res) => {
   const getArcAByReq = async (req, res) => {
     const {idReq} = req.body;
     try{
+      if (idReq){
+        const requerimiento = await Requirement.findOne({
+          where: {codigo: idReq}
+        })
+      }
+      const idReq = requerimiento.idRequerimiento || null;
       
       const ArcA = await ArchivoAdjunto.findAll({
         where: {idReq: idReq},
@@ -52,6 +70,12 @@ const createAA = async (req, res) => {
 const getArcAByCom = async (req, res) => {
     const {idCom} = req.body;
     try{
+      if (idCom){
+        const comentario = Comentario.findOne({
+          where: {idComentario: idCom}
+        })
+      }
+      const idCom = comentario.idComentario || null;
       const ArcA = await ArchivoAdjunto.findAll({
         where: {idCom: idCom},
       });
