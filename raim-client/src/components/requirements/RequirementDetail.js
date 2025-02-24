@@ -32,21 +32,48 @@ import CustomButton from '../../utils/CustomButton';
 
 const RequirementDetail = () => {
   const { codigo } = useParams();
-  const [cod, setCod] = useState(null);
   const navigate = useNavigate();
   const [requerimiento, setRequerimiento] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [formData, setFormData] = useState([]);
+  const [ formData, setFormData] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [ isCommentOpen, setCommentModal ] = useState(false);
   const [ isFileModalOpen, setFileModalOpen ] = useState(false);
   const [asunto, setAsunto] = useState(null);
   const [descripcion, setDescripcion] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [comments, setComments ] = useState(null);
   const handleBack = () => {
     navigate('/requirements');
   };
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`https://g10-raim-disenio.onrender.com/api/comment/${codigo}`);
+        if (!response.ok) {
+          throw new Error('Error al obtener los comentarios');
+      }
+      const data = await response.json();
+      const commentsData = data.comments.map(com => ({
+        asunto: com.asunto, 
+        descripcion: com.descripcion,
+        emisor: com.idUsuarioEmisor,
+        fechahora: com.fechahora
+    }));
+    commentsData.sort((a, b) => new Date(b.fechahora) - new Date(a.fechahora));
+    setComments(commentsData);
+    console.log(commentsData);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchComments();
+  }, [setComments, setLoading, setError, codigo]);
 
 const handleOpenCommentModal = () => setCommentModal(true);
 const handleCloseCommentModal = () => { 
