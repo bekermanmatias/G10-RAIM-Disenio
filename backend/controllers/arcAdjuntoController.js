@@ -29,14 +29,14 @@ const createAA = async (req, res) => {
           where: {idComentario: idCom}
         })
       }
-      const idCom = comentario.idComentario || null;
+      const idCom = comentario?.idComentario || null;
 
       const newAA = await ArchivoAdjunto.create({
-        ext: path.extname(req.file.originalname),
+        extension: path.extname(req.file.originalname),
         peso: req.file.size,
         url: `/uploads/${req.file.filename}`,
-        idReq: idReq,
-        idCom: idCom
+        idRequerimiento: idReq,
+        idComentario: idCom
       });
       res.status(201).json(newAA);
     } catch (error) {
@@ -52,10 +52,10 @@ const createAA = async (req, res) => {
           where: {codigo: idReq}
         })
       }
-      const idReq = requerimiento.idRequerimiento || null;
+      const idRequerimiento = requerimiento?.idRequerimiento || null;
       
       const ArcA = await ArchivoAdjunto.findAll({
-        where: {idReq: idReq},
+        where: {idRequerimiento: idRequerimiento},
       });
       if (!ArcA.length) {
         return res.status(200).json([]);
@@ -77,7 +77,7 @@ const getArcAByCom = async (req, res) => {
       }
       const idCom = comentario.idComentario || null;
       const ArcA = await ArchivoAdjunto.findAll({
-        where: {idCom: idCom},
+        where: {idComentario: idCom},
       });
       if (!ArcA) {
         return res.status(200).json([]);
@@ -120,7 +120,7 @@ const getAAByUrl = async (req, res) => {
     
     try {
 
-        const ArcA = await ArchivoAdjunto.findOne({ where: { url } });
+        const ArcA = await ArchivoAdjunto.findOne({ where: { url: url } });
         if (!ArcA) {
             return res.status(404).json({ message: 'Archivo adjunto no encontrado.' });
         }

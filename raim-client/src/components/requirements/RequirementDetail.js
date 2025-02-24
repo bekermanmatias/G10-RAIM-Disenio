@@ -1,5 +1,5 @@
 // src/components/listRequirements/filters/RequirementDetail.js
-import React, { useState } from 'react';
+import React, { useDebugValue, useState } from 'react';
 import { 
   Box,
   Button,
@@ -38,12 +38,27 @@ const RequirementDetail = () => {
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [ isCommentOpen, setCommentModal ] = useState(false);
+  const [ isFileModalOpen, setFileModalOpen ] = useState(false);
   const [asunto, setAsunto] = useState(null);
   const [descripcion, setDescripcion] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const handleBack = () => {
     navigate('/requirements');
   };
+
+const handleOpenCommentModal = () => setCommentModal(true);
+const handleCloseCommentModal = () => { 
+  setCommentModal(false);
+  setAsunto('');
+  setDescripcion('');
+}
+
+const handleOpenFileModal =  () => setFileModalOpen(true);
+const handleCloseFileModal = () => {
+  setFileModalOpen(false);
+  setSelectedFile(null);
+}
 
   const handleConfirmComment = async () => {
     const nombreUsuario = String(localStorage.getItem('usuario'));
@@ -74,7 +89,7 @@ const RequirementDetail = () => {
     const handleCancelComment = () => {
       setAsunto('');
       setDescripcion('');
-      onClose();
+      handleCloseCommentModal();
     };
 
   const handleFileChange = (e) => {
@@ -106,7 +121,7 @@ const RequirementDetail = () => {
       if (response.ok) {
         console.log('El archivo se subió exitosamente.');
         setSelectedFile(null); 
-        onClose(); 
+        handleCloseFileModal(); 
       } else {
         console.error('Error subiendo los archivos', response.statusText);
       }
@@ -377,10 +392,10 @@ const RequirementDetail = () => {
                 </Box>
               </Box>
 
-              <CustomButton colorScheme="blue" onClick={onOpen} mt={4}>Agregar Comentario</CustomButton>
+              <CustomButton colorScheme="blue" onClick={handleOpenCommentModal} mt={4}>Agregar Comentario</CustomButton>
             </VStack>
 
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isCommentOpen} onClose={handleCloseCommentModal}>
               <ModalOverlay />
               <ModalContent>
                 <ModalHeader>Escribir Comentario</ModalHeader>
@@ -402,7 +417,7 @@ const RequirementDetail = () => {
                 />
                 </ModalBody>
                 <ModalFooter>
-                  <Button variant="ghost" onClick={handleCancelComment}>Cancelar</Button>
+                  <Button variant="ghost" onClick={handleCloseCommentModal}>Cancelar</Button>
                   <Button colorScheme="blue" onClick={handleConfirmComment} ml={3}>Confirmar</Button>
                 </ModalFooter>
               </ModalContent>
@@ -421,14 +436,14 @@ const RequirementDetail = () => {
           </CustomButton>
 
           <CustomButton 
-          onClick={onOpen} 
+          onClick={handleOpenFileModal} 
           variant="archivoAdjunto" 
           width={{ base: '100%', md: '20%' }}
         >
           Agregar Archivo Adjunto
         </CustomButton>
         </Flex>
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isFileModalOpen} onClose={handleCloseFileModal}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Agregar Archivo</ModalHeader>
@@ -455,7 +470,7 @@ const RequirementDetail = () => {
             />
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" onClick={onClose}>Cancelar</Button>
+            <Button variant="ghost" onClick={handleCloseFileModal}>Cancelar</Button>
             <Button colorScheme="blue" ml={3} onClick={handleConfirmArchivos}>Confirmar</Button>
           </ModalFooter>
         </ModalContent>

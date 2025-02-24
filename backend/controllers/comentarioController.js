@@ -10,7 +10,7 @@ const createComment = async (req, res) => {
       if (String(descripcion).length >= 5000) {
           return res.status(400).json({ message: 'Descripcion excede el maximo de caracteres.' });
       }
-      const fechaHora = new Date();
+      const fechahora = new Date();
       const uEmisor = await User.findOne({
           where: { nombreUsuario: emisor },
       });
@@ -21,9 +21,9 @@ const createComment = async (req, res) => {
       const reqRelacionado = await Requirement.findOne({
         where: { codigo: codReq },
     });
-        const idReq = reqRelacionado.idRequerimiento;
+        const idRequerimiento = reqRelacionado.idRequerimiento;
 
-      const newComentario = await Comentario.create({ asunto, descripcion, fechaHora, idUser, idReq });
+      const newComentario = await Comentario.create({ asunto, descripcion, fechahora, idUsuarioEmisor, idRequerimiento });
       res.status(201).json(newComentario);
   } catch (error) {
       res.status(500).json({ message: 'Error al crear el comentario', error: error.message });
