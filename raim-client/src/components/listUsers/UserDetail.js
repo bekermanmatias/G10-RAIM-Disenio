@@ -197,11 +197,11 @@ const UserDetail = () => {
                 </Grid>
 
                 {/* Back Button */}
-                <Flex justifyContent="flex-start">
+                <Flex justifyContent="flex-end">
                     <CustomButton 
                         onClick={handleBack} 
                         variant="apply"
-                        width={{ base: "full", md: "auto" }}
+                        width={{ base: '100%', md: '20%' }}
                     >
                         ← Volver
                     </CustomButton>

@@ -169,64 +169,45 @@ const Requerimientos = () => {
         setFilteredRequirements(result);
     };
 
-    return (
-        <div className="requerimientos-container">
-            <FilterContainer 
-                setTipos={setTipos} 
-                setCategorias={setCategorias} 
+    // Requirements.js
+return (
+    <div className="requerimientos-container">
+        <FilterContainer 
+            setTipos={setTipos} 
+            setCategorias={setCategorias} 
+        />
+
+        <SearchBar 
+            searchTerm={searchTerm}
+            onSearchChange={handleSearch}
+            onResetFilter={handleResetFilter}
+            onToggleFilters={toggleFilters}
+        />
+
+        {showFilters && (
+            <FilterDropdown 
+                onClose={() => setShowFilters(false)} 
+                onApply={handleApplyFilters}
+                initialFilters={activeFilters}
+                tipos={tipos}
+                categorias={categorias}
             />
+        )}
 
-            <SearchBar 
-                searchTerm={searchTerm}
-                onSearchChange={handleSearch}
-                onResetFilter={handleResetFilter}
-                onToggleFilters={toggleFilters}
-            />
+        <RequirementsContainer 
+            setFilteredRequirements={setFilteredRequirements} 
+            setRequerimientosData={setRequerimientosData} 
+            setLoading={setLoading} 
+            setError={setError} 
+        />
 
-            {showFilters && (
-                <FilterDropdown 
-                    onClose={() => setShowFilters(false)} 
-                    onApply={handleApplyFilters}
-                    initialFilters={activeFilters}
-                    tipos={tipos}
-                    categorias={categorias}
-                />
-            )}
+        {loading && <LoadingSpinner />} 
+        {error && <p>Error: {error}</p>}
+        
+        <FloatingCreateButton />
+    </div>
+);
 
-            <RequirementsContainer 
-                setFilteredRequirements={setFilteredRequirements} 
-                setRequerimientosData={setRequerimientosData} 
-                setLoading={setLoading} 
-                setError={setError} 
-            />
-
-            
-
-            <TableRequirements requirements={filteredRequirements} />
-            {loading && <LoadingSpinner />} 
-            {error && <p>Error: {error}</p>}
-
-            <div className="pagination">
-                <button 
-                    onClick={handlePreviousPage} 
-                    disabled={currentPage === 1}
-                >
-                      Anterior
-                </button>
-
-                <span>Página {currentPage} de {totalPages}</span>
-
-                <button 
-                    onClick={handleNextPage} 
-                    disabled={currentPage === totalPages}
-                >
-                       Siguiente
-                </button>
-            </div>
-            
-            <FloatingCreateButton />
-        </div>
-    );
 };
 
 export default Requerimientos;

@@ -618,14 +618,14 @@ const CrearRequerimiento = () => {
                     <CustomButton
                         variant="cancel"
                         onClick={handleCancel}
-                        width={{ base: "100%", md: "auto" }}
+                        width={{ base: '100%', md: '20%' }}
                     >
                         Cancelar
                     </CustomButton>
                     <CustomButton
                         variant="apply"
                         type="submit"
-                        width={{ base: "100%", md: "auto" }}
+                        width={{ base: '100%', md: '20%' }}
                     >
                         Guardar Requerimiento
                     </CustomButton>

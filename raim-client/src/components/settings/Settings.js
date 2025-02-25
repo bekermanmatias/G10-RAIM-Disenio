@@ -157,21 +157,27 @@ const Settings = () => {
                     </GridItem>
                 </Grid>
 
-                <Flex direction={{ base: "column", md: "row" }} mt={4} gap={2}>
-                    <CustomButton
-                        onClick={onDeleteOpen}
-                        variant="danger"
-                        width={{ base: "100%", md: "auto" }}
-                    >
-                        Eliminar Cuenta
-                    </CustomButton>
+                <Flex direction="column" alignItems={{ base: "stretch", md: "flex-end" }} mt={4} gap={2}>
                     <CustomButton
                         onClick={onOpen}
                         variant="delete"
-                        width={{ base: "100%", md: "auto" }}
+                        width={{ base: '100%', md: '20%' }}
                     >
                         Cerrar Sesión
                     </CustomButton>
+                    
+                    {/* Texto para eliminar cuenta */}
+                    <Text
+                        color="red.500"
+                        fontSize="sm"
+                        cursor="pointer"
+                        textDecoration="underline"
+                        onClick={onDeleteOpen}
+                        mt={1}
+                        _hover={{ color: 'red.600' }}
+                    >
+                        Eliminar cuenta permanentemente
+                    </Text>
                 </Flex>
 
                 <Modal isOpen={isOpen} onClose={onClose}>
@@ -204,7 +210,7 @@ const Settings = () => {
                                 <CustomButton variant="cancel" onClick={onDeleteClose} width="50%">
                                     Cancelar
                                 </CustomButton>
-                                <CustomButton variant="danger" onClick={handleDeleteAccount} width="50%">
+                                <CustomButton variant="delete" onClick={handleDeleteAccount} width="50%">
                                     Eliminar
                                 </CustomButton>
                             </Flex>

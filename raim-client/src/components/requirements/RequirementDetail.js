@@ -470,7 +470,7 @@ const handleCloseFileModal = () => {
         </GridItem>
       </Grid>
 
-      <Flex justifyContent="flex-start" mt={6} wrap="wrap" gap={4}>
+      <Flex justifyContent="flex-end" mt={6} wrap="wrap" gap={4}>
        <CustomButton 
             onClick={handleBack} 
             variant="apply" 
