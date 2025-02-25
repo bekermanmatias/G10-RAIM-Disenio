@@ -58,11 +58,14 @@ const RequirementDetail = () => {
         }
         const data = await response.json();
   
-        if (!Array.isArray(data.comments)) {
-          throw new Error("Formato inesperado de datos");
+        if (response.status === 203) {
+          console.log("No hay comentarios disponibles");
+          return;
         }
+        
+
   
-        const commentsData = data.comments.map((com) => ({
+        const commentsData = data.map((com) => ({
           asunto: com.asunto,
           descripcion: com.descripcion,
           emisor: com.idUsuarioEmisor,

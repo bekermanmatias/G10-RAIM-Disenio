@@ -125,6 +125,7 @@ const getRequirements = async (req, res) => {
           attributes:['nombre'],
         }
       ],
+      order: [['fechaHora', 'DESC']],
       limit,
       offset,
     });
