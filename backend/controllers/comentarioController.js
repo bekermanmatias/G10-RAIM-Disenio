@@ -31,10 +31,10 @@ const createComment = async (req, res) => {
 };
 
 const getCommentsByCodReq = async (req, res) => {
-    const { codigo } = req.params;
+    const { codReq } = req.params;
   try {
     const Requerimiento = await Requirement.findOne({
-      where: { codigo: codigo }
+      where: { codigo: codReq }
     })
     if (!Requerimiento){
       res.status(404).json( { message: 'Requerimiento no encontrado', error: error.message});

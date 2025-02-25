@@ -5,6 +5,6 @@ const comController = require('../controllers/comentarioController');
 router.get('/:codReq', comController.getCommentsByCodReq);
 router.post('/', comController.createComment);
 router.delete('/', comController.eliminarComment);
-router.post('/codigo', comController.actualizarDatosComentario);
+router.post('/update/:codigo', comController.actualizarDatosComentario);
 
 module.exports = router;
