@@ -120,7 +120,7 @@ const FilterDropdown = ({ onApply, onClose, initialFilters, tipos = [], categori
       </Flex>
       <Flex 
         direction="row" 
-        justify="space-between" 
+        justify="flex-end" 
         mt={4} 
         gap={2} 
       >

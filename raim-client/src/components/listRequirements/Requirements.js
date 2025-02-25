@@ -18,6 +18,10 @@ const Requerimientos = () => {
     const [error, setError] = useState(null);
     const [tipos, setTipos] = useState([]); 
     const [categorias, setCategorias] = useState([]); 
+    const [userData, setUserData] = useState({
+        nombre: null,
+        idUser: 0
+    });
     const [activeFilters, setActiveFilters] = useState({
         estados: [],
         tipos: [],
@@ -30,19 +34,35 @@ const Requerimientos = () => {
 
     const navigate = useNavigate();
 
+    const fetchUserData = async () => {
+
+        const username = String(localStorage.getItem('usuario'));
+        const response = await fetch(`https://g10-raim-disenio.onrender.com/api/user/${username}`);
+        if (!response.ok){
+            throw new Error('Error al obtener el usuario.');
+        }
+        const data = await response.json();
+        const datosUser = {
+            nombre: data.nombre,
+            idUser: data.idUsuario
+        }
+        setUserData(datosUser);
+    }
     useEffect(() => {
         fetchRequirements(currentPage);
     }, [currentPage]);
 
-    const fetchRequirements = async (page) => {
+    useEffect(() => {
+        fetchUserData();
+    }, []);
+
+    const fetchRequirements =async (page) => {
         setLoading(true);
         try {
             const response = await fetch(`https://g10-raim-disenio.onrender.com/api/requirement?page=${page}&limit=50`);
             const data = await response.json();
-            setFilteredRequirements(data.requirements);
             setTotalPages(data.totalPages);
             setCurrentPage(page);
-
             const requerimientosData = data.requirements.map(req => ({
                 codigo: req.codigo, 
                 prioridad: req.prioridad.descripcion, 
@@ -51,9 +71,10 @@ const Requerimientos = () => {
                 fechaAlta: req.fechaHora,
                 estado: req.estado.descripcion, 
                 asunto: req.asunto,
-                propietario: req.idUserDetinatario ? `Usuario ${req.idUserDetinatario}` : 'Sin asignar', 
-                emisor: req.idUsuarioCreador.nombreUsuario 
+                propietario: req.idUserDestinatario ? `Usuario ${req.idUserDestinatario}` : 'Sin asignar', 
+                emisor: req.idUsuarioCreador.nombre ? req.idUsuarioCreador.nombre : 'Sin asignar'
             }));
+            console.log(requerimientosData);
             setFilteredRequirements(requerimientosData);
 
         } catch (error) {
@@ -108,13 +129,14 @@ const Requerimientos = () => {
     };
 
     const filterRequirements = (searchTerm, filters) => {
-        let result = requerimientosData;
-
+        let result = filteredRequirements;
+        console.log(result);
         if (searchTerm) {
             result = result.filter(req => 
                 req.asunto.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 req.codigo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                req.propietario.toLowerCase().includes(searchTerm.toLowerCase())
+                req.propietario.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                req.emisor.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }
 
@@ -138,8 +160,9 @@ const Requerimientos = () => {
 
         if (filters.participacion && filters.participacion.length > 0) {
             result = result.filter(req => {
-                const filtrarEmisor = filters.participacion.includes('Emisor') ? req.emisor === 'jperez' : true;
-                const filtrarAsignado = filters.participacion.includes('Asignado') ? req.propietario === 7 : true;
+                console.log(result);
+                const filtrarEmisor = filters.participacion.includes('Emisor') ? req.emisor === userData.nombre : true;
+                const filtrarAsignado = filters.participacion.includes('Asignado') ? req.propietario === userData.idUser : true;
                 return filtrarEmisor && filtrarAsignado;
             });
         }
