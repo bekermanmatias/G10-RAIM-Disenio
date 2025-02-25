@@ -54,7 +54,7 @@ const Settings = () => {
                     throw new Error('Error al obtener los datos del usuario');
                 }
                 const data = await response.json();
-                const fechaFormateada = new Date(data.createdAt).toLocaleString('es-ES'); // Formato dd/mm/yyyy hh:mm:ss
+                const fechaFormateada = new Date(data.createdAt).toLocaleString('es-ES');
                 setUserData({
                     idUsuario: data.idUsuario,
                     nombre: data.nombre,
@@ -113,7 +113,6 @@ const Settings = () => {
                     </Heading>
                 </Box>
 
-                {/* Datos de usuario con fecha de ingreso */}
                 <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={{ base: 4, md: 6 }}>
                     <GridItem>
                         <FormControl isReadOnly>
@@ -158,7 +157,6 @@ const Settings = () => {
                     </GridItem>
                 </Grid>
 
-                {/* Botones en el fondo */}
                 <Flex direction={{ base: "column", md: "row" }} mt={4} gap={2}>
                     <CustomButton
                         onClick={onDeleteOpen}
@@ -176,7 +174,6 @@ const Settings = () => {
                     </CustomButton>
                 </Flex>
 
-                {/* Modal Cerrar Sesión */}
                 <Modal isOpen={isOpen} onClose={onClose}>
                     <ModalOverlay />
                     <ModalContent>
@@ -195,7 +192,6 @@ const Settings = () => {
                     </ModalContent>
                 </Modal>
 
-                {/* Modal Eliminar Cuenta */}
                 <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
                     <ModalOverlay />
                     <ModalContent>

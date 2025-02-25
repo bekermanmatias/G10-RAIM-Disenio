@@ -49,6 +49,7 @@ const RequirementDetail = () => {
   };
 
   useEffect(() => {
+
     const fetchComments = async () => {
       setLoading(true);
       try {
@@ -57,6 +58,9 @@ const RequirementDetail = () => {
           throw new Error('Error al obtener los comentarios');
       }
       const data = await response.json();
+      if (!Array.isArray(data.comments)) {
+        throw new Error('Formato inesperado de datos');
+      }
       const commentsData = data.comments.map(com => ({
         asunto: com.asunto, 
         descripcion: com.descripcion,
@@ -65,7 +69,7 @@ const RequirementDetail = () => {
     }));
     commentsData.sort((a, b) => new Date(b.fechahora) - new Date(a.fechahora));
     setComments(commentsData);
-    console.log(commentsData);
+    console.log(comments);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -73,7 +77,7 @@ const RequirementDetail = () => {
       }
     };
     fetchComments();
-  }, [setComments, setLoading, setError, codigo]);
+  }, [codigo]);
 
 const handleOpenCommentModal = () => setCommentModal(true);
 const handleCloseCommentModal = () => { 
@@ -369,63 +373,57 @@ const handleCloseFileModal = () => {
         </GridItem>
 
         <GridItem>
-          <Box width="full">
-            <Heading size={{ base: 'lg', md: 'md' }} mb={4} color="blue.900">
-              Comentarios
-            </Heading>
-            <VStack spacing={4} width="full" align="stretch">
-              <Box 
-                border="1px" 
-                borderColor="gray.200" 
-                borderRadius="md" 
-                p={4} 
+      <Box width="full">
+        <Heading size={{ base: "lg", md: "md" }} mb={4} color="blue.900">
+          Comentarios
+        </Heading>
+
+        {loading && <Spinner />}
+        {error && <Text color="red.500">{error}</Text>}
+
+        <VStack spacing={4} width="full" align="stretch">
+          {comments.length > 0 ? (
+            comments.map((comment, index) => (
+              <Box
+                key={index}
+                border="1px"
+                borderColor="gray.200"
+                borderRadius="md"
+                p={4}
                 bg="white"
               >
                 <Flex justifyContent="space-between" mb={2}>
                   <HStack>
-                    <Text fontWeight="bold" color="blue.900">Juan Pérez</Text>
-                    <Text color="gray.500" fontSize={{ base: 'md', md: 'sm' }}>
-                      12 de Julio, 2023 - 14:30
+                    <Text fontWeight="bold" color="blue.900">
+                      {comment.emisor}
+                    </Text>
+                    <Text color="gray.500" fontSize={{ base: "md", md: "sm" }}>
+                      {new Date(comment.fechahora).toLocaleDateString("es-ES", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                      })}{" "}
+                      -{" "}
+                      {new Date(comment.fechahora).toLocaleTimeString("es-ES", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
                     </Text>
                   </HStack>
                 </Flex>
                 <Box>
                   <Heading size="xs" mb={2} color="gray.700">
-                    Seguimiento de Requerimiento
+                    {comment.asunto}
                   </Heading>
-                  <Text color="gray.900" fontSize={{ base: 'lg', md: 'md' }}>
-                    Se requiere más información sobre los detalles técnicos del problema reportado. 
-                    Por favor, proporcionar especificaciones detalladas del equipo o sistema afectado.
+                  <Text color="gray.900" fontSize={{ base: "lg", md: "md" }}>
+                    {comment.descripcion}
                   </Text>
                 </Box>
               </Box>
-
-              <Box 
-                border="1px" 
-                borderColor="gray.200" 
-                borderRadius="md" 
-                p={4} 
-                bg="white"
-              >
-                <Flex justifyContent="space-between" mb={2}>
-                  <HStack>
-                    <Text fontWeight="bold" color="blue.900">María González</Text>
-                    <Text color="gray.500" fontSize={{ base: 'md', md: 'sm' }}>
-                      13 de Julio, 2023 - 09:15
-                    </Text>
-                  </HStack>
-                </Flex>
-                <Box>
-                  <Heading size="xs" mb={2} color="gray.700">
-                    Respuesta al Seguimiento
-                  </Heading>
-                  <Text color="gray.900" fontSize={{ base: 'lg', md: 'md' }}>
-                    Adjuntaré un informe técnico con los detalles solicitados. 
-                    El equipo está presentando problemas de conectividad en la red local.
-                  </Text>
-                </Box>
-              </Box>
-
+            ))
+          ) : (
+            <Text color="gray.500">No hay comentarios disponibles.</Text>
+          )}
               <CustomButton colorScheme="blue" onClick={handleOpenCommentModal} mt={4}>Agregar Comentario</CustomButton>
             </VStack>
 

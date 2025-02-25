@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/userController'); // Importa el controlador
+const userController = require('../controllers/userController'); 
 
-// Definir las rutas para cada operación
 router.get('/', userController.getUsers);
 router.post('/', userController.createUser);
 router.get('/:username', userController.getUserByUsername);
