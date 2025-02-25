@@ -43,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'idRequerimiento',
             targetKey:'idRequerimiento'
         });
+        Comentario.belongsTo(models.User, {
+          foreignKey: 'idUsuarioEmisor',
+          as: 'UsuarioEmisor',           
+        });
     }
   
     return Comentario;

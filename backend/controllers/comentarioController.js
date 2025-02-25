@@ -32,6 +32,8 @@ const createComment = async (req, res) => {
 
 const getCommentsByCodReq = async (req, res) => {
     const { codReq } = req.params;
+
+    console.log(codReq);
   try {
     const Requerimiento = await Requirement.findOne({
       where: { codigo: codReq }

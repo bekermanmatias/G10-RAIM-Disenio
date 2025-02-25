@@ -49,35 +49,44 @@ const RequirementDetail = () => {
   };
 
   useEffect(() => {
-
     const fetchComments = async () => {
       setLoading(true);
       try {
         const response = await fetch(`https://g10-raim-disenio.onrender.com/api/comment/${codigo}`);
         if (!response.ok) {
-          throw new Error('Error al obtener los comentarios');
-      }
-      const data = await response.json();
-      if (!Array.isArray(data.comments)) {
-        throw new Error('Formato inesperado de datos');
-      }
-      const commentsData = data.comments.map(com => ({
-        asunto: com.asunto, 
-        descripcion: com.descripcion,
-        emisor: com.idUsuarioEmisor,
-        fechahora: com.fechahora
-    }));
-    commentsData.sort((a, b) => new Date(b.fechahora) - new Date(a.fechahora));
-    setComments(commentsData);
-    console.log(comments);
+          throw new Error("Error al obtener los comentarios");
+        }
+        const data = await response.json();
+  
+        if (!Array.isArray(data.comments)) {
+          throw new Error("Formato inesperado de datos");
+        }
+  
+        const commentsData = data.comments.map((com) => ({
+          asunto: com.asunto,
+          descripcion: com.descripcion,
+          emisor: com.idUsuarioEmisor,
+          fechahora: com.fechahora,
+        }));
+  
+        commentsData.sort((a, b) => new Date(b.fechahora) - new Date(a.fechahora));
+        setComments(commentsData);
       } catch (error) {
-        setError(error.message);
+        setError(error.message || "Error desconocido");
       } finally {
         setLoading(false);
       }
     };
-    fetchComments();
+  
+    if (codigo) {
+      fetchComments();
+    }
   }, [codigo]);
+  
+  useEffect(() => {
+    console.log(comments);
+  }, [comments]);
+  
 
 const handleOpenCommentModal = () => setCommentModal(true);
 const handleCloseCommentModal = () => { 
@@ -382,7 +391,7 @@ const handleCloseFileModal = () => {
         {error && <Text color="red.500">{error}</Text>}
 
         <VStack spacing={4} width="full" align="stretch">
-          {comments.length > 0 ? (
+          {Array.isArray(comments) && comments.length > 0 ? (
             comments.map((comment, index) => (
               <Box
                 key={index}

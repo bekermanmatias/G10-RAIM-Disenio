@@ -56,6 +56,9 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'idUserDestinatario',
             as:'requerimientosAsignados'
         });
+        User.hasMany(models.Comentario, {
+          foreignKey: 'idUsuarioEmisor',
+        });
         
     }
   
