@@ -1,0 +1,68 @@
+.professional-alert {
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.swal2-popup {
+    transform: scale(1) !important; /* Elimina cualquier efecto de escala */
+}
+
+/* Eliminar animaciones por defecto */
+@keyframes swal2-show {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.professional-alert {
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.05);
+    font-family: 'Arial', sans-serif;
+}
+
+.professional-alert-title {
+    color: #333;
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+.professional-alert-content {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.swal2-actions {
+    display: flex;
+    gap: 15px; /* Espacio entre botones */
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.swal2-confirm,
+.swal2-cancel {
+    cursor: pointer;
+    min-width: 150px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: all 0.3s ease; /* Transición suave */
+}
+
+
+
+.swal2-confirm {
+    background-color: #040247 !important;
+    color: white !important;
+}
+
+.swal2-confirm:hover {
+    background-color: #060669 !important; /* Tono más claro al hacer hover */
+}
+
+
+
+.swal2-cancel:hover {
+    background-color: rgba(4, 2, 71, 0.05) !important; /* Fondo muy sutl al hacer hover */
+}

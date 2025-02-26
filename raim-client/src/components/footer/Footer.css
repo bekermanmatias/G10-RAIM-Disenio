@@ -1,0 +1,14 @@
+/* src/components/footer/Footer.css */
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+    padding: 10px 20px;
+    background-color: #ffffff; 
+    color: rgb(153, 153, 153);
+    font-size: 0.9rem;
+}
+
+.footer-content {
+    text-align: left; 
+}

@@ -1,0 +1,89 @@
+/* Estilos base */
+.requerimientos-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.requerimientos-table th, .requerimientos-table td {
+    padding: 10px;
+    font-size: 16px; /* Fuente normal para dispositivos de escritorio */
+}
+
+/* Media query para tablets */
+@media screen and (max-width: 1024px) {
+    .requerimientos-table {
+        font-size: 14px;
+    }
+    
+    .table-cell {
+        padding: 10px;
+    }
+}
+
+/* Media query para móviles */
+@media screen and (max-width: 768px) {
+    .requerimientos-table {
+        width: 100%;
+        display: table;
+        table-layout: fixed; /* Distribuye las columnas de forma equitativa */
+        border-collapse: collapse;
+    }
+
+    .requerimientos-table thead,
+    .requerimientos-table tbody {
+        width: 100%;
+    }
+
+    .requerimientos-table th,
+    .requerimientos-table td {
+        width: 33.33%; /* Cada columna ocupa un tercio del ancho */
+        text-align: center;
+        padding: 8px;
+    }
+
+    /* Ocultar todas las columnas excepto las necesarias */
+    .requerimientos-table th:nth-child(n+4),
+    .requerimientos-table td:nth-child(n+4) {
+        display: none;
+    }
+}
+
+
+/* Resto de estilos (prioridades, hover, etc.) */
+.priority-dot {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.priority-low {
+    background-color: rgba(80, 194, 129, 0.2); 
+    color: #156741; 
+}
+
+.priority-medium {
+    background-color: rgba(218, 165, 32, 0.2); 
+    color: #a35d08; 
+}
+
+.priority-high {
+    background-color: rgba(175, 60, 18, 0.281); 
+    color: #ff3300; 
+}
+
+.priority-urgent {
+    background-color: rgba(141, 11, 11, 0.3); 
+    color: #fc0909; 
+}
+
+thead th {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+}
+
+thead th:hover {
+    background-color: rgba(0,0,0,0.05);
+}

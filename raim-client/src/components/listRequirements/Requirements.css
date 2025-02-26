@@ -1,0 +1,155 @@
+.requerimientos-container {
+    padding: 20px;
+    width: 100%; 
+    box-sizing: border-box; 
+}
+.search-container {
+    display: flex; 
+    align-items: center;
+    position: relative;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.search-bar {
+    flex-grow: 1;
+    padding: 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; 
+    margin-right: 10px;
+    height: 56px; 
+}
+
+.filter-dropdown {
+    display:contents;
+    position: absolute; 
+    top: 155px; 
+    left: 250px;
+    width: 60%; 
+    background-color: white; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    padding: 10px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    z-index: 1000;
+    box-sizing: border-box; 
+}
+
+.reset-filter-button {
+    background-color: #040247;
+    color: white; 
+    border: none; 
+    border-radius: 4px; 
+    width: 120px; 
+    height: 56px; 
+    padding: 0; 
+    display: flex; 
+    align-items: center;
+    justify-content: center; 
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+}
+
+.reset-filter-button:hover {
+    background-color: #070370; 
+}
+
+.reset-icon {
+    width: 30px;
+    height: 30px; 
+}
+
+.requerimientos-table {
+    width: 100%; 
+    border-collapse: collapse; 
+    table-layout: auto; 
+}
+
+.table-header {
+    background-color: #040247; 
+    color: white; 
+    font-weight: bold; 
+}
+
+.table-header th {
+    padding: 15px; 
+    text-align: center; 
+}
+
+.table-row:nth-child(even) {
+    background-color: #f0f0f0; 
+}
+
+.table-row:nth-child(odd) {
+    background-color: #e0e0e0; 
+}
+
+.table-cell {
+    padding: 15px; 
+    text-align: center; 
+    border-bottom: 1px solid #ccc; 
+}
+
+.filter-button {
+    background-color: transparent;
+    border: none; 
+    border-radius: 4px;
+    width: 120px; 
+    height: 56px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+}
+
+.filter-button:hover {
+    background-color: #e7e7e7; 
+}
+
+
+.filter-dropdown h4 {
+    margin: 0 0 10px; 
+}
+
+.filter-dropdown label {
+    display: block; 
+    margin-bottom: 5px; 
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+.pagination button {
+    background-color: #040247;
+    color: white;
+    border: 1px solid #040247;
+    padding: 8px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.pagination button:hover:not([disabled]) {
+    background-color: #040247;
+    transform: scale(1.05);
+}
+
+.pagination button:disabled {
+    background-color: #cccccc;
+    border-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.pagination span {
+    font-size: 16px;
+    color: #333;
+}

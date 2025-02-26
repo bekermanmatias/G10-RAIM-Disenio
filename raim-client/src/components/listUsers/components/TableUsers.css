@@ -1,0 +1,98 @@
+/* Estilos base */
+.usuarios-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+/* Media query para tablets */
+@media screen and (max-width: 1024px) {
+    .usuarios-table {
+        font-size: 14px;
+    }
+    
+    .table-cell {
+        padding: 10px;
+    }
+}
+
+/* Media query para móviles */
+@media screen and (max-width: 768px) {
+    .usuarios-table {
+        width: 100%;
+        display: table;
+        table-layout: fixed;
+        border-collapse: collapse;
+    }
+
+    .usuarios-table thead,
+    .usuarios-table tbody {
+        width: 100%;
+    }
+
+    .usuarios-table th,
+    .usuarios-table td {
+        width: 33.33%;
+        text-align: center;
+        padding: 8px;
+    }
+
+    /* Ocultar todas las columnas excepto las necesarias */
+    .usuarios-table th:nth-child(n+4),
+    .usuarios-table td:nth-child(n+4) {
+        display: none;
+    }
+}
+
+
+
+/* Resto de estilos */
+.table-header {
+    background-color: #040247;
+    color: white;
+    font-weight: bold;
+}
+
+.table-header th {
+    padding: 15px;
+    text-align: center;
+}
+
+.table-row {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.table-row:nth-child(even) {
+    background-color: #f0f0f0;
+}
+
+.table-row:nth-child(odd) {
+    background-color: #e0e0e0;
+}
+
+.table-row.row-hovered {
+    background-color: rgba(0, 123, 255, 0.2);
+}
+
+.table-row:hover {
+    box-shadow: 0 3px 4px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+}
+
+.table-cell {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+}
+
+thead th {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+}
+
+thead th:hover {
+    background-color: rgba(255,255,255,0.2);
+}
