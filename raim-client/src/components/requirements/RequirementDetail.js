@@ -103,36 +103,56 @@ const handleCloseFileModal = () => {
   setSelectedFile(null);
 }
 
-  const handleConfirmComment = async () => {
-    const nombreUsuario = String(localStorage.getItem('usuario'));
-    const DataToSend = {
+const handleConfirmComment = async () => {
+  const nombreUsuario = String(localStorage.getItem('usuario'));
+  const DataToSend = {
       asunto: asunto,
       descripcion: descripcion,
       emisor: nombreUsuario,
       codReq: codigo,
-    }
+  }
 
-    console.log(DataToSend);
-    try {
+  try {
       const response = await fetch('https://g10-raim-disenio.onrender.com/api/comment', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(DataToSend),
-    });
-    if(response.ok){
-      console.log('Comment submitted successfully!');
-      setAsunto('');
-      setDescripcion('');
-      onClose();
-    } else {
-      console.error('No pudo subirse el comentario.');
-    }
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(DataToSend),
+      });
+
+      if(response.ok){
+          console.log('Comment submitted successfully!');
+          // Cerrar el modal
+          handleCloseCommentModal();
+          
+          // Recargar los comentarios
+          const newCommentsResponse = await fetch(`https://g10-raim-disenio.onrender.com/api/comment/${codigo}`);
+          const newCommentsData = await newCommentsResponse.json();
+          
+          if (Array.isArray(newCommentsData)) {
+              const updatedComments = newCommentsData.map((com) => ({
+                  asunto: com.asunto,
+                  descripcion: com.descripcion,
+                  emisor: com.idUsuarioEmisor,
+                  fechahora: com.fechahora,
+              }));
+              
+              updatedComments.sort((a, b) => new Date(b.fechahora) - new Date(a.fechahora));
+              setComments(updatedComments);
+          }
+
+          // Limpiar los campos
+          setAsunto('');
+          setDescripcion('');
+      } else {
+          console.error('No pudo subirse el comentario.');
+      }
   } catch (error) {
-    console.error('Error: ', error.message);
-    }
-  };
+      console.error('Error: ', error.message);
+  }
+};
+
 
     const handleCancelComment = () => {
       setAsunto('');
